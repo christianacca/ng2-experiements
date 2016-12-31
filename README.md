@@ -1,4 +1,40 @@
-# TempNg2
+# ng2-experiments
+
+## Experiments
+
+### async service bootstrap
+
+* You want to provide the convenience of working with a service by making *synchronous* calls to it's methods.
+* Yet the service requires some async data before it can work
+* The service should load its data before injecting the service into a component or a route guard
+
+This experiment shows how a service can define a an async method that is guaranteed to have completed
+before the service is injected into a component or a route guard.
+
+Such a service becomes a `bootstrappable` service
+
+**WARNING**: There is no guarantees that a `bootstrappable` service will be finished bootrapping when
+injecting that service into another service.
+
+**Code listing**
+
+* Implementation: `provide-bootstrappable.ts`, `bootstrappable.ts`
+* Example usage: `bootstrappable.service.ts`, `bootstrappable2.service.ts`, `index.ts`
+
+### injecting services into a `class`
+
+* You want to a regular class to create instances from
+* That class requires a service provided by the angular injector
+
+This experiment shows various solutions.
+
+**Code listing**
+
+* `asset.ts` (worst solution)
+* `company.ts` (better solution)
+* `report.model.ts` (best solution)
+
+----
 
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.15.
 
@@ -29,3 +65,5 @@ Run `ng github-pages:deploy` to deploy to Github Pages.
 ## Further help
 
 To get more help on the `angular-cli` use `ng --help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+---
