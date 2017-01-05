@@ -3,11 +3,11 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-import AdminModule from './admin/admin.module';
+import { AdminModule } from './admin/admin.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared';
-import AppRoutingModule from './app-routes';
-import ReportsModule from './reports/reports.module';
+import { AppRoutingModule } from './app-routes';
+import { ReportsModule } from './reports/reports.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +22,7 @@ import ReportsModule from './reports/reports.module';
     SharedModule,
     AppRoutingModule
   ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

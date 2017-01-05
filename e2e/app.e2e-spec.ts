@@ -1,10 +1,10 @@
-import { TempNg2Page } from './app.po';
+import { Ng2ExperiementsPage } from './app.po';
 
-describe('temp-ng2 App', function() {
-  let page: TempNg2Page;
+describe('ng2-experiements App', function() {
+  let page: Ng2ExperiementsPage;
 
   beforeEach(() => {
-    page = new TempNg2Page();
+    page = new Ng2ExperiementsPage();
   });
 
   it('should display message saying app works', () => {

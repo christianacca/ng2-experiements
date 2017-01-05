@@ -10,7 +10,7 @@ import { reportInitializerProvider } from './report-list/report.model';
     providers: [reportInitializerProvider, ReportListResolve],
     declarations: [ReportListComponent]
 })
-export default class ReportsModule {
+export class ReportsModule {
 }
 
-export { ReportListResolve, ReportListComponent }
+export { ReportListResolve, ReportListComponent };

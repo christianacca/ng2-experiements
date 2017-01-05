@@ -28,7 +28,7 @@ export interface AssetType {
 }
 export const AssetType = new OpaqueToken('Asset');
 
-function assetCtorFactory(db: Db) {
+export function assetCtorFactory(db: Db) {
     return class implements Asset {
         id?: number;
         purchaseValue?: number;

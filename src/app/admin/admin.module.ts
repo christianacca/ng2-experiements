@@ -3,7 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminComponent } from './admin.component';
 import { FeatOneComponent } from './feat-one/feat-one.component';
-import AdminRoutingModule from './admin-routing.module';
+import { AdminRoutingModule } from './admin-routing.module';
+
+// function declaration used because of https://github.com/angular/angular/issues/13614
+export function adminTitleResolve () {
+  return 'Admin Area (injected)';
+}
 
 @NgModule({
   imports: [
@@ -20,7 +25,7 @@ import AdminRoutingModule from './admin-routing.module';
     // A naive attempt at limiting the visibility would be to add the provider to the admin.component...
     // ... this wouldn't work as routing uses the root injector which is never configured with providers
     // added to a component, even when that component is the root component of our application
-    { provide: 'AdminTitleResolve', useValue: () => 'Admin Area (injected)'}
+    { provide: 'AdminTitleResolve', useValue: adminTitleResolve }
   ]
 })
-export default class AdminModule { }
+export class AdminModule { }

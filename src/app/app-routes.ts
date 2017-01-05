@@ -21,4 +21,4 @@ const routes: Route[] = [
     }
 ];
 
-export default RouterModule.forRoot(routes);
+export let AppRoutingModule = RouterModule.forRoot(routes);
