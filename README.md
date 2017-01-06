@@ -21,6 +21,7 @@ injecting that service into another service.
 * Implementation: `provide-bootstrappable.ts`, `bootstrappable.ts`
 * Example usage: `bootstrappable.service.ts`, `bootstrappable2.service.ts`, `index.ts`
 
+
 ### injecting services into a `class`
 
 * You want to a regular class to create instances from
@@ -33,6 +34,23 @@ This experiment shows various solutions.
 * `asset.ts` (worst solution)
 * `company.ts` (better solution)
 * `report.model.ts` (best solution)
+
+
+### Reactive forms
+
+* Basic Example (todo: extend as necessary)
+* Usefully shows that with the reactive form, angular will still add field state and validation css classes to the html elements
+
+**Code listing**: `form-eg`
+
+
+### Hybrid reactive forms
+
+* Basic Example (todo: extend as necessary)
+* Shows how you can mix reactive code idoms with template-driven forms
+
+**Code listing**: `form-hybrid`
+
 
 ----
 

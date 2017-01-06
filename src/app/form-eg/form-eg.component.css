@@ -1,0 +1,7 @@
+input.ng-invalid {
+    outline: 1px solid orange
+}
+
+input.ng-invalid.ng-dirty {
+    outline: 1px solid red
+}
