@@ -9,7 +9,22 @@
     <label for="lastName">Last Name</label>
     <input id="lastName" type="text" name="lastName" ngModel required />
   </div>
+  <div>
+    <label for="age">Age</label>
+    <input #age id="age" type="number" name="age" ngModel required />
+  </div>
+  <div>
+    <label for="salary">Salary</label>
+    <input #salaryModel="ngModel" id="salary" type="number" name="salary" [(ngModel)]="salary" required />
+  </div>
 </form>
+
+<div>
+  <h3>Set Salary:</h3>
+  <button (click)="salaryModel.control.setValue(24000)">Via form model</button>
+  <button (click)="setSalary(25000)">Via data model</button>
+</div>
+<hr/>
 
 <div>
   {{ myForm.value | json}}
@@ -23,4 +38,19 @@
 <div>
   <pre>formValue$ (2nd subscription):</pre>
   {{ formValue$ | async }}
+</div>
+
+<div>
+  <pre>#age.value:</pre>
+  {{ age.value }}
+</div>
+
+<div>
+  <pre>#salaryModel.value:</pre>
+  {{ salaryModel.value }}
+</div>
+
+<div>
+  <pre>salaryValue$:</pre>
+  {{ salaryValue$ | async }}
 </div>
