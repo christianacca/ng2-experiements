@@ -5,6 +5,7 @@ import { ReportListComponent, ReportListResolve } from './reports/reports.module
 
 import { FormEgComponent } from './form-eg/form-eg.component';
 import { FormHybridComponent } from './form-hybrid/form-hybrid.component';
+import { ZonesComponent } from './zones/zones.component';
 
 // can't get lazy loading of admin module to work
 
@@ -29,6 +30,10 @@ const routes: Route[] = [
     {
         component: FormHybridComponent,
         path: 'form-hybrid'
+    },
+    {
+        component: ZonesComponent,
+        path: 'zones'
     }
 ];
 

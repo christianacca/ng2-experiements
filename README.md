@@ -41,6 +41,10 @@ This experiment shows various solutions.
 * Basic Example (todo: extend as necessary)
 * Usefully shows that with the reactive form, angular will still add field state and validation css classes to the html elements
 
+**See also**
+
+* custom control: https://plnkr.co/edit/msnDv0aCAWu8gxShb9wC
+
 **Code listing**: `form-eg`
 
 
@@ -51,6 +55,12 @@ This experiment shows various solutions.
 
 **Code listing**: `form-hybrid`
 
+
+### Zones
+
+* An initial exploration of what practical uses there are in using zone's in our code
+
+**Code listing**: `zones`
 
 ----
 
