@@ -12,6 +12,7 @@ import { FormEgComponent } from './form-eg/form-eg.component';
 import { FormHybridComponent } from './form-hybrid/form-hybrid.component';
 import { ZonesComponent } from './zones/zones.component';
 import { ThrowingChildComponent } from './zones/throwing-child/throwing-child.component';
+import { FormHybridComplexComponent } from './form-hybrid-complex/form-hybrid-complex.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ThrowingChildComponent } from './zones/throwing-child/throwing-child.co
     FormEgComponent,
     FormHybridComponent,
     ZonesComponent,
-    ThrowingChildComponent
+    ThrowingChildComponent,
+    FormHybridComplexComponent
   ],
   imports: [
     BrowserModule,
