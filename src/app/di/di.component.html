@@ -1,0 +1,22 @@
+<!--
+  * Directives (and component) sharing the same host element share the same injector
+    * See app-di-sub1[appDiDir2, appDiDir3]; app-di-sub3[appDiDir5]
+  * Directives and components nested in the DOM tree inherit from injectors created higher up in the DOM tree
+    * See div[appDiDir1] > app-di-sub1
+  * Projected components inherit from the injector for the *target* component they are projected into
+    * See app-di-sub1 > app-di-sub2; app-di-sub1 > app-di-sub3
+  * The injector of the projected component can override the injector for the *target* component they are projected into
+    * See app-di-sub1 > app-di-sub3
+-->
+
+<div appDiDir1>
+  <h3>Component <code>app-di</code></h3>
+  <app-di-sub1 appDiDir2 appDiDir3 #dir3="diDir3" [svc1Input]="dir3.svc1" [svc2Input]="dir3.svc2">
+    <app-di-sub2></app-di-sub2>
+    <app-di-sub3></app-di-sub3>
+    <app-di-sub3 appDiDir5></app-di-sub3>
+  </app-di-sub1>
+  <app-di-sub2></app-di-sub2>
+  <app-di-sub3></app-di-sub3>
+  <app-di-sub3 appDiDir5></app-di-sub3>
+</div>

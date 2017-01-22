@@ -1,0 +1,17 @@
+<h4>Sub Component 2 (<code>app-di-sub2</code>)</h4>
+<div class="indent">
+  <p>
+    Constructor inject Service (<code>svc3</code>): {{ svc3.name }}
+  </p>
+  <ul>
+    <li>Provided by <code>{{svc3Provider}}</code> component</li>
+  </ul>
+  <div *ngIf="svc4">
+    <p>
+      Constructor inject Service (<code>svc4</code>): {{ svc4.name }}
+    </p>
+    <ul>
+      <li>Provided by <code>{{svc4.providedBy}}</code> component</li>
+    </ul>
+  </div>
+</div>

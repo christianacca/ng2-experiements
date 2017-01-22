@@ -13,6 +13,14 @@ import { FormHybridComponent } from './form-hybrid/form-hybrid.component';
 import { ZonesComponent } from './zones/zones.component';
 import { ThrowingChildComponent } from './zones/throwing-child/throwing-child.component';
 import { FormHybridComplexComponent } from './form-hybrid-complex/form-hybrid-complex.component';
+import { DiComponent } from './di/di.component';
+import { DiDir1Directive } from './di/di-dir1.directive';
+import { DiDir2Directive } from './di/di-dir2.directive';
+import { DiSub1Component } from './di/di-sub1/di-sub1.component';
+import { DiDir3Directive } from './di/di-dir3.directive';
+import { DiSub2Component } from './di/di-sub2/di-sub2.component';
+import { DiSub3Component } from './di/di-sub3/di-sub3.component';
+import { DiDir5Directive } from './di/di-dir5.directive';
 
 @NgModule({
   declarations: [
@@ -21,7 +29,15 @@ import { FormHybridComplexComponent } from './form-hybrid-complex/form-hybrid-co
     FormHybridComponent,
     ZonesComponent,
     ThrowingChildComponent,
-    FormHybridComplexComponent
+    FormHybridComplexComponent,
+    DiComponent,
+    DiDir1Directive,
+    DiDir2Directive,
+    DiSub1Component,
+    DiDir3Directive,
+    DiSub2Component,
+    DiSub3Component,
+    DiDir5Directive
   ],
   imports: [
     BrowserModule,

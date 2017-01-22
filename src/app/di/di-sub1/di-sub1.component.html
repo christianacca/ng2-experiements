@@ -1,0 +1,40 @@
+<h4>Sub Component (<code>app-di-sub1</code>)</h4>
+<div class="indent">
+  <p>
+    Constructor inject Service (<code>svc1</code>): {{ svc1.name }}
+  </p>
+  <ul>
+    <li>Provided by <code>di-dir1</code> directive</li>
+    <li>Directive on parent componet</li>
+    <li>svc1 {{svc1 === svc1Input ? '=' : '!'}}== svc1Input</li>
+  </ul>
+  <p>
+    Property inject Service (<code>svc1Input</code>): {{ svc1Input.name }}
+  </p>
+  <ul>
+    <li>svc1 {{svc1 === svc1Input ? '=' : '!'}}== svc1Input</li>
+  </ul>
+  <p>
+    Constructor inject Service (<code>svc2</code>): {{ svc2.name }}
+  </p>
+  <ul>
+    <li>Provided by <code>di-dir2</code> directive</li>
+    <li>Directive on host element</li>
+  </ul>
+  <p>
+    Property inject Service (<code>svc2Input</code>): {{ svc2Input.name }}
+  </p>
+  <ul>
+    <li>svc2 {{svc2 === svc2Input ? '=' : '!'}}== svc2Input</li>
+  </ul>
+  <p>
+    Constructor inject Service (<code>svc4</code>): {{ svc4.name }}
+  </p>
+  <ul>
+    <li>Provided by my component class</li>
+  </ul>
+  <div class="indent container-outline">
+    <h4>Transcluded content</h4>
+    <ng-content></ng-content>
+  </div>
+</div>
