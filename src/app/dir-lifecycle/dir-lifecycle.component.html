@@ -1,0 +1,22 @@
+<h4>Using <strong>ng-content</strong> to project</h4>
+
+<app-proj-container>
+  <p>
+    Projected static content
+  </p>
+  <app-projected></app-projected>
+</app-proj-container>
+
+<h4>Using <strong>template</strong> to project</h4>
+
+<app-proj-tmpl-container [template]="content">
+  <template #content>
+    <p>
+      Projected static content
+    </p>
+    <app-projected></app-projected>
+  </template>
+</app-proj-tmpl-container>
+
+<hr/>
+<app-log-results></app-log-results>

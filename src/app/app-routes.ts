@@ -1,13 +1,13 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Route } from '@angular/router';
-
 import { ReportListComponent, ReportListResolve } from './reports/reports.module'
+import { Route, RouterModule } from '@angular/router';
 
-import { FormEgComponent } from './form-eg/form-eg.component';
-import { FormHybridComponent } from './form-hybrid/form-hybrid.component';
-import { ZonesComponent } from './zones/zones.component';
-import { FormHybridComplexComponent } from './form-hybrid-complex/form-hybrid-complex.component';
 import { DiComponent } from './di/di.component';
+import { DirLifecycleComponent } from './dir-lifecycle/dir-lifecycle.component';
+import { FormEgComponent } from './form-eg/form-eg.component';
+import { FormHybridComplexComponent } from './form-hybrid-complex/form-hybrid-complex.component';
+import { FormHybridComponent } from './form-hybrid/form-hybrid.component';
+import { NgModule } from '@angular/core';
+import { ZonesComponent } from './zones/zones.component';
 
 // can't get lazy loading of admin module to work
 
@@ -44,6 +44,10 @@ const routes: Route[] = [
     {
         component: DiComponent,
         path: 'di'
+    },
+    {
+        component: DirLifecycleComponent,
+        path: 'dir-lifecycle'
     }
 ];
 

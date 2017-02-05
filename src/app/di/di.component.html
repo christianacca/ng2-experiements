@@ -19,4 +19,20 @@
   <app-di-sub2></app-di-sub2>
   <app-di-sub3></app-di-sub3>
   <app-di-sub3 appDiDir5></app-di-sub3>
+
+  <app-di-tmpl-container [template]="content" appDiDir5>
+    <template #content>
+      <app-di-sub3></app-di-sub3>
+    </template>
+  </app-di-tmpl-container>
+
+  <!-- Note: app-di-tmpl-container2 is identical to app-di-tmpl-container except supports nicer syntax -->
+  <app-di-tmpl-container2 appDiDir5>
+    <app-di-sub3 *appDiTmplContent></app-di-sub3>
+  </app-di-tmpl-container2>
+
+  <div *appDiDirTmplContainer appDiDir5>
+    <!-- Note: transcluded diSub3 cannot ask for diDirTmplContainer to be injected into it' constructor :-( -->
+    <app-di-sub3></app-di-sub3>
+  </div>
 </div>

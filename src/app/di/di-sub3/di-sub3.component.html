@@ -6,4 +6,38 @@
   <ul>
     <li>Provided by <code>{{svc5.providedBy}}</code> component</li>
   </ul>
+  <div *ngIf="svc6">
+    <p>
+      Constructor inject Service (<code>svc6</code>): {{ svc6.name }}
+    </p>
+    <ul>
+      <li>Provided by <code>{{svc6.providedBy}}</code> component</li>
+    </ul>
+  </div>
+  <!-- Note: this is never set :-( -->
+  <div *ngIf="dirTmplContainer">
+    <p>
+      Constructor inject Directive (<code>dirTmplContainer</code>)
+    </p>
+  </div>
+  <div *ngIf="tmplContainer">
+    <p>
+      Constructor inject Component (<code>tmplContainer</code>)
+    </p>
+  </div>
+  <div *ngIf="tmplContainer2">
+    <p>
+      Constructor inject Component (<code>tmplContainer2</code>)
+    </p>
+  </div>
+  <div *ngIf="dir1">
+    <p>
+      Constructor inject Directive (<code>dir1</code>)
+    </p>
+  </div>
+  <div *ngIf="dir5">
+    <p>
+      Constructor inject Directive (<code>dir5</code>)
+    </p>
+  </div>
 </div>
