@@ -30,6 +30,8 @@ import { DiTmplContainerComponent } from './di/di-tmpl-container/di-tmpl-contain
 import { DiDirTmplContainerDirective } from './di/di-dir-tmpl-container.directive';
 import { DiTmplContainer2Component } from './di/di-tmpl-container2/di-tmpl-container2.component';
 import { DiTmplContentDirective } from './di/di-tmpl-container2/di-tmpl-content.directive';
+import { RxjsErrAsyncPipeComponent } from './rxjs/rxjs-err-async-pipe/rxjs-err-async-pipe.component';
+import { ErrorHandlerComponent } from './error-handler/error-handler.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,9 @@ import { DiTmplContentDirective } from './di/di-tmpl-container2/di-tmpl-content.
     DiTmplContainerComponent,
     DiDirTmplContainerDirective,
     DiTmplContainer2Component,
-    DiTmplContentDirective
+    DiTmplContentDirective,
+    RxjsErrAsyncPipeComponent,
+    ErrorHandlerComponent
   ],
   imports: [
     BrowserModule,
