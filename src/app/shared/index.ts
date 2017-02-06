@@ -12,19 +12,15 @@ export { Company, CompanyType };
 export { Asset, AssetType };
 export { Bootstrappable, Bootstrappable2 };
 
-// making an exported variable to try and solve issue: https://github.com/angular/angular/issues/13614 
-export let bootstrappableProvider = provideBootstrappable(Bootstrappable);
-export let bootstrappableProvider2 = provideBootstrappable(Bootstrappable2);
-export let errorProvider = { provide: ErrorHandler, useClass: DelegatingErrorHandler };
 
 @NgModule({
     providers: [
         COMPANY_TYPE_PROVIDER,
         ASSET_TYPE_PROVIDER,
-        bootstrappableProvider,
-        bootstrappableProvider2,
+        provideBootstrappable(Bootstrappable),
+        provideBootstrappable(Bootstrappable2),
         Db,
-        errorProvider
+        { provide: ErrorHandler, useClass: DelegatingErrorHandler }
     ]
 })
 export class SharedModule {
