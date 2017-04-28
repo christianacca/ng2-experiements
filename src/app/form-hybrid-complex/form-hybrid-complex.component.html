@@ -1,3 +1,54 @@
-<p>
-  form-hybrid-complex works!
-</p>
+<h3>Form (template+reactive) complex example</h3>
+
+<form #myForm="ngForm">
+  <div>
+    <label for="placedOn">Placed</label>
+    <input id="placedOn" type="text" name="placedOn" [(ngModel)]="model.placedOn" />
+  </div>
+  <div>
+    <label for="customerName">Customer</label>
+    <input id="customerName" type="text" name="customerName" [(ngModel)]="model.customerName" />
+  </div>
+
+  <div ngModelGroup="lines">
+    <div *ngFor="let line of model.lines; let i=index" ngModelGroup="{{ i }}" class="formLine">
+      <div>
+        <label for="quantity">Quantity</label>
+        <input id="quantity" type="number" name="quantity" [(ngModel)]="line.quantity" />
+      </div>
+      <div>
+        <label for="unitValue">Value</label>
+        <input id="unitValue" type="number" name="unitValue" [(ngModel)]="line.unitValue" />
+      </div>
+      <div>
+        <label for="lineTotal">Total</label>
+        <input id="lineTotal" type="number" name="lineTotal" [(ngModel)]="line.lineTotal" />
+      </div>
+      <div>
+        <label for="productName">Product</label>
+        <input id="productName" type="text" name="productName" [(ngModel)]="line.productName" />
+      </div>
+      <div>
+        <button (click)="removeLine(line)">Remove</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div>
+  <button (click)="addLine()">Add line</button>
+</div>
+
+<div class="logViewer">
+  <h4><code>valueChanges</code> emitted from 'lines' <code>ngModelGroup</code></h4>
+  <ul>
+    <li *ngFor="let log of logs$ | async">{{log}}</li>
+  </ul>
+</div>
+
+<div>
+  <h4>Current value of <code>ngForm</code> emitted by <code>valueChanges</code></h4>
+  <pre>
+  {{ formValue$ | async | json }}
+</pre>
+</div>

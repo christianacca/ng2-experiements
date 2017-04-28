@@ -1,12 +1,14 @@
-import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, NgZone, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 
 @Component({
   selector: 'app-zones',
   templateUrl: './zones.component.html',
   styleUrls: ['./zones.component.css']
 })
-export class ZonesComponent implements OnInit {
+export class ZonesComponent implements OnInit, AfterViewInit {
   errorCount = 0;
+  @ViewChild('tmpl', { read: ViewContainerRef}) container: ViewContainerRef;
+  @ViewChild('tmpl') tmpl: TemplateRef<any>
 
   constructor(private ngZone: NgZone, private cd: ChangeDetectorRef) {
 
@@ -24,4 +26,7 @@ export class ZonesComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit() {
+    this.container.createEmbeddedView(this.tmpl);
+  }
 }

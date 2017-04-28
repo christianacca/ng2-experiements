@@ -7,6 +7,16 @@
     * See app-di-sub1 > app-di-sub2; app-di-sub1 > app-di-sub3
   * The injector of the projected component can override the injector for the *target* component they are projected into
     * See app-di-sub1 > app-di-sub3
+  * Templates inherit from the injector of the *target* component whose view they are added to
+    * See  app-di-tmpl-container > app-di-sub3
+  * No injector is create for a template element
+    * See template[appDiDirTmplContainer] > app-di-sub3>
+  * Directives can ask to be injected with another directive either:
+    * on the same element as itself (see app-di-sub3[appDiDir5])
+    * higher in the dom tree (see div[appDiDir1] app-di-sub3)
+    * Note: although not demonstrated, you can also restrict visbility of injection. See:
+      * https://blog.nrwl.io/essential-angular-dependency-injection-a6b9dcca1761#.1h7p0z91s
+      * https://blog.thoughtram.io/angular/2015/08/20/host-and-visibility-in-angular-2-dependency-injection.html
 -->
 
 <div appDiDir1>
@@ -31,8 +41,16 @@
     <app-di-sub3 *appDiTmplContent></app-di-sub3>
   </app-di-tmpl-container2>
 
-  <div *appDiDirTmplContainer appDiDir5>
-    <!-- Note: transcluded diSub3 cannot ask for diDirTmplContainer to be injected into it' constructor :-( -->
-    <app-di-sub3></app-di-sub3>
-  </div>
+  <template appDiDirTmplContainer>
+    <div appDiDir5>
+      <!-- Note: 
+      diSub3 cannot ask for an injected DiDirTmplContainerDirective nor
+      any of the services that DiDirTmplContainerDirective provides (eg Service6Service)
+
+      The conclusion is that an injector is not created for a template element    
+      
+      -->
+      <app-di-sub3></app-di-sub3>
+    </div>
+  </template>
 </div>

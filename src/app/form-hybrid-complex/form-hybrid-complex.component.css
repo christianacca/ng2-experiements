@@ -1,0 +1,8 @@
+.formLine div {
+    display: inline-block;
+}
+
+.logViewer {
+    max-height: 100px;
+    overflow-y: auto;
+}
