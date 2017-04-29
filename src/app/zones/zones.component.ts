@@ -15,10 +15,7 @@ export class ZonesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    // WARNING: This first error that our throwing-child generates is not received;
-    // on a quick inspection, it looks like our subscription is happening late
-    // ie our subscribe call below is being made after the first error
-    this.ngZone.onError.subscribe(() => {
+    this.ngZone.onError.subscribe((err) => {
       this.errorCount += 1;
       // angular won't see our change until the next change detection cycle
       // therefore we need to trigger a manual check
