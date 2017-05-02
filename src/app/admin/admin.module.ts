@@ -19,7 +19,7 @@ export function adminTitleResolve () {
   declarations: [AdminComponent, FeatOneComponent],
   providers: [
     // a resolve function that will be used to supply data when when routing to the admin.component
-    // IMPORTANT: 
+    // IMPORTANT:
     // this provider will be added to the *root injector* and therefore available for injection
     // throughout app - this is NOT what we want but is inevitable due to the design of DI
     // A naive attempt at limiting the visibility would be to add the provider to the admin.component...

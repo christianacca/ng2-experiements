@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, AfterViewChecked } from '@angular/core';
-import { FormGroup, NgForm, NgModel } from '@angular/forms'
-import { Observable } from 'rxjs'
+import { FormGroup, NgForm, NgModel } from '@angular/forms';
+import { Observable } from 'rxjs/observable';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/startWith';
@@ -29,7 +29,7 @@ export class FormHybridComponent implements OnInit, AfterViewChecked {
   ngOnInit() {
     this.salaryValue$ = this.salaryModel.valueChanges
       .do(v => {
-        console.log(`salaryValue$: ${v}`)
+        console.log(`salaryValue$: ${v}`);
       });
 
     this.formValue$ = this.currentForm.valueChanges

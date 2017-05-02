@@ -1,9 +1,9 @@
 import { Deferred } from './deferred';
 
 export interface Bootstrappable {
-    bootstrap(): void | Promise<any>;
     isDone: boolean;
     done: Promise<any>;
+    bootstrap(): void | Promise<any>;
 }
 
 export abstract class BootstrappableBase implements Bootstrappable {
@@ -11,7 +11,7 @@ export abstract class BootstrappableBase implements Bootstrappable {
     done: Promise<any>;
     private _deferred: Deferred<any>;
     protected abstract bootstrapImpl(): Promise<any> | void;
-    constructor(private serviceName? : string) {
+    constructor(private serviceName?: string) {
         this._deferred = Deferred.defer();
         this.done = this._deferred.promise;
     }

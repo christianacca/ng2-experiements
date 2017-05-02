@@ -9,8 +9,8 @@ import { Service3Service, Service5Service } from './services';
 })
 export class DiComponent implements OnInit {
 
-  constructor(public svc3: Service3Service, private svc5: Service5Service) { 
-    this.svc5.providedBy = 'app-di'
+  constructor(public svc3: Service3Service, private svc5: Service5Service) {
+    this.svc5.providedBy = 'app-di';
   }
 
   ngOnInit() {

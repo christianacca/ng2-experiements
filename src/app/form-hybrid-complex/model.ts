@@ -5,18 +5,18 @@ export interface OrderPartial {
 }
 
 export class Order {
-    constructor(data: OrderPartial = {}) {
-        Object.assign(this, data);
-    }
     placedOn: Date;
     customerName: string;
     lines: OrderLine[];
+    constructor(data: OrderPartial = {}) {
+        Object.assign(this, data);
+    }
 }
 
 export interface OrderLinePartial {
     quantity?: number;
     unitValue?: number;
-    productName?: string
+    productName?: string;
 }
 
 export class OrderLine {
@@ -35,7 +35,7 @@ export function getExampleOrderLine() {
     return new OrderLine({
     unitValue: Math.floor(Math.random() * 10),
         productName: 'Phone'
-    })
+    });
 }
 
 export function getExampleOrder() {

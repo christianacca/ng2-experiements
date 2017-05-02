@@ -9,8 +9,8 @@ import { Service6Service } from './../services/service6.service';
   styleUrls: ['./di-tmpl-container2.component.css'],
   providers: [Service6Service]
 })
-export class DiTmplContainer2Component {
-  @ContentChild(DiTmplContentDirective) content: DiTmplContentDirective
+export class DiTmplContainer2Component implements AfterContentInit {
+  @ContentChild(DiTmplContentDirective) content: DiTmplContentDirective;
   constructor(svc6: Service6Service) {
     svc6.providedBy = 'app-di-tmpl-container2';
   }

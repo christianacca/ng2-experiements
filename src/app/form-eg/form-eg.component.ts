@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -15,7 +15,7 @@ export class FormEgComponent implements OnInit {
     this.myForm = this.fb.group({
       firstName: 'Christian',
       lastName: ['', Validators.required ]
-    })
+    });
   }
 
 }

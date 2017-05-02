@@ -17,5 +17,5 @@ export function provideBootstrappable<T extends Bootstrappable>(Ctor: Type<T>): 
         useFactory: runBlockFactory,
         deps: [Ctor]
     };
-    return [serviceInit, Ctor]
+    return [serviceInit, Ctor];
 }

@@ -10,4 +10,4 @@ const routes: Route[] = [
     }
 ];
 
-export let AdminRoutingModule = RouterModule.forChild(routes);   
+export let AdminRoutingModule = RouterModule.forChild(routes);

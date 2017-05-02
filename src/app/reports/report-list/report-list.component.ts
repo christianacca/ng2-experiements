@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
 import { Report } from './report.model';
 
 interface RouteData {
-  reports: Report[]
+  reports: Report[];
 }
 
 @Component({

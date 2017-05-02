@@ -6,6 +6,6 @@ export class DelegatingErrorHandler extends ErrorHandler {
     super();
   }
   handleError(error: any) {
-    super.handleError(error)
+    super.handleError(error);
   }
 }

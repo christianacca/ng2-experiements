@@ -14,7 +14,7 @@ export class Bootstrappable2 extends BootstrappableBase {
                 this.asyncValue = 'A value from Bootstrappable2Service';
                 resolve();
             }, 100);
-        })
+        });
     }
 }
 

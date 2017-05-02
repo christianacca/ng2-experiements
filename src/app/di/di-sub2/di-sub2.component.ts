@@ -1,6 +1,6 @@
 import { Component, OnInit, Optional } from '@angular/core';
 import { Service3Service, Service4Service } from '../services';
-import { DiComponent } from '../di.component'
+import { DiComponent } from '../di.component';
 
 @Component({
   selector: 'app-di-sub2',

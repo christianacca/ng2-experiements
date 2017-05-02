@@ -8,9 +8,16 @@ interface ReportData {
 }
 
 export class Report {
+    private static db: Db;
     id: number;
     name: string;
     lastRun?: Date;
+
+    static init(db: Db) {
+        Report.db = db;
+        return () => {};
+    }
+
     constructor(data: ReportData) {
         Object.assign(this, data);
     }
@@ -19,12 +26,6 @@ export class Report {
             this.name = data.name || `Entity List [Id: ${this.id}]`;
             return this;
         });
-    }
-
-    private static db: Db;
-    static init(db: Db) {
-        Report.db = db;
-        return () => {};
     }
 }
 

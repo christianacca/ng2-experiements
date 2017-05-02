@@ -1,5 +1,5 @@
 import { Directive } from '@angular/core';
-import { Service5Service } from './services'
+import { Service5Service } from './services';
 
 @Directive({
   selector: '[appDiDir5]',
@@ -7,8 +7,8 @@ import { Service5Service } from './services'
 })
 export class DiDir5Directive {
 
-  constructor(private svc5: Service5Service) { 
-    this.svc5.providedBy = 'appDiDir5'
+  constructor(private svc5: Service5Service) {
+    this.svc5.providedBy = 'appDiDir5';
   }
 
 }

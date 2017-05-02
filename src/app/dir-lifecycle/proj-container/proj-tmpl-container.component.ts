@@ -15,7 +15,7 @@ import { Component, Input, TemplateRef } from '@angular/core';
   `,
   styleUrls: ['./proj-container.component.css']
 })
-export class ProjTmplContainerComponent{
+export class ProjTmplContainerComponent {
   isActive = true;
   @Input() template: TemplateRef<any>;
   constructor() { }
@@ -24,6 +24,6 @@ export class ProjTmplContainerComponent{
     this.isActive = false;
     setTimeout(() => {
       this.isActive = true;
-    }, 2000)
+    }, 2000);
   }
 }

@@ -1,4 +1,4 @@
-import { ReportListComponent, ReportListResolve } from './reports/reports.module'
+import { ReportListComponent, ReportListResolve } from './reports/reports.module';
 import { Route, RouterModule } from '@angular/router';
 
 import { DiComponent } from './di/di.component';

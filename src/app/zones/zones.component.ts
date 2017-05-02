@@ -8,7 +8,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, NgZone, OnInit, TemplateRe
 export class ZonesComponent implements OnInit, AfterViewInit {
   errorCount = 0;
   @ViewChild('tmpl', { read: ViewContainerRef}) container: ViewContainerRef;
-  @ViewChild('tmpl') tmpl: TemplateRef<any>
+  @ViewChild('tmpl') tmpl: TemplateRef<any>;
 
   constructor(private ngZone: NgZone, private cd: ChangeDetectorRef) {
 

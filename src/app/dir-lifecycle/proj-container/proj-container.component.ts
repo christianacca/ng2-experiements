@@ -13,7 +13,7 @@ import { Component } from '@angular/core';
   `,
   styleUrls: ['./proj-container.component.css']
 })
-export class ProjContainerComponent{
+export class ProjContainerComponent {
   isActive = true;
   constructor() { }
 
@@ -21,6 +21,6 @@ export class ProjContainerComponent{
     this.isActive = false;
     setTimeout(() => {
       this.isActive = true;
-    }, 2000)
+    }, 2000);
   }
 }
