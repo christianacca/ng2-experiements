@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Type } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Asset, AssetType, Company, CompanyType } from '../shared';
 
@@ -12,8 +12,8 @@ export class AdminComponent implements OnInit {
   company: Company;
   title = 'Admin area';
   constructor(
-    @Inject(AssetType) Asset: AssetType,
-    @Inject(CompanyType) Company: CompanyType,
+    @Inject(AssetType) Asset: Type<Asset>,
+    @Inject(CompanyType) Company: Type<Company>,
     private route: ActivatedRoute
   ) {
     this.asset = new Asset();

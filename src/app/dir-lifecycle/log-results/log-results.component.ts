@@ -14,7 +14,7 @@ import { LoggerService } from './../logger.service';
 })
 export class LogResultsComponent implements OnInit {
 
-  constructor(private logger: LoggerService) { }
+  constructor(public logger: LoggerService) { }
 
   ngOnInit() {
   }

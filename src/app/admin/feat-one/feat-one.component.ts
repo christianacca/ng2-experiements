@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Type } from '@angular/core';
 
 import { Asset, AssetType } from '../../shared';
 
@@ -9,7 +9,7 @@ import { Asset, AssetType } from '../../shared';
 })
 export class FeatOneComponent implements OnInit {
   asset: Asset;
-  constructor(@Inject(AssetType) Asset: AssetType) {
+  constructor(@Inject(AssetType) Asset: Type<Asset>) {
     this.asset = new Asset();
    }
 

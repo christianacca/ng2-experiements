@@ -15,7 +15,7 @@
  * angular injector
  */
 
-import { OpaqueToken } from '@angular/core';
+import { InjectionToken, Type } from '@angular/core';
 import { Db } from './db.service';
 
 export interface Asset {
@@ -23,10 +23,8 @@ export interface Asset {
     purchaseValue?: number;
     load(): Promise<void>
 }
-export interface AssetType {
-    new(): Asset
-}
-export const AssetType = new OpaqueToken('Asset');
+
+export const AssetType = new InjectionToken<Type<Asset>>('AssetType');
 
 export function assetCtorFactory(db: Db) {
     return class implements Asset {

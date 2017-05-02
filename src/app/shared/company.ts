@@ -15,13 +15,10 @@
  * angular injector
  */
 
-import { OpaqueToken } from '@angular/core';
+import { InjectionToken, Type } from '@angular/core';
 import { Db } from './db.service';
 
-export interface CompanyType {
-  new(): Company;
-}
-export const CompanyType = new OpaqueToken('CompanyType');
+export const CompanyType = new InjectionToken<Type<Company>>('CompanyType');
 
 export class Company {
   id?: number;
@@ -40,8 +37,12 @@ export class Company {
   }
 }
 
+export function initCtor(db: Db) {
+  return Company.init(db);
+}
+
 export const COMPANY_TYPE_PROVIDER = {
   provide: CompanyType,
-  useFactory: Company.init,
+  useFactory: initCtor,
   deps: [Db]
 };
