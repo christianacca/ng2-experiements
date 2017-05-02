@@ -1,6 +1,7 @@
 import { Injectable, APP_INITIALIZER } from '@angular/core';
 import { BootstrappableBase } from './bootstrappable';
 import { Bootstrappable2 } from './bootstrappable2.service';
+import { runBlockFactory } from './provide-bootstrappable';
 
 @Injectable()
 export class Bootstrappable extends BootstrappableBase {
@@ -24,4 +25,12 @@ export class Bootstrappable extends BootstrappableBase {
     }
 }
 
+// todo: replace provider with commented out lines once issue https://github.com/angular/angular/issues/13614 is resolved
+export const bootstrappableProvider = [{
+        provide: APP_INITIALIZER,
+        multi: true,
+        useFactory: runBlockFactory,
+        deps: [Bootstrappable]
+    }, Bootstrappable];
+// export const bootstrappableProvider = provideBootstrappable(Bootstrappable);
 
