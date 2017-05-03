@@ -5,7 +5,7 @@ import { AdminComponent } from './admin.component';
 import { FeatOneComponent } from './feat-one/feat-one.component';
 import { AdminRoutingModule } from './admin-routing.module';
 
-// function declaration used because of https://github.com/angular/angular/issues/13614
+// exported for AOT compatibility
 export function adminTitleResolve () {
   return 'Admin Area (injected)';
 }
