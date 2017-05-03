@@ -11,15 +11,10 @@ import { NgModule } from '@angular/core';
 import { RxjsErrAsyncPipeComponent } from './rxjs/rxjs-err-async-pipe/rxjs-err-async-pipe.component';
 import { ZonesComponent } from './zones/zones.component';
 
-// can't get lazy loading of admin module to work
-
-// const routes: Route[] = [{
-//     path: 'admin', loadChildren: './admin/admin.module#AdminModule'
-// }];
-
-
-// having to use empty routes array until the above is working
 const routes: Route[] = [
+    {
+        path: 'admin', loadChildren: 'app/admin/admin.module#AdminModule'
+    },
     {
         component: ReportListComponent,
         path: 'reports',

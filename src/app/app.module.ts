@@ -1,8 +1,7 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { AdminModule } from './admin/admin.module';
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routes';
+import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { DiComponent } from './di/di.component';
 import { DiDir1Directive } from './di/di-dir1.directive';
@@ -66,7 +65,6 @@ import { ErrorHandlerComponent } from './error-handler/error-handler.component';
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    AdminModule,
     ReportsModule,
     SharedModule,
     AppRoutingModule
