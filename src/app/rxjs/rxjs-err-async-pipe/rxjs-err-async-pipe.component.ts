@@ -6,7 +6,7 @@ import 'rxjs/add/operator/observeOn';
 import 'rxjs/add/observable/interval';
 
 import { Component, ErrorHandler, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/observable';
+import { Observable } from 'rxjs/Observable';
 import { asap } from 'rxjs/scheduler/asap';
 
 @Component({
