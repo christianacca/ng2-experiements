@@ -7,7 +7,7 @@ export function runBlockFactory<T extends Bootstrappable>(service: T) {
 
 /**
  * Creates the provider used to register a {@link Bootstrappable} service
- * note: not yet in - waiting on https://github.com/angular/angular/issues/13614 to be resolved
+ * note: not yet in use - waiting on https://github.com/angular/angular/issues/13614 to be resolved
  * @param Ctor The constructor of the {@link Bootstrappable} service to provide
  */
 export function provideBootstrappable<T extends Bootstrappable>(Ctor: Type<T>): Provider[] {

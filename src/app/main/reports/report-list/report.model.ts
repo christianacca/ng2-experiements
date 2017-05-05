@@ -1,5 +1,6 @@
-import { APP_INITIALIZER, Provider } from '@angular/core';
-import { Db } from '../../shared/db.service';
+import { APP_INITIALIZER, Provider, InjectionToken } from '@angular/core';
+import { Db } from '../../../shared';
+import { SYNC_INIT } from '../../../shared';
 
 interface ReportData {
     id?: number;
@@ -29,8 +30,8 @@ export class Report {
     }
 }
 
-export const reportInitializerProvider: Provider = {
-    provide: APP_INITIALIZER,
+export const reportCtorInitProvider: Provider = {
+    provide: SYNC_INIT,
     multi: true,
     useFactory: Report.init,
     deps: [Db]

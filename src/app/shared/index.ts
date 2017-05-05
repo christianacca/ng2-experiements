@@ -10,7 +10,8 @@ import { provideBootstrappable, runBlockFactory } from './provide-bootstrappable
 
 export { Company, CompanyType };
 export { Asset, AssetType };
-export { Bootstrappable, Bootstrappable2 };
+export { Bootstrappable, Bootstrappable2, Db };
+export { SYNC_INIT } from './sync-init-token';
 
 export const errorProvider = { provide: ErrorHandler, useClass: DelegatingErrorHandler };
 

@@ -1,59 +1,12 @@
-import { ReportListComponent, ReportListResolve } from './reports/reports.module';
-import { Route, RouterModule } from '@angular/router';
-
-import { DiComponent } from './di/di.component';
-import { DirLifecycleComponent } from './dir-lifecycle/dir-lifecycle.component';
-import { ErrorHandlerComponent } from './error-handler/error-handler.component';
-import { FormEgComponent } from './form-eg/form-eg.component';
-import { FormHybridComplexComponent } from './form-hybrid-complex/form-hybrid-complex.component';
-import { FormHybridComponent } from './form-hybrid/form-hybrid.component';
-import { NgModule } from '@angular/core';
-import { RxjsErrAsyncPipeComponent } from './rxjs/rxjs-err-async-pipe/rxjs-err-async-pipe.component';
-import { ZonesComponent } from './zones/zones.component';
+import { Route, RouterModule, PreloadAllModules } from '@angular/router';
 
 const routes: Route[] = [
     {
-        path: 'admin', loadChildren: 'app/admin/admin.module#AdminModule'
+        path: 'admin', loadChildren: './admin/admin.module#AdminModule'
     },
     {
-        component: ReportListComponent,
-        path: 'reports',
-        resolve: {
-            reports: ReportListResolve
-        }
-    },
-    {
-        component: FormEgComponent,
-        path: 'form-eg'
-    },
-    {
-        component: FormHybridComponent,
-        path: 'form-hybrid'
-    },
-    {
-        component: FormHybridComplexComponent,
-        path: 'form-hybrid-complex'
-    },
-    {
-        component: ZonesComponent,
-        path: 'zones'
-    },
-    {
-        component: DiComponent,
-        path: 'di'
-    },
-    {
-        component: DirLifecycleComponent,
-        path: 'dir-lifecycle'
-    },
-    {
-        component: ErrorHandlerComponent,
-        path: 'error-handler'
-    },
-    {
-        component: RxjsErrAsyncPipeComponent,
-        path: 'rxjs-err-async-pipe'
+        path: 'main', loadChildren: './main/main.module#MainModule'
     }
 ];
 
-export let AppRoutingModule = RouterModule.forRoot(routes);
+export let AppRoutingModule = RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules});
