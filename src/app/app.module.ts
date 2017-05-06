@@ -14,7 +14,7 @@ import { SharedModule } from './shared';
   imports: [
     BrowserModule,
     HttpModule,
-    SharedModule,
+    SharedModule.forRoot(),
     AppRoutingModule
   ],
   providers: [],
