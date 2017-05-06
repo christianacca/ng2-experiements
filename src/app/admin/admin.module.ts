@@ -4,9 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { AdminComponent } from './admin.component';
 import { FeatOneComponent } from './feat-one/feat-one.component';
 import { AdminRoutingModule } from './admin-routing.module';
+import { RunnableModule, RUNNABLE } from '../runnable';
+import { RunnableEgService } from './runnable-eg.service';
 
 // exported for AOT compatibility
-export function adminTitleResolve () {
+export function adminTitleResolve() {
   return 'Admin Area (injected)';
 }
 
@@ -14,7 +16,10 @@ export function adminTitleResolve () {
   imports: [
     CommonModule,
     FormsModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    RunnableModule.forLazyModule([
+      { provide: RUNNABLE, multi: true, useClass: RunnableEgService }
+    ])
   ],
   declarations: [AdminComponent, FeatOneComponent],
   providers: [

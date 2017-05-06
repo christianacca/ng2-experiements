@@ -56,6 +56,9 @@
       "inlineTemplate": true,
       "inlineStyle": true,
       "spec": false
+    },
+    "service": {
+      "spec": false
     }
   }
 }
