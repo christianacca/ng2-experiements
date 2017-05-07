@@ -3,11 +3,11 @@ import { InjectionToken, Injectable, Inject, Optional } from '@angular/core';
 /**
  * A function that will be executed when a module is initialized.
  */
-export const MOD_INITIALIZER = new InjectionToken<Array<() => void>>('ctorInit');
+export const MOD_SYNC_INIT = new InjectionToken<Array<() => void>>('ctorInit');
 
 @Injectable()
-export class ModuleInitializer {
-    constructor(@Inject(MOD_INITIALIZER) @Optional() private modInits: Array<() => any>) {}
+export class ModuleSyncInitializer {
+    constructor(@Inject(MOD_SYNC_INIT) @Optional() private modInits: Array<() => any>) {}
 
     run() {
         if (this.modInits != null) {

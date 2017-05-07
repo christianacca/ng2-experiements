@@ -6,9 +6,9 @@ import { bootstrappableProvider } from './bootstrappable.service';
 import { bootstrappableProvider2 } from './bootstrappable2.service';
 import { Db } from './db.service';
 import { DelegatingErrorHandler } from './delegating-error-handler.service';
-import { ModuleInitializer } from './module-initializer';
+import { ModuleSyncInitializer } from './module-sync-initializer';
 
-const perModuleServices = [ModuleInitializer];
+const perModuleServices = [ModuleSyncInitializer];
 
 @NgModule({})
 export class SharedModule {
@@ -33,7 +33,7 @@ export class SharedModule {
     };
   }
 
-  constructor(moduleInitializer: ModuleInitializer) {
+  constructor(moduleInitializer: ModuleSyncInitializer) {
     moduleInitializer.run();
   }
 }
