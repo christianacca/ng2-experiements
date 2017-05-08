@@ -6,6 +6,9 @@ export interface Bootstrappable {
     bootstrap(): void | Promise<any>;
 }
 
+/**
+ * Convenient base class that provides most of the implementation of the {@link Bootstrappable} interface
+ */
 export abstract class BootstrappableBase implements Bootstrappable {
     isDone = false;
     done: Promise<any>;

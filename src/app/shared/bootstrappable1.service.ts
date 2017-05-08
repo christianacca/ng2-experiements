@@ -4,8 +4,8 @@ import { Bootstrappable2 } from './bootstrappable2.service';
 import { runBlockFactory } from './provide-bootstrappable';
 
 @Injectable()
-export class Bootstrappable extends BootstrappableBase {
-    value: string;
+export class Bootstrappable1 extends BootstrappableBase {
+    asyncValue: string;
     constructor(private bootstrappable2: Bootstrappable2) {
         super('BootstrappableService');
         console.log(`Bootstrappable.ctor -> recevied bootstrappable2`);
@@ -18,7 +18,7 @@ export class Bootstrappable extends BootstrappableBase {
         return new Promise(resolve => {
             setTimeout(() => {
                 console.log(`Bootstrappable.loadAsyncValue -> bootstrappable2.asyncValue: ${this.bootstrappable2.asyncValue}`);
-                this.value = this.bootstrappable2.asyncValue;
+                this.asyncValue = this.bootstrappable2.asyncValue;
                 resolve();
             }, 100);
         });
@@ -30,7 +30,7 @@ export const bootstrappableProvider = [{
         provide: APP_INITIALIZER,
         multi: true,
         useFactory: runBlockFactory,
-        deps: [Bootstrappable]
-    }, Bootstrappable];
+        deps: [Bootstrappable1]
+    }, Bootstrappable1];
 // export const bootstrappableProvider = provideBootstrappable(Bootstrappable);
 

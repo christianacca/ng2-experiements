@@ -1,16 +1,25 @@
-import { Injectable, Optional, Inject } from '@angular/core';
-import { Resolve } from '@angular/router';
+import { Injectable, Optional, Inject, SkipSelf } from '@angular/core';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Runner, IRunnable, RUNNABLE } from './runner';
 
 @Injectable()
-export class LazyModuleRunner implements Resolve<boolean> {
+export class LazyModuleRunner implements CanActivate {
+
     private donePromise: Promise<any>;
     private _done = false;
-    constructor(private runner: Runner, @Inject(RUNNABLE) @Optional() private runnables: IRunnable[]) { }
+    constructor(
+        @Inject(RUNNABLE) @Optional() private runnables: IRunnable[],
+        @SkipSelf() @Optional() private runner: Runner) {
+        // only invoke runnables if we're running in a lazy loaded module
+        if (!this.runner) {
+            this.donePromise = Promise.resolve(true);
+        }
+    }
 
-    resolve() {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
         return this.run();
     }
+
     run() {
         if (this.donePromise != null) { return this.donePromise; }
 

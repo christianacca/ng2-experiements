@@ -4,14 +4,14 @@ import { CommonModule } from '@angular/common';
 import { ReportListResolve } from './report-list/report-list-resolve.service';
 import { ReportListComponent } from './report-list/report-list.component';
 import { reportCtorInitProvider } from './report-list/report.model';
-import { SharedModule } from '../../shared';
+import { MOD_SYNC_INIT, ModuleSyncInitModule } from '../../module-sync-init';
 
 @NgModule({
     imports: [
         CommonModule,
-        SharedModule.forChild()
+        ModuleSyncInitModule.withInits([reportCtorInitProvider])
     ],
-    providers: [reportCtorInitProvider, ReportListResolve],
+    providers: [ReportListResolve],
     declarations: [ReportListComponent]
 })
 export class ReportsModule {}

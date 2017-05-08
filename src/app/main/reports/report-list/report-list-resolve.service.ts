@@ -8,6 +8,7 @@ export class ReportListResolve implements Resolve<Report[]> {
 
     }
     resolve() {
+        console.log('ReportListResolve');
         return Promise.all([
             new Report({ id: 1 }).load(),
             new Report({ id: 2 }).load()

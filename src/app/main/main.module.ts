@@ -13,9 +13,7 @@ import { DiSub1Component } from './di/di-sub1/di-sub1.component';
 import { DiSub2Component } from './di/di-sub2/di-sub2.component';
 import { DiSub3Component } from './di/di-sub3/di-sub3.component';
 import { DirLifecycleComponent } from './dir-lifecycle/dir-lifecycle.component';
-import { FormEgComponent } from './form-eg/form-eg.component';
 import { FormHybridComplexComponent } from './form-hybrid-complex/form-hybrid-complex.component';
-import { FormHybridComponent } from './form-hybrid/form-hybrid.component';
 import { LogResultsComponent } from './dir-lifecycle/log-results/log-results.component';
 import { ProjContainerComponent } from './dir-lifecycle/proj-container/proj-container.component';
 import { ProjTmplContainerComponent } from './dir-lifecycle/proj-container/proj-tmpl-container.component';
@@ -29,11 +27,11 @@ import { DiTmplContainer2Component } from './di/di-tmpl-container2/di-tmpl-conta
 import { DiTmplContentDirective } from './di/di-tmpl-container2/di-tmpl-content.directive';
 import { RxjsErrAsyncPipeComponent } from './rxjs/rxjs-err-async-pipe/rxjs-err-async-pipe.component';
 import { ErrorHandlerComponent } from './error-handler/error-handler.component';
+import { FormEgModule } from './form-eg/form-eg.module';
+import { FormHybridModule } from './form-hybrid/form-hybrid.module';
 
 @NgModule({
   declarations: [
-    FormEgComponent,
-    FormHybridComponent,
     ZonesComponent,
     ThrowingChildComponent,
     FormHybridComplexComponent,
@@ -63,7 +61,9 @@ import { ErrorHandlerComponent } from './error-handler/error-handler.component';
     ReactiveFormsModule,
     HttpModule,
     ReportsModule,
-    MainRoutingModule
+    MainRoutingModule,
+    FormEgModule,
+    FormHybridModule
   ]
 })
 export class MainModule { }

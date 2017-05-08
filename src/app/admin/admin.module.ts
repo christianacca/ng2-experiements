@@ -5,7 +5,8 @@ import { AdminComponent } from './admin.component';
 import { FeatOneComponent } from './feat-one/feat-one.component';
 import { AdminRoutingModule } from './admin-routing.module';
 import { RunnableModule, RUNNABLE } from '../runnable';
-import { RunnableEgService } from './runnable-eg.service';
+import { OnRun } from './runnable-egs/on-run.service';
+import { bootstrappedProvider, BootstrappedService } from './runnable-egs/bootstrapped.service';
 
 // exported for AOT compatibility
 export function adminTitleResolve() {
@@ -17,8 +18,9 @@ export function adminTitleResolve() {
     CommonModule,
     FormsModule,
     AdminRoutingModule,
-    RunnableModule.forLazyModule([
-      { provide: RUNNABLE, multi: true, useClass: RunnableEgService }
+    RunnableModule.for([
+      { provide: RUNNABLE, multi: true, useClass: OnRun },
+      { provide: RUNNABLE, multi: true, useExisting: BootstrappedService }
     ])
   ],
   declarations: [AdminComponent, FeatOneComponent],
@@ -30,7 +32,12 @@ export function adminTitleResolve() {
     // A naive attempt at limiting the visibility would be to add the provider to the admin.component...
     // ... this wouldn't work as routing uses the root injector which is never configured with providers
     // added to a component, even when that component is the root component of our application
-    { provide: 'AdminTitleResolve', useValue: adminTitleResolve }
+    { provide: 'AdminTitleResolve', useValue: adminTitleResolve },
+    bootstrappedProvider
   ]
 })
-export class AdminModule { }
+export class AdminModule {
+  constructor() {
+    console.log('AdminModule.ctor');
+  }
+}

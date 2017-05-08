@@ -6,9 +6,7 @@ import { LazyModuleRunner } from '../runnable';
 const routes: Route[] = [
     {
         path: '',
-        resolve: {
-            moduleReady: LazyModuleRunner
-        },
+        canActivate: [LazyModuleRunner],
         children: [
             {
                 path: '',

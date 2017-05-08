@@ -1,6 +1,6 @@
 import { APP_INITIALIZER, Provider, InjectionToken } from '@angular/core';
 import { Db } from '../../../shared';
-import { MOD_SYNC_INIT } from '../../../shared';
+import { MOD_SYNC_INIT } from '../../../module-sync-init';
 
 interface ReportData {
     id?: number;
