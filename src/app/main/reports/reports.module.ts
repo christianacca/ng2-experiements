@@ -5,11 +5,12 @@ import { ReportListResolve } from './report-list/report-list-resolve.service';
 import { ReportListComponent } from './report-list/report-list.component';
 import { reportCtorInitProvider } from './report-list/report.model';
 import { MOD_SYNC_INIT, ModuleSyncInitModule } from '../../module-sync-init';
+import { logModInitProvider } from './log-mod-init';
 
 @NgModule({
     imports: [
         CommonModule,
-        ModuleSyncInitModule.withInits([reportCtorInitProvider])
+        ModuleSyncInitModule.withInits([logModInitProvider, reportCtorInitProvider])
     ],
     providers: [ReportListResolve],
     declarations: [ReportListComponent]

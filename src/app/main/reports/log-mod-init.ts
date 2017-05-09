@@ -5,7 +5,7 @@ import { MOD_SYNC_INIT } from '../../module-sync-init';
 export class LogModInit {
   constructor() {
     return () => {
-      console.log('form-hybrid.module>LogModInit');
+      console.log('reports.module>LogModInit');
     };
   }
 }

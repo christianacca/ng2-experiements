@@ -1,4 +1,3 @@
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MainRoutingModule } from './main-routing.module';
 import { HttpModule } from '@angular/http';
@@ -13,7 +12,6 @@ import { DiSub1Component } from './di/di-sub1/di-sub1.component';
 import { DiSub2Component } from './di/di-sub2/di-sub2.component';
 import { DiSub3Component } from './di/di-sub3/di-sub3.component';
 import { DirLifecycleComponent } from './dir-lifecycle/dir-lifecycle.component';
-import { FormHybridComplexComponent } from './form-hybrid-complex/form-hybrid-complex.component';
 import { LogResultsComponent } from './dir-lifecycle/log-results/log-results.component';
 import { ProjContainerComponent } from './dir-lifecycle/proj-container/proj-container.component';
 import { ProjTmplContainerComponent } from './dir-lifecycle/proj-container/proj-tmpl-container.component';
@@ -27,14 +25,11 @@ import { DiTmplContainer2Component } from './di/di-tmpl-container2/di-tmpl-conta
 import { DiTmplContentDirective } from './di/di-tmpl-container2/di-tmpl-content.directive';
 import { RxjsErrAsyncPipeComponent } from './rxjs/rxjs-err-async-pipe/rxjs-err-async-pipe.component';
 import { ErrorHandlerComponent } from './error-handler/error-handler.component';
-import { FormEgModule } from './form-eg/form-eg.module';
-import { FormHybridModule } from './form-hybrid/form-hybrid.module';
 
 @NgModule({
   declarations: [
     ZonesComponent,
     ThrowingChildComponent,
-    FormHybridComplexComponent,
     DiComponent,
     DiDir1Directive,
     DiDir2Directive,
@@ -57,13 +52,9 @@ import { FormHybridModule } from './form-hybrid/form-hybrid.module';
   ],
   imports: [
     CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
     HttpModule,
     ReportsModule,
-    MainRoutingModule,
-    FormEgModule,
-    FormHybridModule
+    MainRoutingModule
   ]
 })
 export class MainModule { }

@@ -41,8 +41,8 @@ For modules defined within lazy loaded routes, this means immediately after navi
 
 * Implementation: `module-sync-init`
 * Example usage:
-    * `app.module`, `form-eg.module`, `form-hybrid.module`: see `ModuleSyncInitModule.withInits([logModInitProvider])`
-    * `report.module`: see `ModuleSyncInitModule.withInits([reportCtorInitProvider])`
+    * `app.module`, `forms.module`: see `ModuleSyncInitModule.withInits([logModInitProvider])`
+    * `report.module`: see `ModuleSyncInitModule.withInits([logModInitProvider, reportCtorInitProvider])`
 
 
 ### async module initialization

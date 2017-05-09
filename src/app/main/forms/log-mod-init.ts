@@ -3,7 +3,7 @@ import { MOD_SYNC_INIT } from '../../module-sync-init';
 
 export function logModInit() {
   return () => {
-    console.log('form-eg.module>logModInit');
+    console.log('forms.module>logModInit');
   };
 }
 export const logModInitProvider: Provider = {

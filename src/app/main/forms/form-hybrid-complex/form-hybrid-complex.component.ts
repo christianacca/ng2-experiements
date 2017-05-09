@@ -3,7 +3,7 @@ import 'rxjs/add/operator/scan';
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm, NgModelGroup } from '@angular/forms';
-import { Order, OrderLine, getExampleOrder, getExampleOrderLine } from './model';
+import { Order, OrderLine, getExampleOrder, getExampleOrderLine } from '../shared/model';
 
 import { Observable } from 'rxjs/observable';
 
