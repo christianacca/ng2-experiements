@@ -11,8 +11,9 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "tsc": "tsc",
-    "sme": "source-map-explorer",
-    "doc": "compodoc -p src/tsconfig.app.json -d out-doc"
+    "prewba": "npm run build -- --statsJson",
+    "wba": "webpack-bundle-analyzer dist/stats.json dist",
+    "doc": "compodoc -p src/tsconfig.app.json -d out-doc --toggleMenuItems all -s -o -w"
   },
   "private": true,
   "dependencies": {
@@ -47,9 +48,9 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-remap-istanbul": "^0.2.1",
     "protractor": "^5.1.1",
-    "source-map-explorer": "^1.3.3",
     "ts-node": "^2.0.0",
     "tslint": "^4.5.1",
-    "typescript": "^2.2.2"
+    "typescript": "^2.2.2",
+    "webpack-bundle-analyzer": "^2.6.0"
   }
 }
