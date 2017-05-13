@@ -6,3 +6,5 @@ export { Bootstrappable2 } from './bootstrappable2.service';
 export { Db } from './db.service';
 export { SharedModule } from './shared.module';
 export * from './langs-util';
+import { DebugRouteReuseStrategy } from './debug-route-reuse-strategy';
+import { RouteAlwaysReuseStrategy } from './route-reuse-always-strategy';

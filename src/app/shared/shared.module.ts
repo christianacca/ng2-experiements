@@ -14,7 +14,7 @@ import { DelegatingErrorHandler } from './delegating-error-handler.service';
     bootstrappableProvider,
     bootstrappableProvider2,
     Db,
-    { provide: ErrorHandler, useClass: DelegatingErrorHandler }
+    { provide: ErrorHandler, useClass: DelegatingErrorHandler },
   ]
 })
 export class SharedModule {}

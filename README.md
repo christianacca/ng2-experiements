@@ -109,6 +109,24 @@ This experiment shows various solutions.
 
 **Code listing**: `zones`
 
+### Routing
+
+* An initial exploration of routing with child and sibling/auxiliary routes
+* Also experiment with sticky / MDI routes
+
+**Note** about sticky / MDI routes. As of writing there are following problems that need solving:
+
+* get it to work with sibling/auxiliary routes (see [comment](https://github.com/angular/angular/issues/13869#issuecomment-302315807))
+* how to dispose of an detatched component (for example, to ensure that rxjs subscriptions are disposed of)
+* whether to allow detatched component to participate in rxjs events
+* how to *reload* an page without detaching/attaching current state of page (eg when search term is changed)
+
+**Code listing**: 
+
+* `routing-egs`
+* `debug-route-reuse-strategy`
+* `route-reuse-always-strategy`
+
 ----
 
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.30.
