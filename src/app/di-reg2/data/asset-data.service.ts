@@ -1,11 +1,11 @@
 import { Injectable, Provider } from '@angular/core';
 import { Asset, AssetDataService } from '../model';
-import { QueryCommand, DataCacheService } from '../db';
+import { QueryCommand, DataCacheService, DB_SERVICE } from '../db';
 
 @Injectable()
 export class AssetDataServiceImpl implements AssetDataService {
     constructor(private queryCmd: QueryCommand, private cache: DataCacheService) {
-
+        console.log('di-reg2>AssetDataServiceImpl.ctor');
     }
     async fetchFor(query: any) {
         const rawResults = await this.queryCmd.run<Asset>();
@@ -26,3 +26,7 @@ export class AssetDataServiceImpl implements AssetDataService {
         return fetched;
     }
 }
+
+export const assetDataServiceProviders: Provider[] = [
+    { provide: DB_SERVICE, multi: true, useValue: { provide: AssetDataService, useClass: AssetDataServiceImpl } }
+];

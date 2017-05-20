@@ -127,6 +127,18 @@ This experiment shows various solutions.
 * `debug-route-reuse-strategy`
 * `route-reuse-always-strategy`
 
+
+### Dependency registration
+
+* How to create a maintainable application structure that supports injecting groups of service *instances* either at the component level or globally
+
+**Code listing**
+
+* `di-reg`
+    * idomatic angular solution
+* `di-reg2`
+    * alternative solution that uses custom injector
+
 ----
 
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.30.

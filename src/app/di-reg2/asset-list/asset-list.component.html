@@ -1,0 +1,32 @@
+<h2>
+    Assets <span *ngIf="totalAssetValue != null">(total value: {{totalAssetValue}})</span>
+</h2>
+<ng-template #loading>
+    please wait...
+</ng-template>
+<div *ngIf="assets; else loading">
+    <ul>
+        <li *ngFor="let a of assets">
+            <a href="" (click)="select(a); $event.preventDefault();">{{ a.reference }} - {{a.title }}</a>
+        </li>
+    </ul>
+    <ng-template #unselected>
+        <p><small>Select from above list</small></p>
+    </ng-template>
+    <div *ngIf="selected; else unselected">
+        <h3>Selected:</h3>
+        <div>
+            <p>Reference: {{ selected.reference}}</p>
+            <p>Title: {{selected.title}}</p>
+        </div>
+        <h4>Events:</h4>
+        <ul>
+            <li *ngFor="let e of selected.events">
+                {{ e.reference }} - {{ e.title}}
+            </li>
+        </ul>
+        <div>
+            <button type="button" (click)="addEvent()">New Asset Event</button>
+        </div>
+    </div>
+</div>

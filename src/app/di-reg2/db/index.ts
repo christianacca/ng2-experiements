@@ -1,5 +1,5 @@
-export * from './db.service';
+export * from './uow.service';
 export * from './query-command';
 export * from './data-cache.service';
 export * from './db.module';
-export * from './providers';
+export { DB_SERVICE } from './db-service-provider-registry';

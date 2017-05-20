@@ -10,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
   styles: [`
     .row { width: 100%; clear: both }
     .col {width: 50%; float: left; }
-  `]
+  `],
+  providers: []
 })
-export class DiRegComponent {
-}
+export class DiReg2Component {}
