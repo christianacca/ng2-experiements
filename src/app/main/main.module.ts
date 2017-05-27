@@ -25,6 +25,7 @@ import { DiTmplContainer2Component } from './di/di-tmpl-container2/di-tmpl-conta
 import { DiTmplContentDirective } from './di/di-tmpl-container2/di-tmpl-content.directive';
 import { RxjsErrAsyncPipeComponent } from './rxjs/rxjs-err-async-pipe.component';
 import { ErrorHandlerComponent } from './error-handler/error-handler.component';
+import { ChangeDetectionModule } from './change-detection/change-detection.module';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { ErrorHandlerComponent } from './error-handler/error-handler.component';
     CommonModule,
     HttpModule,
     ReportsModule,
-    MainRoutingModule
+    MainRoutingModule,
+    ChangeDetectionModule
   ]
 })
 export class MainModule { }

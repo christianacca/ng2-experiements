@@ -1,0 +1,10 @@
+<h2>Detatching component with observable</h2>
+
+<div>
+    <button type="button" (click)="start()">Start</button>
+    <button type="button" (click)="stop()">Stop</button>
+    <button type="button" (click)="toggleChangeDetection()">Toggle Change Detection</button>
+</div>
+<div>
+    <app-counter [value]="counts$" [updateView]="cdToggles$"></app-counter>
+</div>
