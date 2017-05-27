@@ -1,5 +1,5 @@
 import { Injectable, InjectionToken, Type, APP_INITIALIZER, Provider, Optional } from '@angular/core';
-import { isPromise } from '../shared';
+import { isPromise } from '../core';
 
 export interface IRunnable {
     run(): void | Promise<any>;

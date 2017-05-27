@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, Type } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Asset, AssetType, Company, CompanyType } from '../shared';
+import { Asset, AssetType, Company, CompanyType } from '../core';
 import { BootstrappedService } from './runnable-egs/bootstrapped.service';
 
 @Component({

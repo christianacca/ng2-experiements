@@ -17,4 +17,4 @@ import { DelegatingErrorHandler } from './delegating-error-handler.service';
     { provide: ErrorHandler, useClass: DelegatingErrorHandler },
   ]
 })
-export class SharedModule {}
+export class CoreModule {}

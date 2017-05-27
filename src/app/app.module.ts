@@ -6,17 +6,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
-import { SharedModule } from './shared';
+import { CoreModule } from './core';
 import { RunnableModule, RUNNABLE } from './runnable';
 import { OnRun } from './runnable-egs/on-run.service';
 import { bootstrappedProviders, BootstrappedService } from './runnable-egs/bootstrapped.service';
 import { ModuleSyncInitModule } from './module-sync-init';
 import { logModInitProvider } from './log-mod-init';
 import { RoutingEgsModule } from './routing-egs/routing-egs.module';
-import { DebugRouteReuseStrategy } from './shared/debug-route-reuse-strategy';
+import { DebugRouteReuseStrategy } from './core/debug-route-reuse-strategy';
 import { DiRegModule } from './di-reg/di-reg.module';
 import { DiReg2Module } from './di-reg2/di-reg2.module';
-// import { RouteAlwaysReuseStrategy } from './shared/route-reuse-always-strategy';
+// import { RouteAlwaysReuseStrategy } from './core/route-reuse-always-strategy';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,7 @@ import { DiReg2Module } from './di-reg2/di-reg2.module';
   imports: [
     BrowserModule,
     HttpModule,
-    SharedModule,
+    CoreModule,
     ModuleSyncInitModule.withInits([logModInitProvider]),
     AppRoutingModule,
     RoutingEgsModule,

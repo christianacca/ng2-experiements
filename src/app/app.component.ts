@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { Bootstrappable1 } from './shared';
+import { Bootstrappable1 } from './core';
 import { BootstrappedService } from './runnable-egs/bootstrapped.service';
 
 @Component({

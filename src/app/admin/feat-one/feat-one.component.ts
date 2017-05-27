@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, Type } from '@angular/core';
 
-import { Asset, AssetType } from '../../shared';
+import { Asset, AssetType } from '../../core';
 
 @Component({
   selector: 'app-feat-one',
