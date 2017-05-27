@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -11,27 +11,27 @@ import { Subscription } from 'rxjs/Subscription';
   `,
   styles: []
 })
-export class CounterComponent implements OnInit, OnDestroy {
-  valueSubscription: Subscription;
-  updateViewSubscription: Subscription;
-
+export class CounterComponent implements OnInit {
   @Input() value: Observable<number>;
-  @Input() updateView: Observable<boolean>;
-  constructor(private cd: ChangeDetectorRef) { }
-
-  ngOnDestroy(): void {
-    this.updateViewSubscription.unsubscribe();
+  @Input()
+  get updateView() {
+    return this._isViewUpdating;
   }
+  set updateView(value: boolean) {
+    this._isViewUpdating = value;
+    if (value) {
+      this.cd.reattach();
+    } else {
+      this.cd.detach();
+    }
+  }
+
+  private _isViewUpdating = true;
+
+  constructor(private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.cd.detach();
-    this.updateViewSubscription = this.updateView.subscribe(on => {
-      if (on) {
-        this.cd.reattach();
-      } else {
-        this.cd.detach();
-      }
-    });
+    this.updateView = true;
   }
-
 }
