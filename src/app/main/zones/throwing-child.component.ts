@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-throwing-child',
-  templateUrl: './throwing-child.component.html',
-  styleUrls: ['./throwing-child.component.css']
+  template: `<button (click)="throwError()">Throw</button>`
 })
 export class ThrowingChildComponent implements OnInit {
 

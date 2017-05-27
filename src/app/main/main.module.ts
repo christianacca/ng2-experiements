@@ -17,13 +17,13 @@ import { ProjContainerComponent } from './dir-lifecycle/proj-container/proj-cont
 import { ProjTmplContainerComponent } from './dir-lifecycle/proj-container/proj-tmpl-container.component';
 import { ProjectedComponent } from './dir-lifecycle/projected/projected.component';
 import { ReportsModule } from './reports/reports.module';
-import { ThrowingChildComponent } from './zones/throwing-child/throwing-child.component';
+import { ThrowingChildComponent } from './zones/throwing-child.component';
 import { ZonesComponent } from './zones/zones.component';
 import { DiTmplContainerComponent } from './di/di-tmpl-container/di-tmpl-container.component';
 import { DiDirTmplContainerDirective } from './di/di-dir-tmpl-container.directive';
 import { DiTmplContainer2Component } from './di/di-tmpl-container2/di-tmpl-container2.component';
 import { DiTmplContentDirective } from './di/di-tmpl-container2/di-tmpl-content.directive';
-import { RxjsErrAsyncPipeComponent } from './rxjs/rxjs-err-async-pipe/rxjs-err-async-pipe.component';
+import { RxjsErrAsyncPipeComponent } from './rxjs/rxjs-err-async-pipe.component';
 import { ErrorHandlerComponent } from './error-handler/error-handler.component';
 
 @NgModule({

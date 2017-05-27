@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-error-handler',
-  templateUrl: './error-handler.component.html',
-  styleUrls: ['./error-handler.component.css']
+  template: `
+    <h3>Error handler service examples</h3>
+
+    <button (click)="throwError()">Throw</button>
+  `
 })
 export class ErrorHandlerComponent {
 

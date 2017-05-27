@@ -4,8 +4,7 @@ import { Asset, AssetType } from '../../shared';
 
 @Component({
   selector: 'app-feat-one',
-  templateUrl: './feat-one.component.html',
-  styleUrls: ['./feat-one.component.css']
+  templateUrl: './feat-one.component.html'
 })
 export class FeatOneComponent implements OnInit {
   asset: Asset;

@@ -2,8 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, NgZone, OnInit, TemplateRe
 
 @Component({
   selector: 'app-zones',
-  templateUrl: './zones.component.html',
-  styleUrls: ['./zones.component.css']
+  templateUrl: './zones.component.html'
 })
 export class ZonesComponent implements OnInit, AfterViewInit {
   errorCount = 0;

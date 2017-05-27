@@ -11,8 +11,12 @@ import { asap } from 'rxjs/scheduler/asap';
 
 @Component({
   selector: 'app-rxjs-err-async-pipe',
-  templateUrl: './rxjs-err-async-pipe.component.html',
-  styleUrls: ['./rxjs-err-async-pipe.component.css']
+  template: `
+    <h3>RxJs errors and async pipe example</h3>
+
+    <h4>Ticks from an observable... {{ticks$ | async | json}}</h4>
+    <h4>Mapped ticks from an observable... {{mapped$ | async | json}}</h4>
+  `
 })
 export class RxjsErrAsyncPipeComponent implements OnInit {
   ticks$: Observable<number>;

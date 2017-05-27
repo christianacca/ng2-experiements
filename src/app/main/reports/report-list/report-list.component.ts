@@ -8,8 +8,14 @@ interface RouteData {
 
 @Component({
   selector: 'app-report-list',
-  templateUrl: './report-list.component.html',
-  styleUrls: ['./report-list.component.css']
+  template: `
+    <p>
+      report-list works!
+    </p>
+    <ul>
+      <li *ngFor="let report of reports">{{report.name }}</li>
+    </ul>
+  `
 })
 export class ReportListComponent implements OnInit {
   reports: Report[];
