@@ -6,7 +6,7 @@ import { DirLifecycleComponent } from './dir-lifecycle/dir-lifecycle.component';
 import { ErrorHandlerComponent } from './error-handler/error-handler.component';
 import { NgModule } from '@angular/core';
 import { RxjsErrAsyncPipeComponent } from './rxjs/rxjs-err-async-pipe.component';
-import { ZonesComponent } from './zones/zones.component';
+import { ZonesComponent } from './error-handler/zones/zones.component';
 
 const routes: Route[] = [
     {
@@ -21,10 +21,6 @@ const routes: Route[] = [
                 }
             },
             {
-                component: ZonesComponent,
-                path: 'zones'
-            },
-            {
                 component: DiComponent,
                 path: 'di'
             },
@@ -34,7 +30,11 @@ const routes: Route[] = [
             },
             {
                 component: ErrorHandlerComponent,
-                path: 'error-handler'
+                path: 'error-handler-basic'
+            },
+            {
+                component: ZonesComponent,
+                path: 'error-handler-zonejs'
             },
             {
                 component: RxjsErrAsyncPipeComponent,

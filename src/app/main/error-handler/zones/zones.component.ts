@@ -14,6 +14,12 @@ export class ZonesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+
+    // IMPORTANT: as of 4.1.1 errors during change detection will no longer be received by NgZone
+    // but instead fed directly into ErrorHandler
+    // Therefore the only way to receive unhandled errors is to override ErrorHandler
+    // for more information see: https://github.com/angular/angular/issues/17012
+
     this.ngZone.onError.subscribe((err) => {
       this.errorCount += 1;
       // angular won't see our change until the next change detection cycle
