@@ -6,5 +6,5 @@
     <button type="button" (click)="toggleChangeDetection()">Toggle Change Detection</button>
 </div>
 <div>
-    <app-counter [value]="counts$" [updateView]="cdToggles$"></app-counter>
+    <app-counter [value]="counts$" [updateView]="cdToggles$" [appAttachedIf]="true"></app-counter>
 </div>
