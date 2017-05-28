@@ -8,21 +8,22 @@ import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/startWith';
 
 @Component({
-  selector: 'app-counter-container',
+  selector: 'app-immut-counter-container',
   templateUrl: `./counter-container.component.html`,
   styles: []
 })
 export class CounterContainerComponent implements OnInit {
-  counts$: Observable<number>;
+  counts$: Observable<{ count: number}>;
   resumes$ = new Subject<boolean>();
   isViewUpdated = true;
   constructor() { }
 
   ngOnInit() {
+    // note: we need to create a NEW object as counter.component uses on push
     this.counts$ = this.resumes$
       .switchMap(resume => resume ? Observable.interval(100) : Observable.empty())
       .startWith(0)
-      .scan(count => count + 1, -1);
+      .scan(({count}) => ({ count: ++count}), { count: -1 });
   }
 
   start() {

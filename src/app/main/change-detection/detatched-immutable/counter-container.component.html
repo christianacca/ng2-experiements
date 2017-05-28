@@ -6,6 +6,6 @@
     <button type="button" (click)="toggleChangeDetection()">Toggle Change Detection</button>
 </div>
 <div>
-    <app-counter [value]="counts$" [attachedIf]="isViewUpdated"></app-counter>
-    <app-counter [value]="counts$" [attachedIf]="isViewUpdated" [hideWhenDetatched]="false"></app-counter>
+    <app-immut-counter [value]="counts$ | async" [attachedIf]="isViewUpdated"></app-immut-counter>
+    <app-immut-counter [value]="counts$ | async" [attachedIf]="isViewUpdated" [hideWhenDetatched]="false"></app-immut-counter>
 </div>

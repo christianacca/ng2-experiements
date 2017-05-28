@@ -2,9 +2,9 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
-  selector: 'app-counter',
+  selector: 'app-immut-counter',
   template: `
-    {{value | async}}
+    {{value.count}}
   `,
   styles: [`
     :host { display: inline }
@@ -12,5 +12,5 @@ import { Observable } from 'rxjs/Observable';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CounterComponent {
-  @Input() value: Observable<number>;
+  @Input() value: { count: number };
 }
