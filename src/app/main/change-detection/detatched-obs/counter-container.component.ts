@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/scan';
 import 'rxjs/add/observable/empty';
@@ -15,7 +14,7 @@ import 'rxjs/add/observable/interval';
 export class CounterContainerComponent implements OnInit {
   counts$: Observable<number>;
   resumes$ = new Subject<boolean>();
-  cdToggles$ = new BehaviorSubject<boolean>(true);
+  isViewUpdated = true;
   constructor() { }
 
   ngOnInit() {
@@ -33,6 +32,6 @@ export class CounterContainerComponent implements OnInit {
   }
 
   toggleChangeDetection() {
-    this.cdToggles$.next(!this.cdToggles$.value);
+    this.isViewUpdated = !this.isViewUpdated;
   }
 }

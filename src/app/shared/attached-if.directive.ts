@@ -1,32 +1,38 @@
-import { Directive, Input, HostBinding, ChangeDetectorRef } from '@angular/core';
+import { Directive, Input, HostBinding, ChangeDetectorRef, Optional, ElementRef } from '@angular/core';
 
 @Directive({
-  selector: '[appAttachedIf]'
+  // tslint:disable-next-line:directive-selector
+  selector: '[attachedIf]'
 })
 export class AttachedIfDirective {
+  private _isAttached: boolean;
   cd: ChangeDetectorRef;
-  private _isAttached = false;
-  // tslint:disable-next-line:no-input-rename
-  @Input('appAttachedIf')
-  get isAttached() {
+  private displayCssProperty: string;
+  private nativeElem: HTMLElement;
+
+  @Input()
+  get attachedIf() {
     return this._isAttached;
   }
-  set isAttached(value: boolean) {
+  set attachedIf(value: boolean) {
     if (value) {
       this.cd.reattach();
     } else {
+      this.displayCssProperty = this.nativeElem ? this.nativeElem.style.display : 'block';
       this.cd.detach();
     }
     this._isAttached = value;
   }
+  @Input() hideWhenDetatched = true;
 
-  // @HostBinding() get hidden() {
-  //   return !this.isAttached;
-  // }
+  @HostBinding('style.display') get display() {
+    return (!this._isAttached && this.hideWhenDetatched) ? 'none' : this.displayCssProperty;
+  }
 
-  constructor(cd: ChangeDetectorRef) {
+  constructor(cd: ChangeDetectorRef, elem: ElementRef) {
     this.cd = cd;
-    this.cd.detach();
+    this.nativeElem = (elem.nativeElement as HTMLElement);
+    this.attachedIf = false;
   }
 
 }
