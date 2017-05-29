@@ -21,7 +21,7 @@ export class CounterContainerComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    // note: we need to create a NEW object as counter.component uses on push
+    // note: we need to create a NEW object as counter.component uses OnPush
     this.counts$ = this.resumes$
       .switchMap(resume => resume ? Observable.interval(500) : Observable.empty())
       .startWith(0)

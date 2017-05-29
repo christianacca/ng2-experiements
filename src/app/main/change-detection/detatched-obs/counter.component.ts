@@ -1,15 +1,13 @@
-import { Component, Input, ChangeDetectionStrategy, Optional, SimpleChanges, SimpleChange, OnChanges } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, Optional, SimpleChanges, SimpleChange, OnChanges, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
 import { AttachedIfDirective } from '../../../shared/attached-if.directive';
 
 import 'rxjs/add/observable/empty';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/share';
-import 'rxjs/add/operator/withLatestFrom';
+import 'rxjs/add/operator/distinctUntilChanged';
 
 interface Inputs extends SimpleChanges {
   value: SimpleChange;
@@ -29,6 +27,7 @@ interface Inputs extends SimpleChanges {
 export class CounterComponent implements OnChanges {
 
   currentValue: Observable<number>;
+  valueSubs: Subscription;
 
   // tslint:disable-next-line:no-input-rename
   @Input('value') rawValue: Observable<number>;
@@ -47,18 +46,19 @@ export class CounterComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+
     // recieve calls to emissions from `this.value`
     // we use `pauseWhenDetatched` to determine whether values emitted by `this.value` will be "dropped"
-    // (ie not emitted onto `this._value$`)
+    // (ie not emitted onto `this.currentValue`)
 
     if (this.pauseWhenDetatched && this.attachedIf) {
-      const value = this.rawValue.share();
-      const attachedValue = value.switchMap(v => this.isAttached ? Observable.of(v) : Observable.empty())
-        .do(count => console.log(`counter next: ${count}`));
-      const reattachValue = this.attachedIf.onAttach.withLatestFrom(value, (_, v) => v);
-      this.currentValue = Observable.merge(attachedValue, reattachValue);
+      // note: distinctUntilChanged as reataching can cause the same (cached) value to be emitted by this.rawValue
+      this.currentValue = this.attachedIf.onAttach
+        .switchMap(attached => attached ? this.rawValue : Observable.empty())
+        .distinctUntilChanged();
     } else {
-      this.currentValue = this.rawValue.do(count => console.log(`counter next: ${count}`));
+      this.currentValue = this.rawValue;
     }
+    this.currentValue = this.currentValue.do(count => console.log(`counter: ${count}`));
   }
 }
