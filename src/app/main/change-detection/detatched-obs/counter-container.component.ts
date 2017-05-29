@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { ConnectableObservable } from 'rxjs/observable/ConnectableObservable';
 
@@ -20,7 +20,7 @@ export class CounterContainerComponent implements OnInit, OnDestroy {
   counts$: ConnectableObservable<number>;
   isViewUpdated = true;
   private countsSubs: Subscription;
-  private resumes$ = new ReplaySubject<boolean>(1);
+  private resumes$ = new Subject<boolean>();
   constructor() { }
 
   ngOnInit() {
