@@ -3,7 +3,6 @@ import { FormGroup, NgForm, NgModel } from '@angular/forms';
 import { Observable } from 'rxjs/observable';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/startWith';
 
 /**
  * Example of combining template-driven forms with reactive code ie using

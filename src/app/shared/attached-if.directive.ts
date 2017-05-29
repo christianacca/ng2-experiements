@@ -1,4 +1,5 @@
-import { Directive, Input, HostBinding, ChangeDetectorRef, Optional, ElementRef } from '@angular/core';
+import { Directive, Input, HostBinding, ChangeDetectorRef, Optional, ElementRef, EventEmitter, Output } from '@angular/core';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Directive({
   // tslint:disable-next-line:directive-selector
@@ -6,7 +7,7 @@ import { Directive, Input, HostBinding, ChangeDetectorRef, Optional, ElementRef 
 })
 export class AttachedIfDirective {
   private _isAttached: boolean;
-  cd: ChangeDetectorRef;
+  private cd: ChangeDetectorRef;
   private displayCssProperty: string;
   private nativeElem: HTMLElement;
 
@@ -16,23 +17,27 @@ export class AttachedIfDirective {
   }
   set attachedIf(value: boolean) {
     if (value) {
-      this.cd.reattach();
+      if (this._isAttached !== undefined) {
+        this.cd.reattach();
+      }
+      this.onAttach.next(true);
     } else {
       this.displayCssProperty = this.nativeElem ? this.nativeElem.style.display : 'block';
       this.cd.detach();
+      this.onAttach.next(false);
     }
     this._isAttached = value;
   }
-  @Input() hideWhenDetatched = true;
-
-  @HostBinding('style.display') get display() {
+  @HostBinding('style.display')
+  get display() {
     return (!this._isAttached && this.hideWhenDetatched) ? 'none' : this.displayCssProperty;
   }
+  @Input() hideWhenDetatched = true;
+
+  @Output() onAttach = new ReplaySubject<boolean>(1);
 
   constructor(cd: ChangeDetectorRef, elem: ElementRef) {
     this.cd = cd;
     this.nativeElem = (elem.nativeElement as HTMLElement);
-    this.attachedIf = false;
   }
-
 }

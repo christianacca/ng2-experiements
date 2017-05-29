@@ -6,6 +6,7 @@ import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/share';
 
 @Component({
   selector: 'app-immut-counter-container',
@@ -23,7 +24,8 @@ export class CounterContainerComponent implements OnInit {
     this.counts$ = this.resumes$
       .switchMap(resume => resume ? Observable.interval(100) : Observable.empty())
       .startWith(0)
-      .scan(({count}) => ({ count: ++count}), { count: -1 });
+      .scan(({count}) => ({ count: ++count}), { count: -1 })
+      .share();
   }
 
   start() {
