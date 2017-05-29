@@ -6,7 +6,8 @@ import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/share';
+import 'rxjs/add/operator/shareReplay';
+
 
 @Component({
   selector: 'app-immut-counter-container',
@@ -22,10 +23,10 @@ export class CounterContainerComponent implements OnInit {
   ngOnInit() {
     // note: we need to create a NEW object as counter.component uses on push
     this.counts$ = this.resumes$
-      .switchMap(resume => resume ? Observable.interval(100) : Observable.empty())
+      .switchMap(resume => resume ? Observable.interval(500) : Observable.empty())
       .startWith(0)
       .scan(({count}) => ({ count: ++count}), { count: -1 })
-      .share();
+      .shareReplay(1);
   }
 
   start() {

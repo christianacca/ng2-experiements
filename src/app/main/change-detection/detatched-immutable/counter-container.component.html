@@ -8,4 +8,5 @@
 <div>
     <app-immut-counter [value]="counts$ | async" [attachedIf]="isViewUpdated"></app-immut-counter>
     <app-immut-counter [value]="counts$ | async" [attachedIf]="isViewUpdated" [hideWhenDetatched]="false"></app-immut-counter>
+    <app-immut-counter [value]="counts$ | async" [attachedIf]="isViewUpdated" [pauseWhenDetatched]="true"></app-immut-counter>
 </div>

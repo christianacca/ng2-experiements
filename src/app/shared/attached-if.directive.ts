@@ -11,11 +11,11 @@ export class AttachedIfDirective {
   private displayCssProperty: string;
   private nativeElem: HTMLElement;
 
-  @Input()
-  get attachedIf() {
+  @Input('attachedIf')
+  get isAttached() {
     return this._isAttached;
   }
-  set attachedIf(value: boolean) {
+  set isAttached(value: boolean) {
     if (value) {
       if (this._isAttached !== undefined) {
         this.cd.reattach();
