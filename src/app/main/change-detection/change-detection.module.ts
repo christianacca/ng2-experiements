@@ -7,6 +7,8 @@ import { CounterComponent } from './detatched-obs/counter.component';
 import { CounterContainerComponent as ImmutableCounterContainerComp } from './detatched-immutable/counter-container.component';
 import { CounterComponent as ImmutableCounterComp } from './detatched-immutable/counter.component';
 import { SharedModule } from '../../shared/shared.module';
+import { DetatchedClicksComponent } from './detatched-clicks/detatched-clicks.component';
+import { ClickableComponent } from './detatched-clicks/clickable.component';
 
 @NgModule({
   imports: [
@@ -16,7 +18,7 @@ import { SharedModule } from '../../shared/shared.module';
   ],
   declarations: [
     CounterContainerComponent, CounterComponent,
-    ImmutableCounterContainerComp, ImmutableCounterComp
+    ImmutableCounterContainerComp, ImmutableCounterComp, DetatchedClicksComponent, ClickableComponent
   ]
 })
 export class ChangeDetectionModule { }

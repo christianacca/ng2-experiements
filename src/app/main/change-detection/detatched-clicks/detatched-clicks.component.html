@@ -1,0 +1,5 @@
+<div>
+    <button (click)="isChildAttached = false;">Detatach Child</button>
+    <button (click)="isChildAttached = true;">Reatach Child</button>
+</div>
+<app-clickable [attached]="isChildAttached"></app-clickable>
