@@ -28,9 +28,7 @@ export class CounterComponent implements OnChanges {
 
   currentValue: Observable<number>;
   valueSubs: Subscription;
-
-  // tslint:disable-next-line:no-input-rename
-  @Input('value') rawValue: Observable<number>;
+  @Input() value: Observable<number>;
 
   @Input() pauseWhenDetatched = false;
 
@@ -54,10 +52,10 @@ export class CounterComponent implements OnChanges {
     if (this.pauseWhenDetatched && this.attachedIf) {
       // note: distinctUntilChanged as reataching can cause the same (cached) value to be emitted by this.rawValue
       this.currentValue = this.attachedIf.onAttach
-        .switchMap(attached => attached ? this.rawValue : Observable.empty())
+        .switchMap(attached => attached ? this.value : Observable.empty())
         .distinctUntilChanged();
     } else {
-      this.currentValue = this.rawValue;
+      this.currentValue = this.value;
     }
     this.currentValue = this.currentValue.do(count => console.log(`counter: ${count}`));
   }
