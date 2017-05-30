@@ -37,6 +37,6 @@ export class CounterComponent implements OnChanges {
       return;
     }
 
-    console.log(`counter next: ${changes.value.currentValue.count}`);
+    console.log(`counter: ${changes.value.currentValue.count}`);
   }
 }
