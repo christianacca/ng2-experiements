@@ -9,16 +9,24 @@ import { CounterComponent as ImmutableCounterComp } from './detatched-immutable/
 import { SharedModule } from '../../shared/shared.module';
 import { DetatchedClicksComponent } from './detatched-clicks/detatched-clicks.component';
 import { ClickableComponent } from './detatched-clicks/clickable.component';
+import { GrandparentComponent } from './unidir-problem/grandparent.component';
+import { ParentComponent } from './unidir-problem/parent.component';
+import { ChildComponent } from './unidir-problem/child.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     ChangeDetectionRoutingModule,
-    SharedModule
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   declarations: [
     CounterContainerComponent, CounterComponent,
-    ImmutableCounterContainerComp, ImmutableCounterComp, DetatchedClicksComponent, ClickableComponent
+    ImmutableCounterContainerComp, ImmutableCounterComp,
+    DetatchedClicksComponent, ClickableComponent,
+    GrandparentComponent, ParentComponent, ChildComponent
   ]
 })
 export class ChangeDetectionModule { }
