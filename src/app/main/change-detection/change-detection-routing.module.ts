@@ -4,12 +4,14 @@ import { CounterContainerComponent } from './detatched-obs/counter-container.com
 import { CounterContainerComponent as ImmutableCounterContainerComp } from './detatched-immutable/counter-container.component';
 import { DetatchedClicksComponent } from './detatched-clicks/detatched-clicks.component';
 import { GrandparentComponent } from './unidir-problem/grandparent.component';
+import { EventGrandparentComponent } from './object-with-events/event-grandparent.component';
 
 const routes: Routes = [
   { path: 'detatched-obs', component: CounterContainerComponent },
   { path: 'detatched-immutable', component: ImmutableCounterContainerComp },
   { path: 'detatched-clicks', component: DetatchedClicksComponent },
   { path: 'unidir-problem', component: GrandparentComponent },
+  { path: 'object-with-events', component: EventGrandparentComponent },
 ];
 
 @NgModule({
