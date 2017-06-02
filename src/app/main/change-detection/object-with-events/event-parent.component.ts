@@ -7,7 +7,7 @@ import { Parent } from './model';
     <div>
       <h3>Parent (age: {{value.age}})</h3>
       <p>
-        Descendants age: {{value.descendantsAge}}
+        Descendants age: {{value.descendantsAge}}<span *ngIf="value.children[0].isMiddleAge">!</span>
       </p>
     </div>
     <p>
@@ -20,14 +20,14 @@ import { Parent } from './model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventParentComponent implements OnInit {
-  private _parent: Parent;
+  private _value: Parent;
   childAge: number;
   @Input()
   get value(): Parent {
-    return this._parent;
+    return this._value;
   }
   set value(v: Parent) {
-    this._parent = v;
+    this._value = v;
     this.childAge = v.children[0].age;
   }
   constructor() { }

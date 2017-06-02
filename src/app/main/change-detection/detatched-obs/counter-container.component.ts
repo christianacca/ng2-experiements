@@ -25,12 +25,16 @@ export class CounterContainerComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnDestroy(): void {
+    // todo: test that a class decorator will not force a dynamically created component that tree-shaking
+    // would ordinarily remove, to be included in the bundle
+    // Once confirmed OK, use @AutoUnsubscribe decorator to avoid having to call unsubscribe manually
+    // (see: https://netbasal.com/automagically-unsubscribe-in-angular-4487e9853a88)
     this.countsSubs.unsubscribe();
   }
   ngOnInit() {
     // note: we're using a connectable observable rather than a refCount based operator to share
-    // the counter observable. This is to avoid our count to reset if all out subscribers are
-    // decide to unsubscribe and then resubscribe
+    // the counter observable. This is to avoid our count resetting if all out subscribers decide
+    // to unsubscribe and then resubscribe
     this.counts$ = this.resumes$
       .switchMap(resume => resume ? Observable.interval(2000) : Observable.empty())
       .scan<number>(count => count + 1, 0)

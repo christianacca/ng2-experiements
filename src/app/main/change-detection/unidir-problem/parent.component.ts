@@ -7,7 +7,7 @@ import { Parent } from './model';
     <div>
       <h3>Parent (age: {{value.age}})</h3>
       <p>
-        Descendants age: {{value.descendantsAge}}
+        Descendants age: {{value.descendantsAge}}<span *ngIf="value.children[0].isMiddleAge">!</span>
       </p>
     </div>
     <p>

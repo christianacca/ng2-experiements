@@ -61,6 +61,10 @@ export class Parent {
         return Array.from(this.descendants()).reduce((sum, d) => sum + d.age, 0);
     }
 
+    get isMiddleAge() {
+        return this.age >= 40;
+    }
+
     constructor(data: ParentCtorData) {
         Object.assign(this, data);
         // todo: unsubscribe!
