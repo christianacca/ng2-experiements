@@ -11,7 +11,7 @@ import { Parent } from './model';
       </p>
     </div>
     <p>
-        <label>Child: <input type="number" #age [value]="childAge"/></label>
+        <label>Child Age: <input type="number" #age [value]="childAge"/></label>
         <button type="button" (click)="changeChildAge(age.value)">Change</button>
     </p>
     <p>

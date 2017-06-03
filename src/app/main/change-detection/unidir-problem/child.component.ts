@@ -42,7 +42,6 @@ export class ChildComponent implements OnInit, OnChanges {
       this.value.iq = parseInt(this.iq, 10);
       this.evts.notifyIQChange();
     }
-    // this.evts.notifyBirthday();
   }
 
   changeAge(value: string) {
@@ -52,5 +51,4 @@ export class ChildComponent implements OnInit, OnChanges {
     this.value.iq = parseInt(value, 10);
     this.evts.notifyIQChange();
   }
-
 }
