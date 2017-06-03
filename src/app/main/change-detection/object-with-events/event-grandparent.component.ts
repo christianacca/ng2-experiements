@@ -63,9 +63,9 @@ export class EventGrandparentComponent implements OnInit {
         validator: CustomValidators.isTooOld(() => this.value)
       });
     // this.iqChanges$ = evts.iqChanges$;
-    // on testing we need to cause the `async` pipe to listen to these emissions [almost] asynchronously
-    // for the template to be checked by angular for changes.
-    // it would seem that `iqChanges$` emissions made within our `EventChildComponent.ngOnChanges`
+    // On testing for the template to be checked by angular for changes we need to cause the `async`
+    // pipe to listen to these emissions [almost] asynchronously.
+    // It would seem that `iqChanges$` emissions made within our `EventChildComponent.ngOnChanges`
     // are not "seen" unless they occur at the end of current javascipt turn...
     this.iqChanges$ = evts.iqChanges$.observeOn(asap);
   }
