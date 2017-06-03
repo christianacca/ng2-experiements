@@ -4,6 +4,7 @@ export type ParentCtorData = ParentPartial & Pick<Parent, 'age'>;
 
 export class Parent {
     age = 0;
+    iq = 0;
     children: Parent[] = [];
     * descendants(): Iterable<Parent> {
         for (const child of this.children) {

@@ -13,22 +13,28 @@ import { Parent } from './model';
     <p>
         <label>Child: <input type="number" #age [value]="childAge"/></label>
         <button type="button" (click)="changeChildAge(age.value)">Change</button>
-      </p>
-    <app-event-child [value]="value.children[0]" [age]="childAge"></app-event-child>
+    </p>
+    <p>
+        <label>Child IQ: <input type="number" #iq [value]="childIQ"/></label>
+        <button type="button" (click)="changeChildIQ(iq.value)">Change</button>
+    </p>
+    <app-event-child [value]="value.children[0]" [age]="childAge" [iq]="childIQ"></app-event-child>
   `,
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventParentComponent implements OnInit {
-  private _value: Parent;
+  childIQ: number;
+  private _parent: Parent;
   childAge: number;
   @Input()
   get value(): Parent {
-    return this._value;
+    return this._parent;
   }
   set value(v: Parent) {
-    this._value = v;
+    this._parent = v;
     this.childAge = v.children[0].age;
+    this.childIQ = v.children[0].iq;
   }
   constructor() { }
 
@@ -38,5 +44,7 @@ export class EventParentComponent implements OnInit {
   changeChildAge(value: string) {
     this.childAge = parseInt(value, 10);
   }
+  changeChildIQ(value: string) {
+    this.childIQ = parseInt(value, 10);
+  }
 }
-

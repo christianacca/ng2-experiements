@@ -46,6 +46,7 @@ export class Parent {
         this._age = value;
         this.propertyChanged.publish({ propertyName: 'age', oldValue: originalValue, newValue: this._age, parent: null, target: this });
     }
+    iq = 0;
     children: Parent[] = [];
     propertyChanged = new PropertyChangeEvent();
 
