@@ -6,5 +6,6 @@ export { Bootstrappable2 } from './bootstrappable2.service';
 export { Db } from './db.service';
 export { CoreModule } from './core.module';
 export * from './langs-util';
+export { AutoUnsubscribe } from './auto-unsubscribe.decorator';
 import { DebugRouteReuseStrategy } from './debug-route-reuse-strategy';
 import { RouteAlwaysReuseStrategy } from './route-reuse-always-strategy';

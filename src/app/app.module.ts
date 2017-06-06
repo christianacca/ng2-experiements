@@ -16,6 +16,7 @@ import { RoutingEgsModule } from './routing-egs/routing-egs.module';
 import { DebugRouteReuseStrategy } from './core/debug-route-reuse-strategy';
 import { DiRegModule } from './di-reg/di-reg.module';
 import { DiReg2Module } from './di-reg2/di-reg2.module';
+import { TreeShakeModule } from './tree-shake/tree-shake.module';
 // import { RouteAlwaysReuseStrategy } from './core/route-reuse-always-strategy';
 
 @NgModule({
@@ -34,7 +35,8 @@ import { DiReg2Module } from './di-reg2/di-reg2.module';
     RunnableModule.for([
       { provide: RUNNABLE, multi: true, useClass: OnRun },
       { provide: RUNNABLE, multi: true, useExisting: BootstrappedService }
-    ])
+    ]),
+    TreeShakeModule
   ],
   providers: [
     bootstrappedProviders,

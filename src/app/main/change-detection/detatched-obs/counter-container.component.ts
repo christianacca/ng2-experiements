@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ConnectableObservable } from 'rxjs/observable/ConnectableObservable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
+import { AutoUnsubscribe } from '../../../core';
 
 import 'rxjs/add/observable/empty';
 import 'rxjs/add/observable/interval';
@@ -17,20 +18,13 @@ import 'rxjs/add/operator/publishBehavior';
   templateUrl: `./counter-container.component.html`,
   styles: []
 })
-export class CounterContainerComponent implements OnInit, OnDestroy {
+@AutoUnsubscribe
+export class CounterContainerComponent implements OnInit {
   counts$: ConnectableObservable<number>;
   isViewUpdated = true;
   private countsSubs: Subscription;
   private resumes$ = new Subject<boolean>();
   constructor() { }
-
-  ngOnDestroy(): void {
-    // todo: test that a class decorator will not force a dynamically created component that tree-shaking
-    // would ordinarily remove, to be included in the bundle
-    // Once confirmed OK, use @AutoUnsubscribe decorator to avoid having to call unsubscribe manually
-    // (see: https://netbasal.com/automagically-unsubscribe-in-angular-4487e9853a88)
-    this.countsSubs.unsubscribe();
-  }
   ngOnInit() {
     // note: we're using a connectable observable rather than a refCount based operator to share
     // the counter observable. This is to avoid our count resetting if all out subscribers decide
