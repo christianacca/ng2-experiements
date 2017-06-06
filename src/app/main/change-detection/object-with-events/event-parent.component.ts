@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
-import { Parent } from './model';
+import { Human } from './model';
 
 @Component({
   selector: 'app-event-parent',
@@ -25,13 +25,13 @@ import { Parent } from './model';
 })
 export class EventParentComponent implements OnInit {
   childIQ: number;
-  private _parent: Parent;
+  private _parent: Human;
   childAge: number;
   @Input()
-  get value(): Parent {
+  get value(): Human {
     return this._parent;
   }
-  set value(v: Parent) {
+  set value(v: Human) {
     this._parent = v;
     this.childAge = v.children[0].age;
     this.childIQ = v.children[0].iq;

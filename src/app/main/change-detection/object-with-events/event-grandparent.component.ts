@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { Parent } from './model';
+import { Human } from './model';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { EventsService } from './events.service';
 import { asap } from 'rxjs/scheduler/asap';
@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/observeOn';
 
 class CustomValidators {
-  static isTooOld(getModelFn: () => Parent): (group: AbstractControl) => { [key: string]: boolean } {
+  static isTooOld(getModelFn: () => Human): (group: AbstractControl) => { [key: string]: boolean } {
     const model = getModelFn();
     return (group: FormGroup) => {
       if (model.age > 120) {
@@ -41,15 +41,15 @@ export class EventGrandparentComponent implements OnInit {
   iqChanges$: Observable<number>;
   form: FormGroup;
 
-  value: Parent;
+  value: Human;
   constructor(private _fb: FormBuilder, evts: EventsService, private cdr: ChangeDetectorRef) {
-    this.value = new Parent({
+    this.value = new Human({
       age: 90,
       children: [
-        new Parent({
+        new Human({
           age: 35,
           children: [
-            new Parent({ age: 12 })
+            new Human({ age: 12 })
           ]
         })
       ]

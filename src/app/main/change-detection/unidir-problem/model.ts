@@ -1,12 +1,12 @@
-export type ParentPartial = Partial<Parent>;
-export type ParentCtorData = ParentPartial & Pick<Parent, 'age'>;
+export type HumanPartial = Partial<Humman>;
+export type HumanCtorData = HumanPartial & Pick<Humman, 'age'>;
 
 
-export class Parent {
+export class Humman {
     age = 0;
     iq = 0;
-    children: Parent[] = [];
-    * descendants(): Iterable<Parent> {
+    children: Humman[] = [];
+    * descendants(): Iterable<Humman> {
         for (const child of this.children) {
             yield child;
             yield * Array.from(child.descendants());
@@ -20,7 +20,7 @@ export class Parent {
         return this.age >= 40;
     }
 
-    constructor(data: ParentCtorData) {
+    constructor(data: HumanCtorData) {
         Object.assign(this, data);
     }
 }

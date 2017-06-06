@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, ChangeDetectionStrategy } from '@angular/core';
-import { Parent } from './model';
+import { Human } from './model';
 import { EventsService } from './events.service';
 
 interface Inputs extends SimpleChanges {
@@ -27,7 +27,7 @@ interface Inputs extends SimpleChanges {
 })
 export class EventChildComponent implements OnInit, OnChanges {
 
-  @Input() value: Parent;
+  @Input() value: Human;
   @Input() iq: string;
   @Input() age: string;
   constructor(private evts: EventsService) { }

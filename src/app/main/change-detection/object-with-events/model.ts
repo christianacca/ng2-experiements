@@ -1,5 +1,5 @@
-export type ParentPartial = Partial<Parent>;
-export type ParentCtorData = ParentPartial & Pick<Parent, 'age'>;
+export type HumanPartial = Partial<Human>;
+export type HumanCtorData = HumanPartial & Pick<Human, 'age'>;
 
 export interface PropertyChangeData<TTarget extends object, TValue> {
     target: TTarget;
@@ -35,7 +35,7 @@ export class PropertyChangeEvent {
     }
 }
 
-export class Parent {
+export class Human {
     get age() {
         return this._age;
     };
@@ -47,12 +47,12 @@ export class Parent {
         this.propertyChanged.publish({ propertyName: 'age', oldValue: originalValue, newValue: this._age, parent: null, target: this });
     }
     iq = 0;
-    children: Parent[] = [];
+    children: Human[] = [];
     propertyChanged = new PropertyChangeEvent();
 
     private _age = 0;
 
-    * descendants(): Iterable<Parent> {
+    * descendants(): Iterable<Human> {
         for (const child of this.children) {
             yield child;
             yield* Array.from(child.descendants());
@@ -66,7 +66,7 @@ export class Parent {
         return this.age >= 40;
     }
 
-    constructor(data: ParentCtorData) {
+    constructor(data: HumanCtorData) {
         Object.assign(this, data);
         // todo: unsubscribe!
         this.children.forEach(c => {
@@ -74,7 +74,7 @@ export class Parent {
         });
     }
 
-    private shouldBubbleAgeEvent(childPropertyChange: PropertyChangeData<Parent, any>) {
+    private shouldBubbleAgeEvent(childPropertyChange: PropertyChangeData<Human, any>) {
         if (childPropertyChange.propertyName === 'age') {
             return true;
         }
@@ -85,7 +85,7 @@ export class Parent {
 
         return false;
     }
-    private publishDescendantAgeChange(childPropertyChange: PropertyChangeData<Parent, any>) {
+    private publishDescendantAgeChange(childPropertyChange: PropertyChangeData<Human, any>) {
         if (!this.shouldBubbleAgeEvent(childPropertyChange)) {
             return;
         }

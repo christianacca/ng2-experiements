@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
-import { Parent } from './model';
+import { Humman } from './model';
 import { EventsService } from './events.service';
 
 interface Inputs extends SimpleChanges {
@@ -26,7 +26,7 @@ interface Inputs extends SimpleChanges {
 })
 export class ChildComponent implements OnInit, OnChanges {
 
-  @Input() value: Parent;
+  @Input() value: Humman;
   @Input() iq: string;
   @Input() age: string;
   constructor(private evts: EventsService) { }
