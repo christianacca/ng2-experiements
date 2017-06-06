@@ -1,12 +1,12 @@
-export type HumanPartial = Partial<Humman>;
-export type HumanCtorData = HumanPartial & Pick<Humman, 'age'>;
+export type HumanPartial = Partial<Human>;
+export type HumanCtorData = HumanPartial & Pick<Human, 'age'>;
 
 
-export class Humman {
+export class Human {
     age = 0;
     iq = 0;
-    children: Humman[] = [];
-    * descendants(): Iterable<Humman> {
+    children: Human[] = [];
+    * descendants(): Iterable<Human> {
         for (const child of this.children) {
             yield child;
             yield * Array.from(child.descendants());

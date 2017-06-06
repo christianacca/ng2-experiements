@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Humman } from './model';
+import { Human } from './model';
 
 @Component({
   selector: 'app-unidir-parent',
@@ -24,13 +24,13 @@ import { Humman } from './model';
 })
 export class ParentComponent implements OnInit {
   childIQ: number;
-  private _parent: Humman;
+  private _parent: Human;
   childAge: number;
   @Input()
-  get value(): Humman {
+  get value(): Human {
     return this._parent;
   }
-  set value(v: Humman) {
+  set value(v: Human) {
     this._parent = v;
     this.childAge = v.children[0].age;
     this.childIQ = v.children[0].iq;

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Humman } from './model';
+import { Human } from './model';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { EventsService } from './events.service';
 import { asap } from 'rxjs/scheduler/asap';
@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/observeOn';
 
 class CustomValidators {
-  static isTooOld(getModelFn: () => Humman): (group: AbstractControl) => { [key: string]: boolean } {
+  static isTooOld(getModelFn: () => Human): (group: AbstractControl) => { [key: string]: boolean } {
     const model = getModelFn();
     return (group: FormGroup) => {
       if (model.age > 120) {
@@ -40,15 +40,15 @@ export class GrandparentComponent implements OnInit {
   iqChanges$: Observable<number>;
   form: FormGroup;
 
-  value: Humman;
+  value: Human;
   constructor(private _fb: FormBuilder, evts: EventsService) {
-    this.value = new Humman({
+    this.value = new Human({
       age: 90,
       children: [
-        new Humman({
+        new Human({
           age: 35,
           children: [
-            new Humman({ age: 12 })
+            new Human({ age: 12 })
           ]
         })
       ]
