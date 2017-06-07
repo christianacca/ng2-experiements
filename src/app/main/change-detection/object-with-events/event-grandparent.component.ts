@@ -17,6 +17,30 @@ class CustomValidators {
   }
 }
 
+function createFakeData() {
+  const gp = new Human({
+    age: 90,
+    score: 40,
+    children: [
+      new Human({
+        age: 35,
+        score: 50,
+        children: [
+          new Human({ age: 12, score: 70, }),
+          new Human({ age: 5, score: 60, })
+        ]
+      })
+    ]
+  });
+  for (const p of gp.children) {
+    p.parent = gp;
+    for (const c of p.children) {
+      c.parent = p;
+    }
+  }
+  return gp;
+}
+
 @Component({
   template: `
     <div>
@@ -43,17 +67,7 @@ export class EventGrandparentComponent implements OnInit {
 
   value: Human;
   constructor(private _fb: FormBuilder, evts: EventsService, private cdr: ChangeDetectorRef) {
-    this.value = new Human({
-      age: 90,
-      children: [
-        new Human({
-          age: 35,
-          children: [
-            new Human({ age: 12 })
-          ]
-        })
-      ]
-    });
+    this.value = createFakeData();
     this.value.propertyChanged.subscribe(evt => this.cdr.detectChanges());
 
     this.form = this._fb.group({

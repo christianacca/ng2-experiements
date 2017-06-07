@@ -11,7 +11,9 @@ interface Inputs extends SimpleChanges {
   selector: 'app-event-child',
   template: `
     <div>
-      <h3>Child (age: {{value.age}})</h3>
+      <h3>Child (age: {{value.age}}) 
+        <small *ngIf="value.siblings[0].score > value.score">(intelligent sibling: {{value.siblings[0].score}})</small>
+      </h3>
       <p>
         <label>Age: <input type="number" #age [value]="value.age"/></label>
         <button type="button" (click)="changeAge(age.value)">Change</button>
@@ -20,9 +22,16 @@ interface Inputs extends SimpleChanges {
         <label>IQ: <input type="number" #iq [value]="value.iq"/></label>
         <button type="button" (click)="changeIQ(iq.value)">Change</button>
       </p>
+      <p>
+        <label>Score: <input type="number" #score [value]="value.score"/></label>
+        <button type="button" (click)="changeScore(score.value)">Change</button>
+      </p>
     </div>
   `,
-  styles: [],
+  styles: [`
+    :host { display: block; padding-left: 20px }
+    small { font-size: 65%; color: #777; }
+  `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventChildComponent implements OnInit, OnChanges {
@@ -30,6 +39,7 @@ export class EventChildComponent implements OnInit, OnChanges {
   @Input() value: Human;
   @Input() iq: string;
   @Input() age: string;
+  @Input() score: string;
   constructor(private evts: EventsService) { }
 
   ngOnInit() {
@@ -43,6 +53,9 @@ export class EventChildComponent implements OnInit, OnChanges {
       this.value.iq = parseInt(this.iq, 10);
       this.evts.notifyIQChange();
     }
+    if (changes.score && !changes.score.isFirstChange()) {
+      this.value.score = parseInt(this.score, 10);
+    }
   }
 
   changeAge(value: string) {
@@ -51,5 +64,8 @@ export class EventChildComponent implements OnInit, OnChanges {
   changeIQ(value: string) {
     this.value.iq = parseInt(value, 10);
     this.evts.notifyIQChange();
+  }
+  changeScore(value: string) {
+    this.value.score = parseInt(value, 10);
   }
 }

@@ -49,6 +49,8 @@ export class Human {
     iq = 0;
     children: Human[] = [];
     propertyChanged = new PropertyChangeEvent();
+    score = 0;
+    parent: Human;
 
     private _age = 0;
 
@@ -60,6 +62,10 @@ export class Human {
     }
     get descendantsAge() {
         return Array.from(this.descendants()).reduce((sum, d) => sum + d.age, 0);
+    }
+
+    get siblings() {
+        return this.parent.children.filter(x => x !== this);
     }
 
     get isMiddleAge() {

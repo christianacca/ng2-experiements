@@ -18,6 +18,10 @@ export class Human {
         return Array.from(this.descendants()).reduce((sum, d) => sum + d.age, 0);
     }
 
+    get isMiddleAge() {
+        return this.age >= 40;
+    }
+
     get siblings() {
         return this.parent.children.filter(x => x !== this);
     }
