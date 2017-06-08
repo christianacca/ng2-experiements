@@ -68,7 +68,7 @@ export class EventGrandparentComponent implements OnInit {
   value: Human;
   constructor(private _fb: FormBuilder, evts: EventsService, private cdr: ChangeDetectorRef) {
     this.value = createFakeData();
-    this.value.propertyChanged.subscribe(evt => this.cdr.detectChanges());
+    // this.value.propertyChanged.subscribe(evt => this.cdr.detectChanges());
 
     this.form = this._fb.group({
       age: ['', Validators.required],

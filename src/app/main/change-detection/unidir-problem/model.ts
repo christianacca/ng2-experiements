@@ -21,6 +21,9 @@ export class Human {
     get isMiddleAge() {
         return this.age >= 40;
     }
+    get hasMiddleAgeDescendant() {
+        return !!this.children.find(c => c.isMiddleAge);
+    }
 
     get siblings() {
         return this.parent.children.filter(x => x !== this);

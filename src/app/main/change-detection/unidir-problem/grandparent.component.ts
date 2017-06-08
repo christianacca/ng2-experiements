@@ -46,7 +46,7 @@ function createFakeData() {
     <div>
       <h3>Grand parent (age: {{value.age}}<span *ngIf="hasAgeError()">!</span>)</h3>
       <p>
-        Descendants age: {{value.descendantsAge}}
+        
       </p>
       <p>
         Grandchild IQ changes: {{iqChanges$ | async}}

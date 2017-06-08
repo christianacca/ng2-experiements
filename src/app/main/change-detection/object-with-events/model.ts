@@ -72,6 +72,10 @@ export class Human {
         return this.age >= 40;
     }
 
+    get hasMiddleAgeDescendant() {
+        return !!this.children.find(c => c.isMiddleAge);
+    }
+
     constructor(data: HumanCtorData) {
         Object.assign(this, data);
         // todo: unsubscribe!
