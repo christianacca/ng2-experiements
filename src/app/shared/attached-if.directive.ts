@@ -22,7 +22,7 @@ export class AttachedIfDirective {
       }
       this.onAttach.next(true);
     } else {
-      this.displayCssProperty = this.nativeElem ? this.nativeElem.style.display : 'block';
+      this.displayCssProperty = this.nativeElem && this.nativeElem.style ? this.nativeElem.style.display : 'block';
       this.cd.detach();
       this.onAttach.next(false);
     }

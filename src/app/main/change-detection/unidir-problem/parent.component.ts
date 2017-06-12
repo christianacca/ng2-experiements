@@ -25,7 +25,7 @@ import { Human } from './model';
         <button type="button" (click)="changeChildScore(score.value)">Change</button>
         <span *ngIf="value.children[1].score > value.children[0].score">!</span>
     </p>
-    <app-unidir-child [value]="value.children[0]"></app-unidir-child>
+    <app-unidir-child [value]="value.children[0]" [ageIncrement]=ageIncrement></app-unidir-child>
     <app-unidir-child [value]="value.children[1]" [age]="childAge" [iq]="childIQ" [score]="childScore"></app-unidir-child>
   `,
   styles: [`
@@ -37,6 +37,7 @@ export class ParentComponent implements OnInit {
   private _parent: Human;
   childAge: number;
   childScore: number;
+  @Input() ageIncrement = 0;
   @Input()
   get value(): Human {
     return this._parent;

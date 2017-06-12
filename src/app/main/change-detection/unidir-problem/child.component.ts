@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, DoCheck } from '@angular/core';
 import { Human } from './model';
 import { EventsService } from './events.service';
 
@@ -34,8 +34,12 @@ interface Inputs extends SimpleChanges {
     small { font-size: 65%; color: #777; }
   `]
 })
-export class ChildComponent implements OnInit, OnChanges {
+export class ChildComponent implements OnInit, OnChanges, DoCheck {
+  @Input() set ageIncrement(value: number) {
+    if (this.value == null) { return; }
 
+    this.value.age += value;
+  }
   @Input() value: Human;
   @Input() iq: string;
   @Input() age: string;
@@ -57,6 +61,9 @@ export class ChildComponent implements OnInit, OnChanges {
     if (changes.score && !changes.score.isFirstChange()) {
       this.value.score = parseInt(this.score, 10);
     }
+  }
+  ngDoCheck(): void {
+    console.log('ChildComponent.ngDoCheck');
   }
 
   changeAge(value: string) {

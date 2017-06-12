@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, DoCheck } from '@angular/core';
 import { Human } from './model';
 
 @Component({
@@ -25,7 +25,7 @@ import { Human } from './model';
         <button type="button" (click)="changeChildScore(score.value)">Change</button>
         <span *ngIf="value.children[1].score > value.children[0].score">!</span>
     </p>
-    <app-event-child [value]="value.children[0]"></app-event-child>
+    <app-event-child [value]="value.children[0]" [ageIncrement]=ageIncrement></app-event-child>
     <app-event-child [value]="value.children[1]" [age]="childAge" [iq]="childIQ" [score]="childScore"></app-event-child>
   `,
   styles: [`
@@ -33,11 +33,12 @@ import { Human } from './model';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EventParentComponent implements OnInit {
+export class EventParentComponent implements OnInit, DoCheck {
   childIQ: number;
   private _parent: Human;
   childAge: number;
   childScore: number;
+  @Input() ageIncrement = 0;
   @Input()
   get value(): Human {
     return this._parent;
@@ -52,7 +53,9 @@ export class EventParentComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  ngDoCheck(): void {
+    console.log('EventParentComponent.ngDoCheck');
+  }
   changeChildAge(value: string) {
     this.childAge = parseInt(value, 10);
   }

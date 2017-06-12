@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, ChangeDetectionStrategy, DoCheck } from '@angular/core';
 import { Human } from './model';
 import { EventsService } from './events.service';
 
@@ -34,8 +34,12 @@ interface Inputs extends SimpleChanges {
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EventChildComponent implements OnInit, OnChanges {
+export class EventChildComponent implements OnInit, OnChanges, DoCheck {
+  @Input() set ageIncrement(value: number) {
+    if (this.value == null) { return; }
 
+    this.value.age += value;
+  }
   @Input() value: Human;
   @Input() iq: string;
   @Input() age: string;
@@ -46,6 +50,7 @@ export class EventChildComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: Inputs): void {
+    console.log('EventChildComponent.ngOnChanges');
     if (changes.age && !changes.age.isFirstChange()) {
       this.value.age = parseInt(this.age, 10);
     }
@@ -56,6 +61,9 @@ export class EventChildComponent implements OnInit, OnChanges {
     if (changes.score && !changes.score.isFirstChange()) {
       this.value.score = parseInt(this.score, 10);
     }
+  }
+  ngDoCheck(): void {
+    console.log('EventChildComponent.ngDoCheck');
   }
 
   changeAge(value: string) {

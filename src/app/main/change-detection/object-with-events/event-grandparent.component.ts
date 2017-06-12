@@ -7,15 +7,12 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/observeOn';
 
 class CustomValidators {
-  static isTooOld(getModelFn: () => Human): (group: AbstractControl) => { [key: string]: boolean } {
-    const model = getModelFn();
-    return (group: FormGroup) => {
-      if (model.age > 120) {
-        return { tooOld: true };
-      }
-    };
+  static isTooOld(group: FormGroup): { [key: string]: boolean } {
+    return group.value > 120 ? { tooOld: true } : null;
   }
 }
+
+const later = Promise.resolve(null);
 
 function createFakeData() {
   const gp = new Human({
@@ -44,24 +41,26 @@ function createFakeData() {
 @Component({
   template: `
     <div>
-      <h3>Grand parent (age: {{value.age}}<span *ngIf="hasAgeError()">!</span>)</h3>
+      <h3>Grand parent (age: {{value.age}}<span *ngIf="hasAgeError">!</span>)</h3>
+      <form [formGroup]="form">
+        <label>Age: <input type="number" formControlName="age" [(ngModel)]="value.age" (blur)="resetProblemAge()"/></label>
+      </form>
       <p>
         Descendants age: {{value.descendantsAge}}
+        <button type="button" (click)="incrementDescendantAge()">+</button>
       </p>
       <p>
         Grandchild IQ changes: {{iqChanges$ | async}}
       </p>
-      <form [formGroup]="form">
-        <label>Age: <input type="number" formControlName="age" [(ngModel)]="value.age" (blur)="resetProblemAge()"/></label>
-      </form>
     </div>
-    <app-event-parent [value]="value.children[0]"></app-event-parent>
+    <app-event-parent [value]="value.children[0]" [ageIncrement]="nextAgeIncrement"></app-event-parent>
   `,
   styles: [],
   providers: [EventsService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventGrandparentComponent implements OnInit {
+  nextAgeIncrement = 0;
   iqChanges$: Observable<number>;
   form: FormGroup;
 
@@ -71,11 +70,8 @@ export class EventGrandparentComponent implements OnInit {
     // this.value.propertyChanged.subscribe(evt => this.cdr.detectChanges());
 
     this.form = this._fb.group({
-      age: ['', Validators.required],
-    },
-      {
-        validator: CustomValidators.isTooOld(() => this.value)
-      });
+      age: ['', [Validators.required, CustomValidators.isTooOld]],
+    });
     // this.iqChanges$ = evts.iqChanges$;
     // On testing for the template to be checked by angular for changes we need to cause the `async`
     // pipe to listen to these emissions [almost] asynchronously.
@@ -86,15 +82,23 @@ export class EventGrandparentComponent implements OnInit {
 
   ngOnInit() {
   }
+  incrementDescendantAge() {
+    ++this.nextAgeIncrement;
+  }
 
   resetProblemAge() {
     if (this.value.age > 120) {
       this.value.age = 100;
+      // trigger anther pass of the change detector sweep
+      // This is workaround to `[(ngModel)]="value.age"` binding "running late" ie running
+      // during the change detection cycle triggered by the `(blur)="resetProblemAge()"`
+      // At this point *ngIf="hasAgeError" has already been checked for changes and will not
+      // run even though the `this.form.age` model has now changed it's validation status
+      setTimeout(() => this.cdr.markForCheck(), 0);
     }
   }
-
-  hasAgeError(): boolean {
-    return this.form.hasError('tooOld');
+  get hasAgeError(): boolean {
+    return this.form.get('age').hasError('tooOld');
   }
 
 }
