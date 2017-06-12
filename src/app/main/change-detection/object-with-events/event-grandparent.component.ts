@@ -12,8 +12,6 @@ class CustomValidators {
   }
 }
 
-const later = Promise.resolve(null);
-
 function createFakeData() {
   const gp = new Human({
     age: 90,
