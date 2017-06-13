@@ -77,9 +77,9 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck {
     if (changes.score && !changes.score.isFirstChange()) {
       this.value.score = parseInt(this.score, 10);
     }
-    setTimeout(_ => {
-      this.cdr.markForCheck();
-    }, 0);
+    // trigger another change detection cycle and make sure any OnPush templates of ancestor
+    // components are re-rendered with the changes I've made here
+    setTimeout(_ => this.cdr.markForCheck(), 0);
   }
   ngDoCheck(): void {
     console.log('EventChildComponent.ngDoCheck');

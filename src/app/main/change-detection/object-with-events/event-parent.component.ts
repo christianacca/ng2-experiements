@@ -23,7 +23,7 @@ import { Human } from './model';
     <p>
         <label>Child 2 Score: <input type="number" #score [value]="childScore"/></label>
         <button type="button" (click)="changeChildScore(score.value)">Change</button>
-        <span *ngIf="value.children[1].score > value.children[0].score">!</span>
+        <span *ngIf="value.children[1].score > value.children[0].score">(Highest)</span>
     </p>
     <app-event-child [value]="value.children[0]" [ageIncrement]=ageIncrement></app-event-child>
     <app-event-child [value]="value.children[1]" [age]="childAge" [iq]="childIQ" [score]="childScore"></app-event-child>
