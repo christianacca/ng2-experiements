@@ -1,4 +1,7 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, ChangeDetectionStrategy, DoCheck } from '@angular/core';
+import {
+  Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, ChangeDetectionStrategy,
+  DoCheck, ChangeDetectorRef
+} from '@angular/core';
 import { Human } from './model';
 import { EventsService } from './events.service';
 
@@ -40,11 +43,24 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck {
 
     this.value.age += value;
   }
-  @Input() value: Human;
+  @Input()
+  get value() {
+    return this._value;
+  }
+  set value(v: Human) {
+    // todo: unsubscribe to existing _value
+    this._value = v;
+    this._value.parent.parent.propertyChanged.subscribe(_ => {
+      this.cdr.markForCheck();
+    });
+  };
   @Input() iq: string;
   @Input() age: string;
   @Input() score: string;
-  constructor(private evts: EventsService) { }
+
+  private _value: Human;
+
+  constructor(private evts: EventsService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
   }
@@ -61,6 +77,9 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck {
     if (changes.score && !changes.score.isFirstChange()) {
       this.value.score = parseInt(this.score, 10);
     }
+    setTimeout(_ => {
+      this.cdr.markForCheck();
+    }, 0);
   }
   ngDoCheck(): void {
     console.log('EventChildComponent.ngDoCheck');

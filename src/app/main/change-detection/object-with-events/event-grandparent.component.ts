@@ -2,9 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@
 import { Human } from './model';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { EventsService } from './events.service';
-import { asap } from 'rxjs/scheduler/asap';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/observeOn';
 
 class CustomValidators {
   static isTooOld(group: FormGroup): { [key: string]: boolean } {
@@ -65,17 +63,10 @@ export class EventGrandparentComponent implements OnInit {
   value: Human;
   constructor(private _fb: FormBuilder, evts: EventsService, private cdr: ChangeDetectorRef) {
     this.value = createFakeData();
-    // this.value.propertyChanged.subscribe(evt => this.cdr.detectChanges());
-
     this.form = this._fb.group({
       age: ['', [Validators.required, CustomValidators.isTooOld]],
     });
-    // this.iqChanges$ = evts.iqChanges$;
-    // On testing for the template to be checked by angular for changes we need to cause the `async`
-    // pipe to listen to these emissions [almost] asynchronously.
-    // It would seem that `iqChanges$` emissions made within our `EventChildComponent.ngOnChanges`
-    // are not "seen" unless they occur at the end of current javascipt turn...
-    this.iqChanges$ = evts.iqChanges$.observeOn(asap);
+    this.iqChanges$ = evts.iqChanges$;
   }
 
   ngOnInit() {
@@ -91,13 +82,15 @@ export class EventGrandparentComponent implements OnInit {
       // This is workaround to `[(ngModel)]="value.age"` binding "running late" ie running
       // during the change detection cycle triggered by the `(blur)="resetProblemAge()"`
       // At this point *ngIf="hasAgeError" has already been checked for changes and will not
-      // run even though the `this.form.age` model has now changed it's validation status
+      // run even though the `this.form.age` model has now changed it's validation status.
+      // To ensure our template is updated, we therefore need to schedule angular to check for changes
+      // when the callback to `setTimeout` runs. At that point the `*ngIf="hasAgeError"` will "see"
+      // the change to the form's validaty
       setTimeout(() => this.cdr.markForCheck(), 0);
     }
   }
   get hasAgeError(): boolean {
     return this.form.get('age').hasError('tooOld');
   }
-
 }
 

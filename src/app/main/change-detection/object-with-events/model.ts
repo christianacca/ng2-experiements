@@ -9,7 +9,7 @@ export interface PropertyChangeData<TTarget extends object, TValue> {
     parent?: object;
 }
 export type PropertyChangeHandler =
-    <TTarget extends object, TValue>(data: PropertyChangeData<TTarget, TValue>) => void;
+   (data: PropertyChangeData<any, any>) => void;
 
 let nextUnsubscribeKey = 0;
 
@@ -44,15 +44,35 @@ export class Human {
 
         const originalValue = this._age;
         this._age = value;
-        this.propertyChanged.publish({ propertyName: 'age', oldValue: originalValue, newValue: this._age, parent: null, target: this });
+        this.propertyChanged.publish({ propertyName: 'age', oldValue: originalValue, newValue: value, parent: null, target: this });
     }
-    iq = 0;
+    get iq() {
+        return this._iq;
+    };
+    set iq(value: number) {
+        if (this._age === value) { return; }
+
+        const originalValue = this._iq;
+        this._iq = value;
+        this.propertyChanged.publish({ propertyName: 'iq', oldValue: originalValue, newValue: value, parent: null, target: this });
+    }
     children: Human[] = [];
     propertyChanged = new PropertyChangeEvent();
-    score = 0;
+    get score() {
+        return this._score;
+    };
+    set score(value: number) {
+        if (this._score === value) { return; }
+
+        const originalValue = this._score;
+        this._score = value;
+        this.propertyChanged.publish({ propertyName: 'score', oldValue: originalValue, newValue: value, parent: null, target: this });
+    }
     parent: Human;
 
     private _age = 0;
+    private _iq = 0;
+    private _score = 0;
 
     * descendants(): Iterable<Human> {
         for (const child of this.children) {
@@ -80,29 +100,15 @@ export class Human {
         Object.assign(this, data);
         // todo: unsubscribe!
         this.children.forEach(c => {
-            c.propertyChanged.subscribe(evt => this.publishDescendantAgeChange(evt));
+            c.propertyChanged.subscribe(evt => this.publishDescendantChange(evt));
         });
     }
 
-    private shouldBubbleAgeEvent(childPropertyChange: PropertyChangeData<Human, any>) {
-        if (childPropertyChange.propertyName === 'age') {
-            return true;
-        }
-
-        if (childPropertyChange.propertyName === 'descendantAge' && childPropertyChange.target !== this) {
-            return true;
-        }
-
-        return false;
-    }
-    private publishDescendantAgeChange(childPropertyChange: PropertyChangeData<Human, any>) {
-        if (!this.shouldBubbleAgeEvent(childPropertyChange)) {
+    private publishDescendantChange(childPropertyChange: PropertyChangeData<Human, any>) {
+        if (childPropertyChange.target === this) {
             return;
         }
 
-        const newValue = this.descendantsAge;
-        const oldValue = newValue - (childPropertyChange.newValue - childPropertyChange.oldValue);
-        this.propertyChanged
-            .publish({ propertyName: 'descendantAge', oldValue, newValue, parent: null, target: this });
+        this.propertyChanged.publish(childPropertyChange);
     }
 }
