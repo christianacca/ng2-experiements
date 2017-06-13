@@ -16,6 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EventGrandparentComponent } from './object-with-events/event-grandparent.component';
 import { EventParentComponent } from './object-with-events/event-parent.component';
 import { EventChildComponent } from './object-with-events/event-child.component';
+import { ZoneCdComponent } from './zone-cd/zone-cd.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,7 @@ import { EventChildComponent } from './object-with-events/event-child.component'
     CounterContainerComponent, CounterComponent,
     ImmutableCounterContainerComp, ImmutableCounterComp,
     DetatchedClicksComponent, ClickableComponent,
-    GrandparentComponent, ParentComponent, ChildComponent, EventGrandparentComponent, EventParentComponent, EventChildComponent
+    GrandparentComponent, ParentComponent, ChildComponent, EventGrandparentComponent, EventParentComponent, EventChildComponent, ZoneCdComponent
   ]
 })
 export class ChangeDetectionModule { }
