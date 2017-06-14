@@ -6,6 +6,7 @@ import { bootstrappableProvider } from './bootstrappable1.service';
 import { bootstrappableProvider2 } from './bootstrappable2.service';
 import { Db } from './db.service';
 import { DelegatingErrorHandler } from './delegating-error-handler.service';
+import { TreeChangeDetectorRef } from './tree-change-detector-ref.service';
 
 @NgModule({
   providers: [
@@ -15,6 +16,7 @@ import { DelegatingErrorHandler } from './delegating-error-handler.service';
     bootstrappableProvider2,
     Db,
     { provide: ErrorHandler, useClass: DelegatingErrorHandler },
+    TreeChangeDetectorRef
   ]
 })
 export class CoreModule {}

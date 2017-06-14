@@ -9,3 +9,4 @@ export * from './langs-util';
 export { AutoUnsubscribe } from './auto-unsubscribe.decorator';
 import { DebugRouteReuseStrategy } from './debug-route-reuse-strategy';
 import { RouteAlwaysReuseStrategy } from './route-reuse-always-strategy';
+export { TreeChangeDetectorRef } from './tree-change-detector-ref.service';

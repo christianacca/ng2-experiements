@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import { Human } from './model';
 import { EventsService } from './events.service';
+import { TreeChangeDetectorRef } from '../../../core';
 
 interface Inputs extends SimpleChanges {
   age?: SimpleChange;
@@ -60,26 +61,33 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck {
 
   private _value: Human;
 
-  constructor(private evts: EventsService, private cdr: ChangeDetectorRef) { }
+  constructor(private evts: EventsService, private cdr: ChangeDetectorRef, private tcdr: TreeChangeDetectorRef) { }
 
   ngOnInit() {
   }
 
   ngOnChanges(changes: Inputs): void {
     console.log('EventChildComponent.ngOnChanges');
+    let hasChange = false;
     if (changes.age && !changes.age.isFirstChange()) {
       this.value.age = parseInt(this.age, 10);
+      hasChange = true;
     }
     if (changes.iq && !changes.iq.isFirstChange()) {
       this.value.iq = parseInt(this.iq, 10);
       this.evts.notifyIQChange();
+      hasChange = true;
     }
     if (changes.score && !changes.score.isFirstChange()) {
       this.value.score = parseInt(this.score, 10);
+      hasChange = true;
     }
     // trigger another change detection cycle and make sure any OnPush templates of ancestor
     // components are re-rendered with the changes I've made here
-    setTimeout(_ => this.cdr.markForCheck(), 0);
+    if (hasChange) {
+      this.tcdr.markForCheckAsap(this.cdr);
+      // setTimeout(_ => this.cdr.markForCheck(), 0);
+    }
   }
   ngDoCheck(): void {
     console.log('EventChildComponent.ngDoCheck');
