@@ -4,14 +4,12 @@ import {
 } from '@angular/core';
 import { Human } from './model';
 import { EventsService } from './events.service';
-import { TreeChangeDetectorRef, LifecycleEvents, mixinOnChanges$, mixinOnDestroy$ } from '../../../core';
+import { TreeChangeDetectorRef } from '../../../core';
 
 interface Inputs extends SimpleChanges {
   age?: SimpleChange;
   iq?: SimpleChange;
 }
-
-export const _EventChildComponent = mixinOnDestroy$(mixinOnChanges$(class { }));
 
 @Component({
   selector: 'app-event-child',
@@ -40,7 +38,7 @@ export const _EventChildComponent = mixinOnDestroy$(mixinOnChanges$(class { }));
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EventChildComponent extends _EventChildComponent implements OnInit, OnChanges, DoCheck {
+export class EventChildComponent implements OnInit, OnChanges, DoCheck {
   @Input() set ageIncrement(value: number) {
     if (this.value == null) { return; }
 
@@ -63,15 +61,12 @@ export class EventChildComponent extends _EventChildComponent implements OnInit,
 
   private _value: Human;
 
-  constructor(private evts: EventsService, private cdr: ChangeDetectorRef, private tcdr: TreeChangeDetectorRef) {
-    super();
-  }
+  constructor(private evts: EventsService, private cdr: ChangeDetectorRef, private tcdr: TreeChangeDetectorRef) {}
 
   ngOnInit() {
   }
 
   ngOnChanges(changes: Inputs): void {
-    super.ngOnChanges(changes);
     console.log('EventChildComponent.ngOnChanges');
     let hasChange = false;
     if (changes.age && !changes.age.isFirstChange()) {
