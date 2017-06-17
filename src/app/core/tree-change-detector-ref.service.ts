@@ -21,6 +21,8 @@ export class TreeChangeDetectorRef {
     }
 
     markForCheckAsap(cdr: ChangeDetectorRef) {
+        if (this.asaps.indexOf(cdr) !== -1) { return; }
+
         this.asaps.push(cdr);
     }
 }
