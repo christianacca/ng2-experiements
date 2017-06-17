@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy, DoCheck } from '@angular/core';
 import { Human } from './model';
+import { int } from '../../../core';
 
 @Component({
   selector: 'app-event-parent',
@@ -14,15 +15,15 @@ import { Human } from './model';
     </div>
     <p>
         <label>Child 2 Age: <input type="number" #age [value]="childAge"/></label>
-        <button type="button" (click)="changeChildAge(age.value)">Change</button>
+        <button type="button" (click)="childAge = age.value;">Change</button>
     </p>
     <p>
         <label>Child 2 IQ: <input type="number" #iq [value]="childIQ"/></label>
-        <button type="button" (click)="changeChildIQ(iq.value)">Change</button>
+        <button type="button" (click)="childIQ = iq.value;">Change</button>
     </p>
     <p>
         <label>Child 2 Score: <input type="number" #score [value]="childScore"/></label>
-        <button type="button" (click)="changeChildScore(score.value)">Change</button>
+        <button type="button" (click)="childScore = score.value;">Change</button>
         <span *ngIf="value.children[1].score > value.children[0].score">(Highest)</span>
     </p>
     <app-event-child [value]="value.children[0]" [ageIncrement]=ageIncrement></app-event-child>
@@ -34,10 +35,10 @@ import { Human } from './model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventParentComponent implements OnInit, DoCheck {
-  childIQ: number;
+  @int childIQ: number;
   private _parent: Human;
   childAge: number;
-  childScore: number;
+  @int childScore: number;
   @Input() ageIncrement = 0;
   @Input()
   get value(): Human {
@@ -55,14 +56,5 @@ export class EventParentComponent implements OnInit, DoCheck {
   }
   ngDoCheck(): void {
     console.log('EventParentComponent.ngDoCheck');
-  }
-  changeChildAge(value: string) {
-    this.childAge = parseInt(value, 10);
-  }
-  changeChildIQ(value: string) {
-    this.childIQ = parseInt(value, 10);
-  }
-  changeChildScore(value: string) {
-    this.childScore = parseInt(value, 10);
   }
 }

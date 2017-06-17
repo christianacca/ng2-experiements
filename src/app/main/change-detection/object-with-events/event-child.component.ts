@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { Human } from './model';
 import { EventsService } from './events.service';
-import { TreeChangeDetectorRef } from '../../../core';
+import { TreeChangeDetectorRef, markForCheckAsap, CanMarkForCheckAsap, int } from '../../../core';
 
 interface Inputs extends SimpleChanges {
   age?: SimpleChange;
@@ -38,7 +38,7 @@ interface Inputs extends SimpleChanges {
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EventChildComponent implements OnInit, OnChanges, DoCheck {
+export class EventChildComponent implements OnInit, OnChanges, DoCheck, CanMarkForCheckAsap {
   @Input() set ageIncrement(value: number) {
     if (this.value == null) { return; }
 
@@ -52,16 +52,16 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck {
     // todo: unsubscribe to existing _value
     this._value = v;
     this._value.parent.parent.propertyChanged.subscribe(_ => {
-      this.cdr.markForCheck();
+      this._cdr.markForCheck();
     });
   };
   @Input() iq: string;
-  @Input() age: string;
+  @Input() @int @markForCheckAsap age: number;
   @Input() score: string;
 
   private _value: Human;
 
-  constructor(private evts: EventsService, private cdr: ChangeDetectorRef, private tcdr: TreeChangeDetectorRef) {}
+  constructor(private evts: EventsService, public _cdr: ChangeDetectorRef, public _tcdr: TreeChangeDetectorRef) { }
 
   ngOnInit() {
   }
@@ -70,8 +70,7 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck {
     console.log('EventChildComponent.ngOnChanges');
     let hasChange = false;
     if (changes.age && !changes.age.isFirstChange()) {
-      this.value.age = parseInt(this.age, 10);
-      hasChange = true;
+      this.value.age = this.age;
     }
     if (changes.iq && !changes.iq.isFirstChange()) {
       this.value.iq = parseInt(this.iq, 10);
@@ -85,7 +84,7 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck {
     // trigger another change detection cycle and make sure any OnPush templates of ancestor
     // components are re-rendered with the changes I've made here
     if (hasChange) {
-      this.tcdr.markForCheckAsap(this.cdr);
+      this._tcdr.markForCheckAsap(this._cdr);
       // setTimeout(_ => this.cdr.markForCheck(), 0);
     }
   }
