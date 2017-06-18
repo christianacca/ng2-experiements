@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, OnChanges, Type, SimpleChanges } from '@angular/core';
 import { TreeChangeDetectorRef } from './tree-change-detector-ref.service';
-import { addPropertyTrait, PropertyTrait, createTraitEnabledProperty } from './add-property-trait';
+import { addPropertyTrait, PropertyTrait } from './add-property-trait';
 
 export interface CanMarkForCheckAsap {
     _cdr: ChangeDetectorRef;
