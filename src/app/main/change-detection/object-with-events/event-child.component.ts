@@ -4,7 +4,9 @@ import {
 } from '@angular/core';
 import { Human } from './model';
 import { EventsService } from './events.service';
-import { TreeChangeDetectorRef, markForCheckAsap, CanMarkForCheckAsap, int } from '../../../core';
+import {
+  TreeChangeDetectorRef, CanMarkForCheckAsap, int, onChangesMarkForCheckAsap, markForCheck
+} from '../../../core';
 
 interface Inputs extends SimpleChanges {
   age?: SimpleChange;
@@ -38,8 +40,11 @@ interface Inputs extends SimpleChanges {
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
+// @onChangesMarkForCheckAsap
 export class EventChildComponent implements OnInit, OnChanges, DoCheck, CanMarkForCheckAsap {
-  @Input() set ageIncrement(value: number) {
+  @Input()
+  @markForCheck
+  set ageIncrement(value: number) {
     if (this.value == null) { return; }
 
     this.value.age += value;
@@ -55,9 +60,9 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck, CanMarkF
       this._cdr.markForCheck();
     });
   };
-  @Input() @markForCheckAsap @int iq: number;
-  @Input() @markForCheckAsap @int age: number;
-  @Input() @markForCheckAsap @int score: number;
+  @Input() @markForCheck @int iq: number;
+  @Input() @markForCheck @int age: number;
+  @Input() @markForCheck @int score: number;
 
   private _value: Human;
 

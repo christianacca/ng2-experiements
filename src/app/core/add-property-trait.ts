@@ -117,7 +117,18 @@ function createBaseProperty(target: any, propertyKey: string): PropertyDescripto
 }
 
 
-function createTraitEnabledProperty(propertyKey: string, baseProperty: PropertyDescriptor, traits: PropertyTrait[]) {
+export function createTraitEnabledProperty(target: object, propertyKey: string, trait: PropertyTrait): PropertyDescriptor {
+    const traits = getOrAddTraitStore(target, propertyKey);
+    if (!traits.includes(trait)) {
+        traits.push(trait);
+    }
+    let baseProperty = Object.getOwnPropertyDescriptor(target, propertyKey);
+    if (!baseProperty) {
+        baseProperty = createBaseProperty(target, propertyKey);
+    } else if (!baseProperty.get) {
+        // base property must have a getter for trait implementation to function...
+        baseProperty.get = createBaseProperty(target, propertyKey).get
+    }
     const existingRunner = getTraitRunner(baseProperty);
     const baseGetter = existingRunner ? existingRunner.originalGet : baseProperty.get;
     const baseSetter = existingRunner ? existingRunner.originalSet : baseProperty.set;
@@ -130,16 +141,12 @@ function createTraitEnabledProperty(propertyKey: string, baseProperty: PropertyD
     }
 }
 
-export function addPropertyTrait(target: object, propertyKey: string, trait: PropertyTrait) {
-    const traits = getOrAddTraitStore(target, propertyKey);
-
-    if (traits.includes(trait)) { return; }
-
-    traits.push(trait);
-    let existingProperty = Object.getOwnPropertyDescriptor(target, propertyKey);
-    if (!existingProperty) {
-        existingProperty = createBaseProperty(target, propertyKey);
+export function addPropertyTrait(target: object, propertyKey: string, trait: PropertyTrait, property?: PropertyDescriptor): any {
+    const enabledProperty = createTraitEnabledProperty(target, propertyKey, trait);
+    if (!property) {
+        Object.defineProperty(target, propertyKey, enabledProperty);
+    } else {
+        return enabledProperty;
     }
-    const property = createTraitEnabledProperty(propertyKey, existingProperty, traits);
-    return Object.defineProperty(target, propertyKey, property);
 }
+
