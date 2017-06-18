@@ -1,4 +1,4 @@
-import { addOrExtendProperty } from './langs-util';
+import { addPropertyTrait, PropertyTrait } from './add-property-trait';
 
 function parseValue(value: any) {
     if (value == null || typeof value === 'number') { return value; }
@@ -6,7 +6,10 @@ function parseValue(value: any) {
     return parseInt(value, 10);
 }
 
+const propertyTrait: PropertyTrait = {
+    parser: parseValue
+};
+
 export function int(target: any, propertyKey: string) {
-    const transform = { parser: parseValue };
-    addOrExtendProperty(target, propertyKey, transform);
+    addPropertyTrait(target, propertyKey, propertyTrait);
 }

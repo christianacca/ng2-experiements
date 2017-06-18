@@ -56,7 +56,7 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck, CanMarkF
     });
   };
   @Input() iq: string;
-  @Input() @int @markForCheckAsap age: number;
+  @Input() @int @markForCheckAsap age = 0;
   @Input() score: string;
 
   private _value: Human;

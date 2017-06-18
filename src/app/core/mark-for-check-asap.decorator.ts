@@ -1,23 +1,26 @@
 import { ChangeDetectorRef } from '@angular/core';
 import { TreeChangeDetectorRef } from './tree-change-detector-ref.service';
-import { addOrExtendProperty } from './langs-util';
+import { addPropertyTrait, PropertyTrait } from './add-property-trait';
 
 export interface CanMarkForCheckAsap {
     _cdr: ChangeDetectorRef;
     _tcdr: TreeChangeDetectorRef
 }
 
-export function markForCheckAsap(target: any, propertyKey: string) {
-    let isFirstCheck = true;
+const isFirstCheckKey = Symbol('markForCheckAsap.isFirstCheck');
 
-    function setter(this: CanMarkForCheckAsap, value: any) {
-        if (!isFirstCheck && value !== this[propertyKey]) {
+function beforeSet(this: CanMarkForCheckAsap, newValue: any, oldValue: any) {
+        if (!this[isFirstCheckKey] && newValue !== oldValue) {
             this._tcdr.markForCheckAsap(this._cdr);
         }
-        isFirstCheck = false;
-        return value;
+        this[isFirstCheckKey] = false;
+        return newValue;
     }
 
-    const transform = { parser: setter };
-    addOrExtendProperty(target, propertyKey, transform);
+const propertyTrait: PropertyTrait = {
+    beforeSet
+};
+
+export function markForCheckAsap(target: any, propertyKey: string) {
+    addPropertyTrait(target, propertyKey, propertyTrait);
 }
