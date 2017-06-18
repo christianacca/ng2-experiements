@@ -9,4 +9,3 @@ export function convert(convertor: (v: any) => any) {
         addPropertyTrait(target, propertyKey, propertyTrait);
     }
 }
-

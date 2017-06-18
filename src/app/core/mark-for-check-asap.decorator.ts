@@ -2,7 +2,7 @@ import { ChangeDetectorRef, OnChanges, Type, SimpleChanges } from '@angular/core
 import { TreeChangeDetectorRef } from './tree-change-detector-ref.service';
 import { addPropertyTrait, PropertyTrait } from './add-property-trait';
 
-export interface CanMarkForCheckAsap {
+interface CanMarkForCheckAsap {
     _cdr: ChangeDetectorRef;
     _tcdr: TreeChangeDetectorRef
 }
@@ -33,19 +33,33 @@ const propertyTrait: PropertyTrait = {
     beforeSet
 };
 
-export function markForCheck(target: CanMarkForCheckAsap, propertyKey: string, property?: PropertyDescriptor) {
+function markForCheck(target: CanMarkForCheckAsap, propertyKey: string, property?: PropertyDescriptor) {
     return addPropertyTrait(target, propertyKey, propertyTrait, property);
 }
 
+const markForCheckEnabledMetadataKey = Symbol('markForCheckEnabled');
 
-export function onChangesMarkForCheckAsap<T extends Type<OnChanges>>(constructor: T): T {
+function markForCheckEnabled(enabled: boolean = true) {
+    return Reflect.metadata(markForCheckEnabledMetadataKey, enabled);
+}
+
+function isMarkForCheckEnabled(target: any, propertyKey: string) {
+    const meta = Reflect.getMetadata(markForCheckEnabledMetadataKey, target, propertyKey);
+    return meta === undefined || !!meta;
+}
+
+function onChangesMarkForCheck<T extends Type<OnChanges>>(constructor: T): T {
     const original = constructor.prototype.ngOnChanges as (changes: SimpleChanges) => void;
     const patched = function markedForCheckOnChanges(this: CanMarkForCheckAsap, changes: SimpleChanges) {
         let hasChanges = false;
         // tslint:disable-next-line:forin
         for (const name in changes) {
             const change = changes[name];
-            if (change.isFirstChange() || change.currentValue === change.previousValue) { continue; }
+            if (change.isFirstChange()
+                || change.currentValue === change.previousValue
+                || !isMarkForCheckEnabled(this, name)) {
+                continue;
+            }
 
             hasChanges = true;
             break;
@@ -58,3 +72,5 @@ export function onChangesMarkForCheckAsap<T extends Type<OnChanges>>(constructor
     constructor.prototype.ngOnChanges = patched;
     return constructor;
 }
+
+export { CanMarkForCheckAsap, markForCheck, markForCheckEnabled, onChangesMarkForCheck }
