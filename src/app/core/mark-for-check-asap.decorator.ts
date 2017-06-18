@@ -8,19 +8,31 @@ export interface CanMarkForCheckAsap {
 }
 
 const isFirstCheckKey = Symbol('markForCheckAsap.isFirstCheck');
+interface FirstChecks {
+    [key: string]: boolean;
+}
 
-function beforeSet(this: CanMarkForCheckAsap, newValue: any, oldValue: any) {
-        if (!this[isFirstCheckKey] && newValue !== oldValue) {
-            this._tcdr.markForCheckAsap(this._cdr);
-        }
-        this[isFirstCheckKey] = false;
-        return newValue;
+function getOrAddFirstCheckCache(propertyKey: string, target: object) {
+    const firstChecks = target[isFirstCheckKey] as FirstChecks;
+    if (firstChecks && (propertyKey in firstChecks)) {
+        return firstChecks;
     }
+    return target[isFirstCheckKey] = Object.assign(firstChecks || {}, { [propertyKey]: true });
+}
+
+function beforeSet(newValue: any, oldValue: any, propertyKey: string, target: CanMarkForCheckAsap) {
+    const firstChecks = getOrAddFirstCheckCache(propertyKey, target);
+    if (!firstChecks[propertyKey] && newValue !== oldValue) {
+        target._tcdr.markForCheckAsap(target._cdr);
+    }
+    firstChecks[propertyKey] = false;
+    return newValue;
+}
 
 const propertyTrait: PropertyTrait = {
     beforeSet
 };
 
-export function markForCheckAsap(target: any, propertyKey: string) {
+export function markForCheckAsap(target: CanMarkForCheckAsap, propertyKey: string) {
     addPropertyTrait(target, propertyKey, propertyTrait);
 }

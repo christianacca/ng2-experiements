@@ -55,9 +55,9 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck, CanMarkF
       this._cdr.markForCheck();
     });
   };
-  @Input() iq: string;
-  @Input() @int @markForCheckAsap age = 0;
-  @Input() score: string;
+  @Input() @markForCheckAsap @int iq: number;
+  @Input() @markForCheckAsap @int age: number;
+  @Input() @markForCheckAsap @int score: number;
 
   private _value: Human;
 
@@ -68,24 +68,15 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck, CanMarkF
 
   ngOnChanges(changes: Inputs): void {
     console.log('EventChildComponent.ngOnChanges');
-    let hasChange = false;
     if (changes.age && !changes.age.isFirstChange()) {
       this.value.age = this.age;
     }
     if (changes.iq && !changes.iq.isFirstChange()) {
-      this.value.iq = parseInt(this.iq, 10);
+      this.value.iq = this.iq;
       this.evts.notifyIQChange();
-      hasChange = true;
     }
     if (changes.score && !changes.score.isFirstChange()) {
-      this.value.score = parseInt(this.score, 10);
-      hasChange = true;
-    }
-    // trigger another change detection cycle and make sure any OnPush templates of ancestor
-    // components are re-rendered with the changes I've made here
-    if (hasChange) {
-      this._tcdr.markForCheckAsap(this._cdr);
-      // setTimeout(_ => this.cdr.markForCheck(), 0);
+      this.value.score = this.score;
     }
   }
   ngDoCheck(): void {

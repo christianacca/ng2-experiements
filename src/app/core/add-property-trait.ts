@@ -2,7 +2,7 @@ import { Type } from '@angular/core';
 
 const traitsMapKey = Symbol('propertyExtensions');
 
-export type BeforeSet = (newValue: any, oldValue: any, propertyKey: string, target: any) => void;
+export type BeforeSet = (newValue: any, oldValue: any, propertyKey: string, target: object) => void;
 
 export type ValueTransformer = (value: any) => any;
 export interface ValueTransform {
@@ -20,7 +20,7 @@ interface PropertyTraitsMap {
     [property: string]: PropertyTrait[]
 }
 
-function getOrAddTraitStore(target: any, propertyKey: string) {
+function getOrAddTraitStore(target: object, propertyKey: string) {
     if (!target[traitsMapKey]) {
         target[traitsMapKey] = {};
     }
@@ -42,20 +42,18 @@ interface TraitEnabledSet extends Setter {
 
 
 class PropertyTraitRunner {
+    private beforeSets: BeforeSet[];
+    private formatters: ValueTransformer[];
+    private parsers: ValueTransformer[];
     constructor(
         private traits: PropertyTrait[],
         public originalGet: () => any,
         public originalSet: (value: any) => void,
-        private propertyKey: string) { }
+        private propertyKey: string) {
 
-    private get beforeSets() {
-        return this.traits.map(t => t.beforeSet);
-    }
-    private get parsers() {
-        return this.traits.map(t => t.parser);
-    }
-    private get formatters() {
-        return this.traits.map(t => t.formatter);
+        this.beforeSets = traits.map(t => t.beforeSet).filter(f => !!f);
+        this.formatters = traits.map(t => t.formatter).filter(f => !!f);
+        this.parsers = traits.map(t => t.parser).filter(f => !!f);
     }
 
     createPropertyGetter() {
@@ -92,10 +90,10 @@ class PropertyTraitRunner {
     }
 
     private shouldOverrideGet() {
-        return this.traits.some(t => !!t.formatter);
+        return this.formatters.length > 0;
     }
     private shouldOverrideSet() {
-        return this.traits.some(t => !!t.parser || !!t.beforeSet);
+        return this.parsers.length > 0 || this.beforeSets.length > 0;
     }
 
     private transformValue(target: object, value: any, transformers: ValueTransformer[]) {
@@ -132,7 +130,7 @@ function createTraitEnabledProperty(propertyKey: string, baseProperty: PropertyD
     }
 }
 
-export function addPropertyTrait(target: any, propertyKey: string, trait: PropertyTrait) {
+export function addPropertyTrait(target: object, propertyKey: string, trait: PropertyTrait) {
     const traits = getOrAddTraitStore(target, propertyKey);
 
     if (traits.includes(trait)) { return; }

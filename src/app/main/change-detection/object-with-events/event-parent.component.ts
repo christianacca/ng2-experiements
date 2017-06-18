@@ -37,7 +37,7 @@ import { int } from '../../../core';
 export class EventParentComponent implements OnInit, DoCheck {
   @int childIQ: number;
   private _parent: Human;
-  childAge: number;
+  @int childAge: number;
   @int childScore: number;
   @Input() ageIncrement = 0;
   @Input()
