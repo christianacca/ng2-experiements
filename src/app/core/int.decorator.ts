@@ -1,5 +1,4 @@
-import { addPropertyTrait, PropertyTrait } from './add-property-trait';
-
+import { convert } from './convert.decorator';
 
 export function parseValue(value: any) {
     if (value == null || typeof value === 'number') { return value; }
@@ -7,9 +6,6 @@ export function parseValue(value: any) {
     return parseInt(value, 10);
 }
 
-const propertyTrait: PropertyTrait = {
-    parser: parseValue
-};
 export function int(target: any, propertyKey: string) {
-    addPropertyTrait(target, propertyKey, propertyTrait);
+    convert(parseValue)(target, propertyKey);
 }
