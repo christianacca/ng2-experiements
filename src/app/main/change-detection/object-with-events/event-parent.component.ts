@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, DoCheck } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, DoCheck, AfterViewChecked } from '@angular/core';
 import { Human } from './model';
 import { int } from '../../../core';
 
@@ -34,7 +34,7 @@ import { int } from '../../../core';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EventParentComponent implements OnInit, DoCheck {
+export class EventParentComponent implements OnInit, DoCheck, AfterViewChecked {
   @int childIQ: number;
   private _parent: Human;
   @int childAge: number;
@@ -54,7 +54,12 @@ export class EventParentComponent implements OnInit, DoCheck {
 
   ngOnInit() {
   }
+  ngAfterViewChecked(): void {
+    const age = this.value.age;
+    console.log(`EventParentComponent.ngAfterViewChecked (age: ${age})`);
+  }
   ngDoCheck(): void {
-    console.log('EventParentComponent.ngDoCheck');
+    const age = this.value.age;
+    console.log(`EventParentComponent.ngDoCheck (age: ${age}`);
   }
 }

@@ -1,6 +1,6 @@
 import {
   Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, ChangeDetectionStrategy,
-  DoCheck, ChangeDetectorRef
+  DoCheck, ChangeDetectorRef, AfterViewChecked
 } from '@angular/core';
 import { Human } from './model';
 import { EventsService } from './events.service';
@@ -41,7 +41,7 @@ interface Inputs extends SimpleChanges {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 @onChangesMarkForCheck
-export class EventChildComponent implements OnInit, OnChanges, DoCheck, CanMarkForCheckAsap {
+export class EventChildComponent implements OnInit, OnChanges, DoCheck, AfterViewChecked, CanMarkForCheckAsap {
   @Input()
   set ageIncrement(value: number) {
     if (this.value == null) { return; }
@@ -71,10 +71,18 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck, CanMarkF
   ngOnInit() {
   }
 
+  ngAfterViewChecked(): void {
+    const age = this.value.age;
+    console.log(`EventChildComponent.ngAfterViewChecked (age: ${age})`);
+  }
+
   ngOnChanges(changes: Inputs): void {
     console.log('EventChildComponent.ngOnChanges');
     if (changes.age && !changes.age.isFirstChange()) {
       this.value.age = this.age;
+      if (this.value.isMiddleAge) {
+        this.value.score += 20;
+      }
     }
     if (changes.iq && !changes.iq.isFirstChange()) {
       this.value.iq = this.iq;
@@ -85,7 +93,8 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck, CanMarkF
     }
   }
   ngDoCheck(): void {
-    console.log('EventChildComponent.ngDoCheck');
+    const age = this.value.age;
+    console.log(`EventChildComponent.ngDoCheck (age: ${age}`);
   }
 
   changeAge(value: string) {
