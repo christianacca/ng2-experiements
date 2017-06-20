@@ -6,6 +6,7 @@ import { DetatchedClicksComponent } from './detatched-clicks/detatched-clicks.co
 import { GrandparentComponent } from './unidir-problem/grandparent.component';
 import { EventGrandparentComponent } from './object-with-events/event-grandparent.component';
 import { ZoneCdComponent } from './zone-cd/zone-cd.component';
+import { PushParentComponent } from './on-push-children/push-parent.component';
 
 const routes: Routes = [
   { path: 'detatched-obs', component: CounterContainerComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'unidir-problem', component: GrandparentComponent },
   { path: 'object-with-events', component: EventGrandparentComponent },
   { path: 'zone-cd', component: ZoneCdComponent },
+  { path: 'on-push-children', component: PushParentComponent },
 ];
 
 @NgModule({

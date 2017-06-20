@@ -91,7 +91,7 @@ export class EventGrandparentComponent implements OnInit, DoCheck {
       // run even though the `this.form.age` model has now changed it's validation status.
       // To ensure our template is updated, we therefore need to schedule angular to check for changes
       // - we do this using `markForCheckAsap`. At that point the `*ngIf="hasAgeError"` will "see"
-      // the change to the form's validaty
+      // the change to the form's validity
       this.tcdr.markForCheckAsap(this.cdr);
     }
   }

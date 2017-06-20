@@ -61,7 +61,7 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck, AfterVie
     // todo: unsubscribe to existing _value
     this._value = v;
     this._value.parent.parent.propertyChanged.subscribe(_ => {
-      this._cdr.markForCheck();
+      // this._cdr.markForCheck();
     });
   };
   @Input() @int iq: number;

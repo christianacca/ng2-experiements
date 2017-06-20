@@ -17,6 +17,9 @@ import { EventGrandparentComponent } from './object-with-events/event-grandparen
 import { EventParentComponent } from './object-with-events/event-parent.component';
 import { EventChildComponent } from './object-with-events/event-child.component';
 import { ZoneCdComponent } from './zone-cd/zone-cd.component';
+import { PushParentComponent } from './on-push-children/push-parent.component';
+import { PushChildComponent } from './on-push-children/push-child.component';
+import { PushGrandchildComponent } from './on-push-children/push-grandchild.component';
 
 @NgModule({
   imports: [
@@ -30,7 +33,7 @@ import { ZoneCdComponent } from './zone-cd/zone-cd.component';
     CounterContainerComponent, CounterComponent,
     ImmutableCounterContainerComp, ImmutableCounterComp,
     DetatchedClicksComponent, ClickableComponent,
-    GrandparentComponent, ParentComponent, ChildComponent, EventGrandparentComponent, EventParentComponent, EventChildComponent, ZoneCdComponent
+    GrandparentComponent, ParentComponent, ChildComponent, EventGrandparentComponent, EventParentComponent, EventChildComponent, ZoneCdComponent, PushParentComponent, PushChildComponent, PushGrandchildComponent
   ]
 })
 export class ChangeDetectionModule { }

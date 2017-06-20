@@ -1,10 +1,5 @@
 # Change detection experiments
 
-## Outstanding
-
-* Will a direct child of an `OnPush` component be checked? 
-    * Note: I already know that they *will* receive ther `DoCheck` and when inputs have changed, their `OnChanges` event
-
 ## Observations
 
 * `OnChanges` lifecycle hook **will fire** when it's input properties change even when component is detatched manually
@@ -18,11 +13,14 @@
 * A detatched component will respond to click events in it's template. However, changes made in these click handlers will not be reflected in view until component:
 	* calls `detectChanges` OR
 	* is `reattach` (thus implicitly causing `markForCheck` to be called)
-* Grand children of an `OnPush` component will:
+* `OnPush` grand children of an `OnPush` component tree will:
 	* not be checked for changes by angular unless that grandchild's component has triggered a DOM event via it's template, explicitly calls `markForCheck` or `detectChanges` (last one need verification)
 	* will not receive `OnChanges`
 	* will not receive `DoCheck`
-* *Direct children* of an `OnPush` component that has been checked:
+* `CheckAlways` children and grandchildren of an `OnPush` component:
+	* *will* be checked when the parent component is checked
+	* will not be checked on a setTimeout (or ajax?) firing unless the `CheckAlways` component also calls explicitly calls `markForCheck`
+* `OnPush` *children* of an `OnPush` component that has been checked:
 	* will receive their `DoCheck` and `OnChanges` event (the later only when an input has changed byref)
 	* if within these `DoCheck` and `OnChanges` these component's either directly or indirectly (via an event firing due to sibling code) then `markForCheck`, their template *will* be checked and updated if expressions in their template has changed
 * Detatched *direct children* of a component that has been checked:
