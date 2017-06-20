@@ -5,8 +5,9 @@ import {
 import { Human } from './model';
 import { EventsService } from './events.service';
 import {
-  TreeChangeDetectorRef, CanMarkForCheckAsap, int, onChangesMarkForCheck, markForCheckEnabled
+  TreeChangeDetectorRef, CanMarkForCheckAsap, int, onChangesMarkForCheck, markForCheckEnabled, AutoUnsubscribe
 } from '../../../core';
+import { Subscription } from 'rxjs/Subscription';
 
 interface Inputs extends SimpleChanges {
   age?: SimpleChange;
@@ -41,7 +42,10 @@ interface Inputs extends SimpleChanges {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 @onChangesMarkForCheck
+@AutoUnsubscribe
 export class EventChildComponent implements OnInit, OnChanges, DoCheck, AfterViewChecked, CanMarkForCheckAsap {
+  iqRequestSub: Subscription;
+  iqChangeRequested: boolean;
   @Input()
   set ageIncrement(value: number) {
     if (this.value == null) { return; }
@@ -66,7 +70,14 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck, AfterVie
 
   private _value: Human;
 
-  constructor(private evts: EventsService, public _cdr: ChangeDetectorRef, public _tcdr: TreeChangeDetectorRef) { }
+  constructor(private evts: EventsService, public _cdr: ChangeDetectorRef, public _tcdr: TreeChangeDetectorRef) {
+    this.iqRequestSub = evts.iqChangeRequests$.subscribe(() => {
+      // this is a contrived example - normally we would update the iq on the model here
+      // rather than deferring this until the `DoCheck` lifecycle event is received
+      this.iqChangeRequested = true;
+      this._cdr.markForCheck();
+    });
+  }
 
   ngOnInit() {
   }
@@ -95,13 +106,25 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck, AfterVie
   ngDoCheck(): void {
     const age = this.value.age;
     console.log(`EventChildComponent.ngDoCheck (age: ${age}`);
+    // note: this is a clearly a contrived example - it's unlikely that we would use
+    // `ngDoCheck` hook to make a change to the iq property of our model
+    // instead we would make the change to the model in the function subscribed to receive evts.iqChangeRequests$ events
+    if (this.iqChangeRequested) {
+      this.iqChangeRequested = false;
+      this.changeIQ(this.value.iq + 1);
+      // trigger anther pass of the change detector sweep
+      // we do this because our ancestor has already been marked as checked and therefore model updates it might
+      // have made when listening to `iqChanges$` will not be reflected in the DOM
+      this._tcdr.markForCheckAsap(this._cdr);
+    }
   }
 
   changeAge(value: string) {
     this.value.age = parseInt(value, 10);
   }
-  changeIQ(value: string) {
-    this.value.iq = parseInt(value, 10);
+  changeIQ(value: string | number) {
+    const iq = typeof value === 'string' ? parseInt(value, 10) : value;
+    this.value.iq = iq;
     this.evts.notifyIQChange();
   }
   changeScore(value: string) {

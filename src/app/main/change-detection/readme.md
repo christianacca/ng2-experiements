@@ -1,6 +1,11 @@
 # Change detection experiments
 
-## Facts
+## Outstanding
+
+* Will a direct child of an `OnPush` component be checked? 
+    * Note: I already know that they *will* receive ther `DoCheck` and when inputs have changed, their `OnChanges` event
+
+## Observations
 
 * `OnChanges` lifecycle hook **will fire** when it's input properties change even when component is detatched manually
 * `OnChanges` lifecycle hook will only fire if the `@Input` bindings change. For object's this means a *new* object reference must be assigned
@@ -19,7 +24,7 @@
 	* will not receive `DoCheck`
 * *Direct children* of an `OnPush` component that has been checked:
 	* will receive their `DoCheck` and `OnChanges` event (the later only when an input has changed byref)
-	* if within these `DoCheck` and `OnChanges` these component's either directly or indirectly (via an event firing due to sibling code) then `markForCheck`, their template *will* be checked and updated if expressions in this template has changed
+	* if within these `DoCheck` and `OnChanges` these component's either directly or indirectly (via an event firing due to sibling code) then `markForCheck`, their template *will* be checked and updated if expressions in their template has changed
 * Detatched *direct children* of a component that has been checked:
 	* will receive their `DoCheck` and `OnChanges` event (the later only when an input has changed byref)
 	* this will allow them `reattach` or run `detectChanges` causing their templates to be checked

@@ -4,7 +4,7 @@ const later = Promise.resolve(null);
 
 @Injectable()
 export class TreeChangeDetectorRef {
-    asaps: ChangeDetectorRef[] = [];
+    private asaps: ChangeDetectorRef[] = [];
 
     constructor(ngZone: NgZone) {
         ngZone.onStable.subscribe(_ => {

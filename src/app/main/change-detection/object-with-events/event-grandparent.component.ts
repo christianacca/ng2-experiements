@@ -3,6 +3,7 @@ import { Human } from './model';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { EventsService } from './events.service';
 import { Observable } from 'rxjs/Observable';
+import { TreeChangeDetectorRef } from '../../../core';
 
 class CustomValidators {
   static isTooOld(group: FormGroup): { [key: string]: boolean } {
@@ -47,6 +48,7 @@ function createFakeData() {
       </p>
       <p>
         Grandchild IQ changes: {{iqChanges$ | async}}
+        <button type="button" (click)="evts.requestIQChange()">Request +</button>
       </p>
     </div>
     <app-event-parent [value]="value.children[0]" [ageIncrement]="nextAgeIncrement"></app-event-parent>
@@ -61,7 +63,7 @@ export class EventGrandparentComponent implements OnInit, DoCheck {
   form: FormGroup;
 
   value: Human;
-  constructor(private _fb: FormBuilder, evts: EventsService, private cdr: ChangeDetectorRef) {
+  constructor(private _fb: FormBuilder, public evts: EventsService, private cdr: ChangeDetectorRef, private tcdr: TreeChangeDetectorRef) {
     this.value = createFakeData();
     this.form = this._fb.group({
       age: ['', [Validators.required, CustomValidators.isTooOld]],
@@ -88,9 +90,9 @@ export class EventGrandparentComponent implements OnInit, DoCheck {
       // At this point *ngIf="hasAgeError" has already been checked for changes and will not
       // run even though the `this.form.age` model has now changed it's validation status.
       // To ensure our template is updated, we therefore need to schedule angular to check for changes
-      // when the callback to `setTimeout` runs. At that point the `*ngIf="hasAgeError"` will "see"
+      // - we do this using `markForCheckAsap`. At that point the `*ngIf="hasAgeError"` will "see"
       // the change to the form's validaty
-      setTimeout(() => this.cdr.markForCheck(), 0);
+      this.tcdr.markForCheckAsap(this.cdr);
     }
   }
   get hasAgeError(): boolean {
