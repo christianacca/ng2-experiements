@@ -6,7 +6,7 @@
     <button type="button" (click)="toggleChangeDetection()">Toggle Change Detection</button>
 </div>
 <div *rxContext="let count on counts$">
-    <app-immut-counter [value]="count" [attachedIf]="isViewUpdated"></app-immut-counter>
-    <app-immut-counter [value]="count" [attachedIf]="isViewUpdated" [hideWhenDetatched]="false"></app-immut-counter>
-    <app-immut-counter [value]="count" [attachedIf]="isViewUpdated" [pauseWhenDetatched]="true"></app-immut-counter>
+    <app-immut-counter [value]="count" *attachedIf="isViewUpdated"></app-immut-counter>
+    <app-immut-counter [value]="count" *attachedIf="isViewUpdated; hide: false"></app-immut-counter>
+    <app-immut-counter [value]="count" *attachedIf="isViewUpdated" [pauseWhenDetatched]="true"></app-immut-counter>
 </div>

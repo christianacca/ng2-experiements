@@ -1,14 +1,16 @@
-import { Directive, Input, HostBinding, ChangeDetectorRef, Optional, ElementRef, EventEmitter, Output } from '@angular/core';
+import {
+  Directive, Input, HostBinding, ChangeDetectorRef, Optional, ElementRef,
+  EventEmitter, Output, ViewContainerRef, TemplateRef, EmbeddedViewRef, ViewChild, AfterViewInit, Renderer2
+} from '@angular/core';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Directive({
   // tslint:disable-next-line:directive-selector
   selector: '[attachedIf]'
 })
-export class AttachedIfDirective {
+export class AttachedIfDirective implements AfterViewInit {
+  private view: EmbeddedViewRef<object>;
   private _isAttached: boolean;
-  private cd: ChangeDetectorRef;
-  private displayCssProperty: string;
   private nativeElem: HTMLElement;
 
   @Input('attachedIf')
@@ -16,28 +18,33 @@ export class AttachedIfDirective {
     return this._isAttached;
   }
   set isAttached(value: boolean) {
+    if (!this.view) {
+      this.view = this._viewContainer.createEmbeddedView(this._template);
+    }
     if (value) {
       if (this._isAttached !== undefined) {
-        this.cd.reattach();
+        this.view.reattach();
+        this.renderer.setStyle(this.nativeElem, 'display', '');
       }
       this.onAttach.next(true);
     } else {
-      this.displayCssProperty = this.nativeElem && this.nativeElem.style ? this.nativeElem.style.display : 'block';
-      this.cd.detach();
+      if (this.hide) {
+        this.renderer.setStyle(this.nativeElem, 'display', 'none');
+      }
+      this.view.detach();
       this.onAttach.next(false);
     }
     this._isAttached = value;
   }
-  @HostBinding('style.display')
-  get display() {
-    return (!this._isAttached && this.hideWhenDetatched) ? 'none' : this.displayCssProperty;
-  }
-  @Input() hideWhenDetatched = true;
+  // tslint:disable-next-line:no-input-rename
+  @Input('attachedIfHide') hide = true;
 
   @Output() onAttach = new ReplaySubject<boolean>(1);
 
-  constructor(cd: ChangeDetectorRef, elem: ElementRef) {
-    this.cd = cd;
-    this.nativeElem = (elem.nativeElement as HTMLElement);
+  constructor(private _viewContainer: ViewContainerRef, private _template: TemplateRef<object>, private renderer: Renderer2) {
+  }
+
+  ngAfterViewInit(): void {
+    this.nativeElem = (this._template.elementRef.nativeElement.nextSibling as HTMLElement);
   }
 }
