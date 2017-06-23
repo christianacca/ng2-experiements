@@ -8,6 +8,15 @@ import 'rxjs/add/observable/empty';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/takeWhile';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/last';
+import 'rxjs/add/operator/withLatestFrom';
+import 'rxjs/add/operator/window';
+import 'rxjs/add/operator/buffer';
+import 'rxjs/add/operator/timestamp';
+import 'rxjs/add/operator/groupBy';
+import 'rxjs/add/operator/takeUntil';
 
 interface Inputs extends SimpleChanges {
   value: SimpleChange;
@@ -50,10 +59,9 @@ export class CounterComponent implements OnChanges {
     // (ie not emitted onto `this.currentValue`)
 
     if (this.pauseWhenDetatched && this.attachedIf) {
-      // note: distinctUntilChanged as reataching can cause the same (cached) value to be emitted by this.rawValue
-      this.currentValue = this.attachedIf.onAttach
-        .switchMap(attached => attached ? this.value : Observable.empty())
-        .distinctUntilChanged();
+      const t = this.attachedIf.onAttach
+        .map(isAttached => ({ values: this.value.takeUntil(this.attachedIf.onAttach), isAttached}))
+        .switchMap(x => x.isAttached ? x.values : x.values.last());
     } else {
       this.currentValue = this.value;
     }
