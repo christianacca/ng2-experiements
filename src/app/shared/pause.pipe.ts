@@ -3,9 +3,9 @@ import { Observable } from 'rxjs/Observable';
 import '../custom-rx/pausable.operator';
 
 @Pipe({
-  name: 'pausable'
+  name: 'pause'
 })
-export class PausablePipe implements PipeTransform {
+export class PausePipe implements PipeTransform {
 
   transform(value: Observable<any>, pauser: Observable<boolean>): Observable<any> {
     return value.pauseReplay(pauser);
