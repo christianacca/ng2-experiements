@@ -1,13 +1,10 @@
 import { Component, Input, ChangeDetectionStrategy, Optional, SimpleChanges, SimpleChange, OnChanges, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
 import { AttachedIfDirective } from '../../../shared/attached-if.directive';
 
-import 'rxjs/add/observable/empty';
-import 'rxjs/add/operator/switchMap';
+import '../../../custom-rx/pausable.operator';
 import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/distinctUntilChanged';
 
 interface Inputs extends SimpleChanges {
   value: SimpleChange;
@@ -27,12 +24,9 @@ interface Inputs extends SimpleChanges {
 export class CounterComponent implements OnChanges {
 
   currentValue: Observable<number>;
-  valueSubs: Subscription;
   @Input() value: Observable<number>;
 
   @Input() pauseWhenDetatched = false;
-
-  sourceValue: Observable<number>;
 
   private get isAttached() {
     if (this.attachedIf == null) { return true; }
@@ -50,10 +44,8 @@ export class CounterComponent implements OnChanges {
     // (ie not emitted onto `this.currentValue`)
 
     if (this.pauseWhenDetatched && this.attachedIf) {
-      // note: distinctUntilChanged as reataching can cause the same (cached) value to be emitted by this.rawValue
-      this.currentValue = this.attachedIf.onAttach
-        .switchMap(attached => attached ? this.value : Observable.empty())
-        .distinctUntilChanged();
+      const pauses = this.attachedIf.onAttach.map(attached => !attached);
+      this.currentValue = this.value.pauseReplay(pauses);
     } else {
       this.currentValue = this.value;
     }
