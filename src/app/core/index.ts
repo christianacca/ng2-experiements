@@ -11,5 +11,5 @@ import { DebugRouteReuseStrategy } from './debug-route-reuse-strategy';
 import { RouteAlwaysReuseStrategy } from './route-reuse-always-strategy';
 export { TreeChangeDetectorRef } from './tree-change-detector-ref.service';
 export * from './mark-for-check-asap.decorator';
-export { int } from './int.decorator';
+export { Int } from './int.decorator';
 export * from './add-property-trait';

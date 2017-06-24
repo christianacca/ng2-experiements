@@ -1,4 +1,4 @@
-import { convert } from './convert.decorator';
+import { Convert } from './convert.decorator';
 
 export function parseValue(value: any) {
     if (value == null || typeof value === 'number') { return value; }
@@ -6,6 +6,6 @@ export function parseValue(value: any) {
     return parseInt(value, 10);
 }
 
-export function int(target: any, propertyKey: string) {
-    convert(parseValue)(target, propertyKey);
+export function Int(target: any, propertyKey: string) {
+    Convert(parseValue)(target, propertyKey);
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy, DoCheck, AfterViewChecked } from '@angular/core';
 import { Human } from './model';
-import { int } from '../../../core';
+import { Int } from '../../../core';
 
 @Component({
   selector: 'app-event-parent',
@@ -35,10 +35,10 @@ import { int } from '../../../core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventParentComponent implements OnInit, DoCheck, AfterViewChecked {
-  @int childIQ: number;
+  @Int childIQ: number;
   private _parent: Human;
-  @int childAge: number;
-  @int childScore: number;
+  @Int childAge: number;
+  @Int childScore: number;
   @Input() ageIncrement = 0;
   @Input()
   get value(): Human {

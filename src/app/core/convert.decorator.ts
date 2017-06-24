@@ -1,6 +1,6 @@
 import { addPropertyTrait, PropertyTrait } from './add-property-trait';
 
-export function convert(convertor: (v: any) => any) {
+export function Convert(convertor: (v: any) => any) {
     const propertyTrait: PropertyTrait = {
         parser: convertor
     };

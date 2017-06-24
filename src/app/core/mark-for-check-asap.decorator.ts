@@ -33,13 +33,13 @@ const propertyTrait: PropertyTrait = {
     beforeSet
 };
 
-function markForCheck(target: CanMarkForCheckAsap, propertyKey: string, property?: PropertyDescriptor) {
+function MarkForCheck(target: CanMarkForCheckAsap, propertyKey: string, property?: PropertyDescriptor) {
     return addPropertyTrait(target, propertyKey, propertyTrait, property);
 }
 
 const markForCheckEnabledMetadataKey = Symbol('markForCheckEnabled');
 
-function markForCheckEnabled(enabled: boolean = true) {
+function MarkForCheckEnabled(enabled: boolean = true) {
     return Reflect.metadata(markForCheckEnabledMetadataKey, enabled);
 }
 
@@ -48,7 +48,7 @@ function isMarkForCheckEnabled(target: any, propertyKey: string) {
     return meta === undefined || !!meta;
 }
 
-function onChangesMarkForCheck<T extends Type<OnChanges>>(constructor: T): T {
+function OnChangesMarkForCheck<T extends Type<OnChanges>>(constructor: T): T {
     const original = constructor.prototype.ngOnChanges as (changes: SimpleChanges) => void;
     const patched = function markedForCheckOnChanges(this: CanMarkForCheckAsap, changes: SimpleChanges) {
         let hasChanges = false;
@@ -73,4 +73,4 @@ function onChangesMarkForCheck<T extends Type<OnChanges>>(constructor: T): T {
     return constructor;
 }
 
-export { CanMarkForCheckAsap, markForCheck, markForCheckEnabled, onChangesMarkForCheck }
+export { CanMarkForCheckAsap, MarkForCheck, MarkForCheckEnabled, OnChangesMarkForCheck }

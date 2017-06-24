@@ -5,7 +5,7 @@ import {
 import { Human } from './model';
 import { EventsService } from './events.service';
 import {
-  TreeChangeDetectorRef, CanMarkForCheckAsap, int, onChangesMarkForCheck, markForCheckEnabled, AutoUnsubscribe
+  TreeChangeDetectorRef, CanMarkForCheckAsap, Int, OnChangesMarkForCheck, MarkForCheckEnabled, AutoUnsubscribe
 } from '../../../core';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -41,7 +41,7 @@ interface Inputs extends SimpleChanges {
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-@onChangesMarkForCheck
+@OnChangesMarkForCheck
 @AutoUnsubscribe
 export class EventChildComponent implements OnInit, OnChanges, DoCheck, AfterViewChecked, CanMarkForCheckAsap {
   iqRequestSub: Subscription;
@@ -53,7 +53,7 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck, AfterVie
     this.value.age += value;
   }
   @Input()
-  @markForCheckEnabled(false)
+  @MarkForCheckEnabled(false)
   get value() {
     return this._value;
   }
@@ -64,9 +64,9 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck, AfterVie
       this._cdr.markForCheck();
     });
   };
-  @Input() @int iq: number;
-  @Input() @int age: number;
-  @Input() @int score: number;
+  @Input() @Int iq: number;
+  @Input() @Int age: number;
+  @Input() @Int score: number;
 
   private _value: Human;
 
