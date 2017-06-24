@@ -16,6 +16,6 @@ export class CounterComponent implements OnChanges {
   constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(`counter: ${changes.value.currentValue.count}`);
+    console.log(`counter: ${this.value}`);
   }
 }

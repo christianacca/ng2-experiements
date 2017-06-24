@@ -19,14 +19,14 @@ Observable.prototype.pauseReplay = pauseReplay;
 function pauseReplay<T>(this: Observable<T>, pauser: Observable<any>) {
   return Observable.create(obs => {
     const bufferedSource = this.timestamp().publishReplay(1);
-    const connection = bufferedSource.connect();
-    const subs = new Subscription();
-    subs.add(connection);
     const pausable = pauser
       .switchMap(paused => !paused ? bufferedSource : Observable.empty<Timestamp<T>>())
       .distinctUntilChanged((x, y) => x === y, x => x.timestamp)
       .map(x => x.value);
+    const subs = new Subscription();
     subs.add(pausable.subscribe(obs));
+    const connection = bufferedSource.connect();
+    subs.add(connection);
     return subs;
   });
 }

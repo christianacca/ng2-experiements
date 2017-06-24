@@ -29,12 +29,16 @@ export class CounterContainerComponent implements OnInit {
     // note: we're using a connectable observable rather than a refCount based operator to share
     // the counter observable. This is to avoid our count resetting if all out subscribers decide
     // to unsubscribe and then resubscribe
-    this.counts$ = this.resumes$
-      .switchMap(resume => resume ? Observable.interval(2000) : Observable.empty())
-      .scan<number>(count => count + 1, 0)
+    this.counts$ = this.createCounts$();
+    this.countsSubs = this.counts$.connect();
+  }
+
+  private createCounts$() {
+    return this.resumes$
+      .switchMap(resume => resume ? Observable.interval(3000) : Observable.empty<number>())
+      .scan(count => count + 1, 0)
       .do(count => console.log(`counter-countainer: ${count}`))
       .publishBehavior(0);
-    this.countsSubs = this.counts$.connect();
   }
 
   start() {

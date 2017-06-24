@@ -15,18 +15,22 @@ import 'rxjs/add/operator/do';
   styles: []
 })
 export class CounterContainerComponent implements OnInit {
-  counts$: Observable<{ count: number}>;
-  resumes$ = new Subject<boolean>();
+  counts$: Observable<{ count: number }>;
+  private resumes$ = new Subject<boolean>();
   isViewUpdated = true;
   constructor() { }
 
   ngOnInit() {
+    this.counts$ = this.createCounts$();
+  }
+
+  private createCounts$() {
     // note: we need to create a NEW object as counter.component uses OnPush
-    this.counts$ = this.resumes$
-      .switchMap(resume => resume ? Observable.interval(1000) : Observable.empty())
+    return this.resumes$
+      .switchMap(resume => resume ? Observable.interval(3000) : Observable.empty<number>())
       .startWith(0)
-      .scan(({count}) => ({ count: ++count}), { count: -1 })
-      .do(counter => console.log(`counter.container: ${counter.count}`));
+      .scan(({ count }) => ({ count: ++count }), { count: -1 })
+      .do(counter => console.log(`counter.container: ${counter.count}`))
   }
 
   start() {
