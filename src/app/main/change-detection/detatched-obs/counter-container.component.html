@@ -6,7 +6,7 @@
     <button type="button" (click)="toggleChangeDetection()">Toggle Change Detection</button>
 </div>
 <div>
-    <app-counter [value]="counts$" [attachedIf]="isViewUpdated"></app-counter>
-    <app-counter [value]="counts$" [attachedIf]="isViewUpdated" [hideWhenDetatched]="false"></app-counter>
-    <app-counter [value]="counts$" [attachedIf]="isViewUpdated" [pauseWhenDetatched]="true"></app-counter>
+    <app-counter [value]="counts$" *attachedIf="isViewUpdated"></app-counter>
+    <app-counter [value]="counts$" *attachedIf="isViewUpdated; hide: false"></app-counter>
+    <app-counter [value]="counts$" *attachedIf="isViewUpdated" [pauseWhenDetatched]="true"></app-counter>
 </div>
