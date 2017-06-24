@@ -15,7 +15,10 @@ declare module 'rxjs/Observable' {
 }
 
 Observable.prototype.pauseReplay = pauseReplay;
-
+/**
+ * Note that this is a poor implementation of
+ * [pausableBuffered](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/operators/pausablebuffered.md)
+ */
 function pauseReplay<T>(this: Observable<T>, pauser: Observable<any>) {
   return Observable.create(obs => {
     const bufferedSource = this.timestamp().publishReplay(1);
