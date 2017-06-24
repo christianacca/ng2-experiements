@@ -55,11 +55,9 @@ export class EventParentComponent implements OnInit, DoCheck, AfterViewChecked {
   ngOnInit() {
   }
   ngAfterViewChecked(): void {
-    const age = this.value.age;
-    console.log(`EventParentComponent.ngAfterViewChecked (age: ${age})`);
+    console.log(`EventParentComponent.ngAfterViewChecked (age: ${this.value.age})`);
   }
   ngDoCheck(): void {
-    const age = this.value.age;
-    console.log(`EventParentComponent.ngDoCheck (age: ${age}`);
+    console.log(`EventParentComponent.ngDoCheck (age: ${this.value.age})`);
   }
 }

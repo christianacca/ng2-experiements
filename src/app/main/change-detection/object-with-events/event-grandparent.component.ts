@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, DoCheck } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, DoCheck, AfterViewChecked } from '@angular/core';
 import { Human } from './model';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { EventsService } from './events.service';
@@ -57,7 +57,7 @@ function createFakeData() {
   providers: [EventsService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EventGrandparentComponent implements OnInit, DoCheck {
+export class EventGrandparentComponent implements OnInit, DoCheck, AfterViewChecked {
   nextAgeIncrement = 0;
   iqChanges$: Observable<number>;
   form: FormGroup;
@@ -74,11 +74,14 @@ export class EventGrandparentComponent implements OnInit, DoCheck {
   ngOnInit() {
   }
   ngDoCheck(): void {
-    const age = this.value.age;
-    console.log(`EventGrandparentComponent.ngDoCheck (age: ${age}`);
+    console.log(`EventGrandparentComponent.ngDoCheck (age: ${this.value.age}`);
   }
   incrementDescendantAge() {
     ++this.nextAgeIncrement;
+  }
+
+  ngAfterViewChecked(): void {
+    console.log(`EventGrandparentComponent.ngAfterViewChecked (age: ${this.value.age})`);
   }
 
   resetProblemAge() {

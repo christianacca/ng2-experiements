@@ -61,7 +61,7 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck, AfterVie
     // todo: unsubscribe to existing _value
     this._value = v;
     this._value.parent.parent.propertyChanged.subscribe(_ => {
-      // this._cdr.markForCheck();
+      this._cdr.markForCheck();
     });
   };
   @Input() @int iq: number;
@@ -83,8 +83,7 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck, AfterVie
   }
 
   ngAfterViewChecked(): void {
-    const age = this.value.age;
-    console.log(`EventChildComponent.ngAfterViewChecked (age: ${age})`);
+    console.log(`EventChildComponent.ngAfterViewChecked (age: ${this.value.age})`);
   }
 
   ngOnChanges(changes: Inputs): void {
@@ -104,11 +103,12 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck, AfterVie
     }
   }
   ngDoCheck(): void {
-    const age = this.value.age;
-    console.log(`EventChildComponent.ngDoCheck (age: ${age}`);
+    console.log(`EventChildComponent.ngDoCheck (age: ${this.value.age})`);
     // note: this is a clearly a contrived example - it's unlikely that we would use
     // `ngDoCheck` hook to make a change to the iq property of our model
     // instead we would make the change to the model in the function subscribed to receive evts.iqChangeRequests$ events
+    // this code is just to demonstrate when `_tcdr.markForCheckAsap` has to be called imperatively rather than being able
+    // to use `onChangesMarkForCheck` to handle this for us
     if (this.iqChangeRequested) {
       this.iqChangeRequested = false;
       this.changeIQ(this.value.iq + 1);
