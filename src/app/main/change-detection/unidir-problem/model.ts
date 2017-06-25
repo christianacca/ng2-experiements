@@ -6,6 +6,7 @@ export class Human {
     age = 0;
     iq = 0;
     children: Human[] = [];
+    hairColor = 'brown';
     score = 0;
     parent: Human;
     * descendants(): Iterable<Human> {
@@ -21,6 +22,7 @@ export class Human {
     get isMiddleAge() {
         return this.age >= 40;
     }
+
     get hasMiddleAgeDescendant() {
         return !!this.children.find(c => c.isMiddleAge);
     }

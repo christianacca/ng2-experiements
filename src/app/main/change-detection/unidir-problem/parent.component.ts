@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, KeyValueDiffers, KeyValueDiffer, DoCheck } from '@angular/core';
 import { Human } from './model';
 
 @Component({
@@ -25,19 +25,23 @@ import { Human } from './model';
         <button type="button" (click)="changeChildScore(score.value)">Change</button>
         <span *ngIf="value.children[1].score > value.children[0].score">(Highest)</span>
     </p>
-    <app-unidir-child [value]="value.children[0]" [ageIncrement]=ageIncrement></app-unidir-child>
+    <app-unidir-child [value]="value.children[0]"
+      [ageIncrement]="ageIncrement"
+      [grandparentHairColor]="grandparentHairColor"></app-unidir-child>
     <app-unidir-child [value]="value.children[1]" [age]="childAge" [iq]="childIQ" [score]="childScore"></app-unidir-child>
   `,
   styles: [`
     :host { display: block; padding-left: 20px;}
   `]
 })
-export class ParentComponent implements OnInit {
+export class ParentComponent implements OnInit, DoCheck {
   childIQ: number;
+  private differ: KeyValueDiffer<string, any>;
   private _parent: Human;
   childAge: number;
   childScore: number;
   @Input() ageIncrement = 0;
+  @Input() grandparentHairColor: string;
   @Input()
   get value(): Human {
     return this._parent;
@@ -47,10 +51,41 @@ export class ParentComponent implements OnInit {
     this.childAge = v.children[1].age;
     this.childIQ = v.children[1].iq;
     this.childScore = v.children[1].score;
+    this.differ = this.differs.find(this.value.parent).create();
   }
-  constructor() { }
+  constructor(private differs: KeyValueDiffers) { }
 
   ngOnInit() {
+  }
+
+  ngDoCheck(): void {
+    // important: example of how a cycle can still occur even with uni-directional data flow:
+    // 1. grandparent.component changes hairColor to 'brown'
+    // 2. change detection runs
+    //    - child.component input property `grandparentHairColor` is set to 'brown'
+    //    - child.component.ngOnChanges runs, seeing that `grandparentHairColor === 'brown'`, set's the value to 'brown!';
+    //      it does this within a timeout to avoid `ExpressionChangedAfterItHasBeenCheckedError` error
+    // 3. timeout fires and runs the code to assign the `hairColor` to 'brown!'
+    // 4. change detection runs:
+    //    - parent.component.ngDoCheck runs (this method) and set's the value back to 'brown'
+    //      it does this within a timeout to avoid `ExpressionChangedAfterItHasBeenCheckedError` error
+    // 5. timeout fires and runs the code to assign the `hairColor` back to 'brown'
+    // 6. change detection runs
+    //    - repeat step 2. causing change detection cycle
+
+    // use (abuse?) `DoCheck` to perform the equivalent of AngularJS `$watch`...
+    const changes = this.differ.diff(this.value.parent);
+    if (changes) {
+      changes.forEachChangedItem(r => {
+        if (r.key === 'hairColor' && (r.currentValue === 'brown!')) {
+          // to avoid `ExpressionChangedAfterItHasBeenCheckedError` error we must move the update model
+          // outside of the current change detection cycle
+          setTimeout(() => {
+            this.value.parent.hairColor = r.previousValue;
+          }, 1000);
+        }
+      });
+    }
   }
 
   changeChildAge(value: string) {
