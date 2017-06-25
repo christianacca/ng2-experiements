@@ -1,5 +1,50 @@
 # Change detection experiments
 
+## Examples
+
+### `detatached-clicks`
+
+Explores the behaviour of a detatched component
+
+Highlights:
+* a detatched component will still receive input events from user, but any updates to it's template will not be reflected in the DOM unless it calls `detectChanges`
+* calling `markForChange` on a detatched component will have no affect
+
+
+### `detatched-immutable`
+
+Explores the behaviour detatching an `OnPush` (immutable input) component from the change detector tree
+
+Highlights:
+* uses structural directive `attachedIf` to detatch a section of the component tree from the tree of change detectors
+* the component(s) declared in the template of the structural directive will not:
+	* receive `DoCheck` or `OnChanges` events
+		* note: ordinarily a detatched component *would* receive these events but angular not update the DOM for this component (see notes below)
+	* have it's view template checked for changes
+* example of stopping / starting an observable
+* uses structural directive `rxContext` to simplify and improve efficiency of having the same observable used in multiple places in the template
+
+### `detatched-obs`
+
+Explores the behaviour detatching an `OnPush` (observable input) component from the change detector tree
+
+Highlights:
+* as `detatched-immutable` except...
+* uses `pause` pipe to stop the counter component still receiving events when detatched
+* interesting use of rx to avoid the counter value resetting after stopping / starting the source observable
+
+### `on-push-children`
+
+Explores the behaviour of `CheckAlways` child and grandchild components of an `OnPush` component
+
+Highlights:
+* `OnPush` component that *has* been checked (eg called `markForCheck`) will result in descendant `CheckAlways` components being checked
+* `CheckAlways` grandchild will *not* be checked when the grandparent makes a change if it's parent:
+	* is configured as `OnPush` AND
+	* is not checked
+* A `setTimeout` callback of a `CheckAlways` component will not cause angular to run change detection for that component unless the callback calls `markForChange`
+
+
 ## Observations
 
 * `OnChanges` lifecycle hook **will fire** when it's input properties change even when component is detatched manually
@@ -30,7 +75,7 @@
 	* note:  if this `OnPush` grandparent receiving the event raised by the grandchild, does NOT call `markForCheck`, the *children* of the grandparent will not receive their `OnChanges` or `DoCheck` events
 * A detatched component will respond to click events in it's template. However, changes made in these click handlers will not be reflected in view until component:
 	* calls `detectChanges` OR
-	* is `reattach` (thus implicitly causing `markForCheck` to be called)
+	* is `reattach`
 * Detatched *children* of a component that has been checked:
 	* will receive their `DoCheck` and `OnChanges` event (the later only when an input has changed byref)
 	* this will allow them `reattach` or run `detectChanges` causing their templates to be checked

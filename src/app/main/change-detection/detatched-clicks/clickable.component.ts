@@ -1,29 +1,42 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectorRef, DoCheck } from '@angular/core';
 
 @Component({
   selector: 'app-clickable',
   template: `
     <h3>Clickable ( {{ attached ? 'Attached' : 'Detatched'}})</h3>
     <div>
-      <button (click)="clickMe()">Click Me</button> (count: {{clickCount}})
+      <button (click)="detectChanges()">detectChanges</button> (count: {{detectChangesCount}})
+    </div>
+    <div>
+      <button (click)="markForChange()">markForChange</button> (count: {{markForChangeCount}})
     </div>
   `,
   styles: [`
     :host { display: block }
   `]
 })
-export class ClickableComponent implements OnChanges {
+export class ClickableComponent implements OnChanges, DoCheck {
   @Input() attached = true;
-  clickCount = 0;
+  detectChangesCount = 0;
+  markForChangeCount = 0;
   constructor(private cdr: ChangeDetectorRef) { }
 
-  clickMe() {
+  detectChanges() {
     // note: this event handler will still run even when this component is detatched
-    // however, when detatched, in order for the view to be updated with the current value
-    // of `clickCount` we must manually ask angular to `detectChanges`
-    this.clickCount += 1;
+    // however, when detatched, in order for the DOM to be updated with changes we must
+    // manually ask angular `detectChanges`
+    this.detectChangesCount += 1;
     if (!this.attached) {
       this.cdr.detectChanges();
+    }
+  }
+
+  markForChange() {
+    // note: this event handler will still run even when this component is detatched
+    // note: when detatched, calling `markForCheck` will NOT cause angular to update DOM
+    this.markForChangeCount += 1;
+    if (!this.attached) {
+      this.cdr.markForCheck();
     }
   }
 
@@ -37,5 +50,9 @@ export class ClickableComponent implements OnChanges {
       // `{{ attached ? 'Attached' : 'Detatched'}}` binding
       this.cdr.detectChanges();
     }
+  }
+
+  ngDoCheck(): void {
+    console.log(`ClickableComponent.ngDoCheck`);
   }
 }

@@ -35,7 +35,7 @@ export class CounterContainerComponent implements OnInit {
 
   private createCounts$() {
     return this.resumes$
-      .switchMap(resume => resume ? Observable.interval(3000) : Observable.empty<number>())
+      .switchMap(resume => resume ? Observable.interval(2000) : Observable.empty<number>())
       .scan(count => count + 1, 0)
       .do(count => console.log(`counter-countainer: ${count}`))
       .publishBehavior(0);

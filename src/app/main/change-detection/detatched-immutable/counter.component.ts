@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, OnChanges, SimpleChanges, DoCheck } from '@angular/core';
 
 @Component({
   selector: 'app-immut-counter',
@@ -10,12 +10,15 @@ import { Component, Input, ChangeDetectionStrategy, OnChanges, SimpleChanges } f
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CounterComponent implements OnChanges {
+export class CounterComponent implements OnChanges, DoCheck {
   @Input() value: { count: number };
 
-  constructor() {}
+  constructor() { }
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(`counter: ${this.value}`);
+  }
+  ngDoCheck(): void {
+    console.log(`CounterComponent.ngDoCheck`);
   }
 }

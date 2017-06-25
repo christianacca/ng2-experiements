@@ -27,7 +27,7 @@ export class CounterContainerComponent implements OnInit {
   private createCounts$() {
     // note: we need to create a NEW object as counter.component uses OnPush
     return this.resumes$
-      .switchMap(resume => resume ? Observable.interval(3000) : Observable.empty<number>())
+      .switchMap(resume => resume ? Observable.interval(2000) : Observable.empty<number>())
       .startWith(0)
       .scan(({ count }) => ({ count: ++count }), { count: -1 })
       .do(counter => console.log(`counter.container: ${counter.count}`))
