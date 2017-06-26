@@ -10,6 +10,8 @@ interface Inputs extends SimpleChanges {
   grandparentHairColor?: SimpleChange;
 }
 
+const later = Promise.resolve(null);
+
 @Component({
   selector: 'app-unidir-child',
   template: `
@@ -46,7 +48,13 @@ export class ChildComponent implements OnInit, OnChanges, DoCheck {
   @Input() set ageIncrement(value: number) {
     if (this.value == null) { return; }
 
+    // the following line causes `ExpressionChangedAfterItHasBeenCheckedError` error use the commented out code instead
     this.value.age += value;
+    /*
+        later.then(() => {
+          this.value.age += value;
+        });
+    */
   }
   @Input() value: Human;
   @Input() iq: string;

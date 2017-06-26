@@ -76,6 +76,13 @@ Each example below will result in `ExpressionChangedAfterItHasBeenCheckedError` 
 7. Change "Parent">Child 2 IQ - set to any value and click Change
 8. Change "Parent">Child 2 Score - set to 75 and click Change
 
+**Bonus problem**
+
+9.  Change "Grand parent">Hair Color - set to brown and click Change
+	* Notice that the Hair Color input alternates between brown and brown!
+
+This last problem is actually an example of how, by avoiding `ExpressionChangedAfterItHasBeenCheckedError` error, you can trigger an infinite loop in change dectection
+
 #### Workarounds
 
 Workarounds (often crazy) to the problems noted above
@@ -110,7 +117,62 @@ When the button - Make invalid - is clicked, the following occurs:
 
 > 4. Click button "Grand parent">"Descendants age">+
 
+**Workaround**
 
+Schedule the update to the `age` property that is happening in `child.component` to happen after the current round of change detection. EG:
+
+```ts
+const later = Promise.resolve(null);
+// snip...
+
+@Input() set ageIncrement(value: number) {
+  later.then(() => {
+    this.value.age += value;
+  });
+}
+```
+
+> 5. Click button "Grand parent">"Grandchild IQ changes">Request +
+
+**Workaround 1**
+
+`grandparent.component` register to listen to `iqChanges$` asynchronously. EG:
+
+```ts
+this.iqChanges$ = evts.iqChanges$.observeOn(asap);
+```
+
+
+**Workaround 2**
+
+In child.component, move out it's call to `changeIQ` within the `ngDoCheck` into the `next` callback method it registers with `EventsService.iqChangeRequests$`
+
+Basically, we stop the call to `EventsService.notifyIQChange` from happening within the change detection sweep
+
+> 6-8
+
+**Workaround**
+
+Schedule the update to the model property within `ngOnChanges` on `child.component` to happen after the current round of change detection. EG:
+
+```ts
+ngOnChanges(changes: Inputs): void {
+  const unsafeUpdates: Function[] = [];
+  if (changes.age && !changes.age.isFirstChange()) {
+    unsafeUpdates.push(() => {
+      this.value.age = parseInt(this.age, 10);
+    });
+  }
+
+  // snip...
+
+  if (unsafeUpdates.length > 0) {
+    later.then(() => {
+      unsafeUpdates.forEach(f => f());
+    })
+  }
+}
+```
 
 
 ## Observations
