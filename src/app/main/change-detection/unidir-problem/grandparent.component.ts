@@ -45,6 +45,11 @@ function createFakeData() {
         <label>Age: <input type="number" formControlName="age" [(ngModel)]="value.age" (blur)="resetProblemAge()"/></label>
       </form>
       <p>
+        Trigger validation:
+        <button type="button" (click)="value.age = 121">Make invalid</button>
+        <button type="button" (click)="resetProblemAge()">Make valid</button>
+      </p>
+      <p>
         <label>Hair color: <input type="string" #hair [value]="value.hairColor"/></label>
         <button type="button" (click)="changeHairColor(hair.value)">Change</button>
         <small>Try change to brown</small>

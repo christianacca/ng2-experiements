@@ -14,7 +14,7 @@ interface Inputs extends SimpleChanges {
   selector: 'app-unidir-child',
   template: `
     <div>
-      <h3>Child (age: {{value.age}})
+      <h3>Child ({{index}}) (age: {{value.age}})
         <small *ngIf="value.siblings[0].score > value.score">(intelligent sibling: {{value.siblings[0].score}})</small>
       </h3>
       <p>
@@ -40,6 +40,9 @@ export class ChildComponent implements OnInit, OnChanges, DoCheck {
   @Input() grandparentHairColor: string;
   iqChangeRequested: boolean;
   iqRequestSub: Subscription;
+  get index() {
+    return this.value.parent.children.indexOf(this.value);
+  }
   @Input() set ageIncrement(value: number) {
     if (this.value == null) { return; }
 
@@ -50,20 +53,13 @@ export class ChildComponent implements OnInit, OnChanges, DoCheck {
   @Input() age: string;
 
   @Input() score: string;
+
   constructor(private evts: EventsService) {
     this.iqRequestSub = evts.iqChangeRequests$.subscribe(() => {
       // this is a contrived example - normally we would update the iq on the model here
       // rather than deferring this until the `DoCheck` lifecycle event is received
       this.iqChangeRequested = true;
     });
-
-    // // example of how a cycle can still occur even with uni-directional data flow:
-    // evts.hairColorChange$.subscribe(({ color, subject }) => {
-    //   if (this.value.parent.parent === subject && color === 'brown') {
-    //     // to avoid a stackoverflow we need to defer till the next event loop
-    //     setTimeout(() => { this.changeGrandparentHairColor(color + '!') }, 1000);
-    //   }
-    // });
   }
 
   ngOnInit() {

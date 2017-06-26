@@ -48,6 +48,71 @@ Highlights:
 
 Explorer the many cases where `ExpressionChangedAfterItHasBeenCheckedError` can be thrown
 
+The baseline "happy" experience - ie the experience that does not cause `ExpressionChangedAfterItHasBeenCheckedError` errors to be thrown:
+
+1. Change "Child (1)">Age - set to 50 and click Change. Notice:
+	* "Parent">"Descendants age" - incremented by the new age and has a '!' mark
+	* "Grand parent">"Descendants age" - incremented by the new age
+2. Change "Child (1)">Score - set to 75 and click Change. Notice:
+	* small note about who is the 'intelligent sibling' moves from "Child (1)" to "Child (0)"
+	* button next to "Parent">"Child 2 Score" now has shows '(Highest)'
+3. Change "Child (1)">IQ - set to 1 and click Change. Notice:
+	* "Grand parent">"Grandchild IQ changes" - incremented by 1
+4. Change "Grand parent">Age - set to 120 and then tab away from the input. Notice:
+	* no error thrown
+
+#### Examples of `ExpressionChangedAfterItHasBeenCheckedError` error
+
+(Note: ensure to refresh the browser tab before proceeding with the example below)
+
+Each example below will result in `ExpressionChangedAfterItHasBeenCheckedError` error
+
+1. Change "Grand parent">Age - set to 121 and then tab away from the input
+2. Click button "Grand parent">Make invalid
+3. Click button "Grand parent">Make valid
+4. Click button "Grand parent">"Descendants age">+
+5. Click button "Grand parent">"Grandchild IQ changes">Request +
+6. Change "Parent">Child 2 Age - set to any value and click Change
+7. Change "Parent">Child 2 IQ - set to any value and click Change
+8. Change "Parent">Child 2 Score - set to 75 and click Change
+
+#### Workarounds
+
+Workarounds (often crazy) to the problems noted above
+
+> 1-3
+
+Make one of the following changes in `grandparent.component.ts` template
+
+**Workaround 1**
+
+Change `<span *ngIf="hasAgeError">!</span>`, to `{{ hasAgeError ? '!' : '' }}`
+
+**Workaround 2**
+
+Move `<span *ngIf="hasAgeError">!</span>` to below `<input type="number" formControlName="age" ...`
+
+A rough guess at why the problem is occurring...
+
+Forms validation is setup such that an `age` value greater than 120 will cause the `FormControl` model and thus the parent `FormGroup` validation status to change to false
+
+When the button - Make invalid - is clicked, the following occurs:
+1. code changes the `age` property to an invalid value
+2. angular change detection starts from the root component and reaches the grandparent.component
+3. grandparent.component has a change detection strategy set to `CheckAlways` and thus angular proceeds to run change detection for the component
+4. angular starts checking the child directive/component of grandparent.component
+	1. angular sees NO change to the `ngIf` input expression and thus skips change detection for this directive
+	2. angular sees the change to the `ngModelInput` expression and updates `ngModel`'s `ngModelInput` property value to the new value of the `age` property
+	3. `ngModel` directive updates the bound `FormControl` model which causes the validators for this `FormControl` to run. This code eventually causes the parent `FormGroup` to be marked as invalid. This will now result in `hasAgeError` on grandparent.component to return true
+	4. angular marks `ngIf` and `ngModel` as checked (calling their `AfterViewChecked` lifecycle hooks)
+5. angular runs another change detection cycle because it's running in dev mode
+6. angular reaches `ngIf` and sees that the value of it's expression has changed. Because this value change is AFTER `ngIf` has been marked as checked, angular throws an `ExpressionChangedAfterItHasBeenCheckedError` error
+
+> 4. Click button "Grand parent">"Descendants age">+
+
+
+
+
 ## Observations
 
 * `OnChanges` lifecycle hook **will fire** when it's input properties change even when component is detatched manually
