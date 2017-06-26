@@ -56,6 +56,16 @@ export class Human {
         this._iq = value;
         this.propertyChanged.publish({ propertyName: 'iq', oldValue: originalValue, newValue: value, parent: null, target: this });
     }
+    get hairColor() {
+        return this._hairColor;
+    };
+    set hairColor(value: string) {
+        if (this._hairColor === value) { return; }
+
+        const originalValue = this._hairColor;
+        this._hairColor = value;
+        this.propertyChanged.publish({ propertyName: 'hairColor', oldValue: originalValue, newValue: value, parent: null, target: this });
+    }
     children: Human[] = [];
     propertyChanged = new PropertyChangeEvent();
     get score() {
@@ -72,6 +82,7 @@ export class Human {
 
     private _age = 0;
     private _iq = 0;
+    private _hairColor: string;
     private _score = 0;
 
     * descendants(): Iterable<Human> {

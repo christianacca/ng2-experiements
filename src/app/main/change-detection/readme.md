@@ -42,8 +42,11 @@ Highlights:
 * `CheckAlways` grandchild will *not* be checked when the grandparent makes a change if it's parent:
 	* is configured as `OnPush` AND
 	* is not checked
-* A `setTimeout` callback of a `CheckAlways` component will not cause angular to run change detection for that component unless the callback calls `markForChange`
+* A `setTimeout` callback on a `CheckAlways` component will not cause angular to run change detection for that component unless the callback calls `markForChange`
 
+### `unidir-problem`
+
+Explorer the many cases where `ExpressionChangedAfterItHasBeenCheckedError` can be thrown
 
 ## Observations
 
@@ -81,10 +84,13 @@ Highlights:
 	* this will allow them `reattach` or run `detectChanges` causing their templates to be checked
 * Children of an detatched component will not receive their `DoCheck` and `OnChanges` event
 * `OnPush` cd strategy can be used to avoid `ExpressionChangedAfterItHasBeenCheckedError`. However:
-	* changes to template expression values that have already been checked will not be updated in the DOM until the next change detection sweep
+	* changes to template expression values that have already been checked (eg ancestor templates) will not be updated in the DOM until the next change detection sweep
 	* changing the template expression values after they have been checked, requires another round of change detection to be scheduled. 
-		* This can be done efficiently by hooking into `NgZone.onStable` event (see `TreeChangeDetectorRef` for example implementation)
+		* This can be done efficiently by hooking into `NgZone.onStable` event (see `TreeChangeDetectorRef` for example implementation). Unlike using `setTimeout` to do the scheduling, JS execution will not be yeilded back to the JS event loop and thus will not be interrupted by timer's or ajax requestes resolving
 		* The burden on developers can be reduced with the help of component decorators that will automatically schedule this check when `Input`(s) change (see `onChangesMarkForCheck`, `markForCheck` and `markForCheckEnabled` decorators)
+		* This can result in change detection cycles, which could be result in maxium call stack errors. This is bad, but do note:
+			* a `CheckAlways` component will suffer from the same issues when it needs to run code in a `setTimeout` to avoid `ExpressionChangedAfterItHasBeenCheckedError` errors
+			* using an implementation such as `TreeChangeDetectorRef`, infinite loops are avoided, and there is an opportunity to force an exception after a configurable number of iterations
 	* using `OnPush` requires you to implement custom change detection code. EG:
 		* observables in conjunction with `AsyncPipe`
 		* custom model events that are subscribed to by components in the tree and which trigger calls to `markForCheck`

@@ -15,6 +15,7 @@ function createFakeData() {
   const gp = new Human({
     age: 90,
     score: 40,
+    hairColor: 'white',
     children: [
       new Human({
         age: 35,
@@ -43,6 +44,11 @@ function createFakeData() {
         <label>Age: <input type="number" formControlName="age" [(ngModel)]="value.age" (blur)="resetProblemAge()"/></label>
       </form>
       <p>
+        <label>Hair color: <input type="string" #hair [value]="value.hairColor"/></label>
+        <button type="button" (click)="changeHairColor(hair.value)">Change</button>
+        <small>Try change to brown (todo: throw once 10 cycles reached)</small>
+      </p>
+      <p>
         Descendants age: {{value.descendantsAge}}
         <button type="button" (click)="incrementDescendantAge()">+</button>
       </p>
@@ -51,7 +57,10 @@ function createFakeData() {
         <button type="button" (click)="evts.requestIQChange()">Request +</button>
       </p>
     </div>
-    <app-event-parent [value]="value.children[0]" [ageIncrement]="nextAgeIncrement"></app-event-parent>
+    <app-event-parent
+      [value]="value.children[0]"
+      [ageIncrement]="nextAgeIncrement"
+      [grandparentHairColor]="value.hairColor"></app-event-parent>
   `,
   styles: [],
   providers: [EventsService],
@@ -82,6 +91,10 @@ export class EventGrandparentComponent implements OnInit, DoCheck, AfterViewChec
 
   ngAfterViewChecked(): void {
     console.log(`EventGrandparentComponent.ngAfterViewChecked (age: ${this.value.age})`);
+  }
+
+  changeHairColor(color: string) {
+    this.value.hairColor = color;
   }
 
   resetProblemAge() {

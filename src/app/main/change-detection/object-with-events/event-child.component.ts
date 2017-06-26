@@ -44,6 +44,7 @@ interface Inputs extends SimpleChanges {
 @OnChangesMarkForCheck
 @AutoUnsubscribe
 export class EventChildComponent implements OnInit, OnChanges, DoCheck, AfterViewChecked, CanMarkForCheckAsap {
+  @Input() grandparentHairColor: string;
   iqRequestSub: Subscription;
   iqChangeRequested: boolean;
   @Input()
@@ -100,6 +101,10 @@ export class EventChildComponent implements OnInit, OnChanges, DoCheck, AfterVie
     }
     if (changes.score && !changes.score.isFirstChange()) {
       this.value.score = this.score;
+    }
+    if (changes.grandparentHairColor && changes.grandparentHairColor.currentValue === 'brown') {
+      // important: this is part of a change detection infinite loop - see comments in parent.component
+      this.value.parent.parent.hairColor = changes.grandparentHairColor.currentValue + '!';
     }
   }
   ngDoCheck(): void {

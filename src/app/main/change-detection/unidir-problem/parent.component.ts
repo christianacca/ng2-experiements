@@ -59,6 +59,7 @@ export class ParentComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck(): void {
+    console.log(`ParentComponent.ngDoCheck (age: ${this.value.age})`);
     // important: example of how a cycle can still occur even with uni-directional data flow:
     // 1. grandparent.component changes hairColor to 'brown'
     // 2. change detection runs

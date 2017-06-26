@@ -2,6 +2,9 @@ import { Injectable, ChangeDetectorRef, NgZone } from '@angular/core';
 
 const later = Promise.resolve(null);
 
+// todo: detect cycles
+// todo: support configuration to throw after n cycles detected
+
 @Injectable()
 export class TreeChangeDetectorRef {
     private asaps: ChangeDetectorRef[] = [];
