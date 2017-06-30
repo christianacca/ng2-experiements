@@ -1,0 +1,21 @@
+<div>
+    <form #modelForm="ngForm" (ngSubmit)="apply(modelForm, model)">
+        <label>Firt Name: <input type="text" [ngModel]="model.firstName" name="firstName" /></label>
+        <label>Last Name: <input type="text" [ngModel]="model.lastName" name="lastName" /></label>
+        <label>Age: <input type="number" [ngModel]="model.age" name="age" /></label>
+        <button type="submit">Apply</button>
+    </form>
+    <div>
+        <input type="text" [value]="model.child ? (model.child.name || '') : null" placeholder="Child Name" #child />
+        <button type="button" (click)="model.child.name = child.value">Apply</button>
+        <button type="button" (click)="replaceChild()">Replace Child</button>
+        <button type="button" (click)="model.child = null">Dereference Child</button>
+        <button type="button" (click)="removeChild()">Delete Child</button>
+    </div>
+</div>
+<p>
+    {{ model | json }}
+</p>
+<ul>
+    <li *ngFor="let entry of logs$ | async">{{entry}}</li>
+</ul>

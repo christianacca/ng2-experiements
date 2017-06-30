@@ -1,4 +1,5 @@
-export interface Model {
+// note: webpack complained when this was an interface so made it an abstract class whose interface we're using
+export abstract class Model {
   firstName: string;
   lastName: string;
   age: number;

@@ -1,55 +1,11 @@
 <div>
     <h3>KeyValueDiffer</h3>
     <div>
-    <h4><code>literal</code></h4>
-    <div>
-        <form #literalForm="ngForm" (ngSubmit)="apply(literalForm, literal)">
-            <label>Firt Name: <input type="text" [ngModel]="literal.firstName" name="firstName" /></label>
-            <label>Last Name: <input type="text" [ngModel]="literal.lastName" name="lastName" /></label>
-            <label>Age: <input type="number" [ngModel]="literal.age" name="age" /></label>
-            <button type="submit">Apply</button>
-        </form>
-        <div>
-            <input type="text" [value]="literal.child ? (literal.child.name || '') : null" placeholder="Child Name" #child />
-            <button type="button" (click)="literal.child.name = child.value">Apply</button>
-            <button type="button" (click)="replaceChild()">Replace Child</button>
-            <button type="button" (click)="literal.child = null">Dereference Child</button>
-            <button type="button" (click)="removeChild()">Delete Child</button>
-        </div>
-    </div>
-    <p>
-        {{ literal | json }}
-    </p>
-    <ul>
-        <li *ngFor="let entry of logs">{{entry}}</li>
-    </ul>
+        <h4><code>literal</code></h4>
+        <app-key-value-differ-form [model]="literal"></app-key-value-differ-form>
     </div>
     <div>
-    <h4><code>instance</code></h4>
-    <div>
-        <form #instanceForm="ngForm" (ngSubmit)="apply(instanceForm, instance)">
-            <label>Firt Name: <input type="text" [ngModel]="instance.firstName" name="firstName" /></label>
-            <label>Last Name: <input type="text" [ngModel]="instance.lastName" name="lastName" /></label>
-            <label>Age: <input type="number" [ngModel]="instance.age" name="age" /></label>
-            <button type="submit">Apply</button>
-        </form>
-        <div>
-            <input type="text" [value]="instance.child ? (instance.child.name || '') : null" placeholder="Child Name" #child2 />
-            <button type="button" (click)="instance.child.name = child2.value">Apply</button>
-            <button type="button" (click)="replaceChildInstance()">Replace Child</button>
-            <button type="button" (click)="instance.child = null">Dereference Child</button>
-            <button type="button" (click)="removeChildInstance()">Delete Child</button>
-        </div>
-    </div>
-    <p>
-        age: {{ instance.age }}
-        firstName: {{ instance.firstName }}
-        lastName: {{ instance.lastName }}
-        name: {{ instance.name }}
-        child.name: {{ instance.child.name }}
-    </p>
-    <ul>
-        <li *ngFor="let entry of instanceLogs">{{entry}}</li>
-    </ul>
+        <h4><code>instance</code></h4>
+        <app-key-value-differ-form [model]="instance"></app-key-value-differ-form>
     </div>
 </div>
