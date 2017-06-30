@@ -75,6 +75,9 @@ export class ParentComponent implements OnInit, DoCheck {
     //    - repeat step 2. causing change detection cycle
 
     // use (abuse?) `DoCheck` to perform the equivalent of AngularJS `$watch`...
+    if (this.value.parent.isMiddleAge) {
+      this.value.parent.test.name = 'kc';
+    }
     const changes = this.differ.diff(this.value.parent);
     if (changes) {
       changes.forEachChangedItem(r => {

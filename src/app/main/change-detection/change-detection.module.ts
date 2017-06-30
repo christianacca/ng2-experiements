@@ -20,6 +20,7 @@ import { ZoneCdComponent } from './zone-cd/zone-cd.component';
 import { PushParentComponent } from './on-push-children/push-parent.component';
 import { PushChildComponent } from './on-push-children/push-child.component';
 import { PushGrandchildComponent } from './on-push-children/push-grandchild.component';
+import { KeyValueDifferComponent } from './differ/key-value-differ.component';
 
 @NgModule({
   imports: [
@@ -33,7 +34,9 @@ import { PushGrandchildComponent } from './on-push-children/push-grandchild.comp
     CounterContainerComponent, CounterComponent,
     ImmutableCounterContainerComp, ImmutableCounterComp,
     DetatchedClicksComponent, ClickableComponent,
-    GrandparentComponent, ParentComponent, ChildComponent, EventGrandparentComponent, EventParentComponent, EventChildComponent, ZoneCdComponent, PushParentComponent, PushChildComponent, PushGrandchildComponent
+    GrandparentComponent, ParentComponent, ChildComponent,
+    EventGrandparentComponent, EventParentComponent, EventChildComponent, ZoneCdComponent, PushParentComponent,
+    PushChildComponent, PushGrandchildComponent, KeyValueDifferComponent
   ]
 })
 export class ChangeDetectionModule { }

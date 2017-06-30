@@ -9,6 +9,7 @@ export class Human {
     hairColor = 'brown';
     score = 0;
     parent: Human;
+    test = { name: 'cc' };
     * descendants(): Iterable<Human> {
         for (const child of this.children) {
             yield child;

@@ -7,6 +7,7 @@ import { GrandparentComponent } from './unidir-problem/grandparent.component';
 import { EventGrandparentComponent } from './object-with-events/event-grandparent.component';
 import { ZoneCdComponent } from './zone-cd/zone-cd.component';
 import { PushParentComponent } from './on-push-children/push-parent.component';
+import { KeyValueDifferComponent } from './differ/key-value-differ.component';
 
 const routes: Routes = [
   { path: 'detatched-obs', component: CounterContainerComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'object-with-events', component: EventGrandparentComponent },
   { path: 'zone-cd', component: ZoneCdComponent },
   { path: 'on-push-children', component: PushParentComponent },
+  { path: 'key-value-differ', component: KeyValueDifferComponent },
 ];
 
 @NgModule({
