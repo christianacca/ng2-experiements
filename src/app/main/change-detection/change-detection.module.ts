@@ -21,7 +21,6 @@ import { PushParentComponent } from './on-push-children/push-parent.component';
 import { PushChildComponent } from './on-push-children/push-child.component';
 import { PushGrandchildComponent } from './on-push-children/push-grandchild.component';
 import { KeyValueDifferComponent } from './differ/key-value-differ.component';
-import { KeyValueDifferObsComponent } from './differ/key-value-differ-obs.component';
 import { KeyValueDifferFormComponent } from './differ/key-value-differ-form.component';
 
 @NgModule({
@@ -38,7 +37,7 @@ import { KeyValueDifferFormComponent } from './differ/key-value-differ-form.comp
     DetatchedClicksComponent, ClickableComponent,
     GrandparentComponent, ParentComponent, ChildComponent,
     EventGrandparentComponent, EventParentComponent, EventChildComponent, ZoneCdComponent, PushParentComponent,
-    PushChildComponent, PushGrandchildComponent, KeyValueDifferComponent, KeyValueDifferObsComponent, KeyValueDifferFormComponent
+    PushChildComponent, PushGrandchildComponent, KeyValueDifferComponent, KeyValueDifferFormComponent
   ]
 })
 export class ChangeDetectionModule { }

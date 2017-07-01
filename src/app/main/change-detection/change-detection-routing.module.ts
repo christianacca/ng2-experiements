@@ -19,7 +19,6 @@ const routes: Routes = [
   { path: 'zone-cd', component: ZoneCdComponent },
   { path: 'on-push-children', component: PushParentComponent },
   { path: 'key-value-differ', component: KeyValueDifferComponent },
-  { path: 'key-value-differ-obs', component: KeyValueDifferObsComponent },
 ];
 
 @NgModule({
