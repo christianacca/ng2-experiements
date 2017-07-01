@@ -1,13 +1,14 @@
 import { Component, OnInit, Input, KeyValueChanges, KeyValueDiffer, KeyValueDiffers, DoCheck } from '@angular/core';
 import { Model, ModelClass } from './model';
 import { NgForm } from '@angular/forms';
-import { KeyValueDifferSubject, ChangeCollection } from './key-value-differ-observable';
-import './key-value-differ-operator';
+import { ChangeCollection, KeyValueDiffSubject } from '../../../custom-rx/diff';
 import { Observable } from 'rxjs/Observable';
 import { AutoUnsubscribe } from '../../../core';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/reduce';
+import '../../../custom-rx/add/observable/diff';
+import '../../../custom-rx/add/observable/of-changes';
 
 @Component({
   selector: 'app-key-value-differ-form',
@@ -17,7 +18,7 @@ import 'rxjs/add/operator/reduce';
 @AutoUnsubscribe
 export class KeyValueDifferFormComponent implements DoCheck, OnInit {
   @Input() model: Model;
-  modelDiffs: KeyValueDifferSubject<Model>;
+  modelDiffs: KeyValueDiffSubject<Model>;
   logs$: Observable<string[]>;
   addCount$: Observable<number>;
   changeCount$: Observable<number>;
@@ -31,16 +32,9 @@ export class KeyValueDifferFormComponent implements DoCheck, OnInit {
     // we need to `publishReplay` to avoid the async pipe in our template
     // missing the first set of changes
 
-    const birthdaysOnly = (changes: KeyValueChanges<keyof Model, any>) => {
-      return Observable.ofChanges<Model>(changes)
-        .includes(r => r.key === 'age')
-        .mapToRecordsOf('change')
-        .filter(r => r.key === 'age');
-    }
-
     const logs$ = this.modelDiffs
       .switchMap(changes =>
-        birthdaysOnly(changes)
+        this.birthdaysOnly$(changes)
           .map(r => [`Happy ${r.currentValue}`])
           .merge([this.toLogEntries(changes)])
           .reduce((prev, current) => current.concat(prev))
@@ -53,6 +47,13 @@ export class KeyValueDifferFormComponent implements DoCheck, OnInit {
     this.removeCount$ = this.countOf$('remove');
     this.changeCount$ = this.countOf$('change');
 
+  }
+
+  private birthdaysOnly$(changes: KeyValueChanges<keyof Model, any>) {
+    return Observable.ofChanges<Model>(changes)
+      .includes(r => r.key === 'age')
+      .mapToRecordsOf('change')
+      .filter(r => r.key === 'age');
   }
 
   private countOf$(collection: ChangeCollection): Observable<number> {

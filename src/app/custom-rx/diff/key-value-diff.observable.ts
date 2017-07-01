@@ -1,7 +1,5 @@
-import { KeyValueDiffer, KeyValueChangeRecord, KeyValueChanges } from '@angular/core';
+import { KeyValueChangeRecord, KeyValueChanges } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Subscriber } from 'rxjs/Subscriber';
-import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
@@ -42,12 +40,12 @@ function hasRecord<K, V>(changes: KeyValueChanges<K, V>, predicate: (record: Key
     if (match) { return true; }
 }
 
-export class KeyValueDifferObservable<T extends object, K extends keyof T = keyof T> extends Observable<KeyValueChanges<K, any>> {
+export class KeyValueDiffObservable<T extends object, K extends keyof T = keyof T> extends Observable<KeyValueChanges<K, any>> {
     mapToArrayOf(...collections: ChangeCollection[]) {
         return this.map(changes => toArray(changes, collections));
     }
     includes(predicate: (record: KeyValueChangeRecord<K, any>) => boolean) {
-        return new KeyValueDifferObservable<T, K>(subscriber => {
+        return new KeyValueDiffObservable<T, K>(subscriber => {
             return this.filter(changes => hasRecord(changes, predicate)).subscribe(subscriber);
         })
     }
@@ -65,29 +63,3 @@ export class KeyValueDifferObservable<T extends object, K extends keyof T = keyo
             .switchMap(records => Observable.from(records));
     }
 }
-
-
-
-export class KeyValueDifferSubject<T extends {}, K extends keyof T = keyof T> extends KeyValueDifferObservable<T, K> {
-    private subject = new Subject<KeyValueChanges<K, any>>();
-
-    static create<T extends object, K extends keyof T>(source: T, differ: KeyValueDiffer<K, any>) {
-        return new KeyValueDifferSubject<T, K>(source, differ);
-    }
-
-    detectChanges() {
-        const changes = this.differ.diff(this.value);
-        if (!changes) { return; }
-
-        this.subject.next(changes);
-    }
-
-    private constructor(
-        public value: T,
-        private differ: KeyValueDiffer<K, any>) {
-        super((subscriber: Subscriber<KeyValueChanges<K, any>>) => {
-            return this.subject.subscribe(subscriber);
-        });
-    }
-}
-

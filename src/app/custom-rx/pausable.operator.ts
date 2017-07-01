@@ -8,18 +8,11 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/publishReplay';
 import 'rxjs/add/operator/timestamp';
 
-declare module 'rxjs/Observable' {
-  interface Observable<T> {
-    pauseReplay(pauser: Observable<any>): Observable<T>;
-  }
-}
-
-Observable.prototype.pauseReplay = pauseReplay;
 /**
  * Note that this is a poor implementation of
  * [pausableBuffered](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/operators/pausablebuffered.md)
  */
-function pauseReplay<T>(this: Observable<T>, pauser: Observable<any>) {
+export function pauseReplay<T>(this: Observable<T>, pauser: Observable<any>) {
   return Observable.create(obs => {
     const bufferedSource = this.timestamp().publishReplay(1);
     const pausable = pauser

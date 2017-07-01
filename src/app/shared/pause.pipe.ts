@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import '../custom-rx/pausable.operator';
+import '../custom-rx/add/operator/pausable';
 
 @Pipe({
   name: 'pause'
