@@ -1,52 +1,51 @@
-import { Component, OnInit, Input, KeyValueChanges, KeyValueDiffer, KeyValueDiffers, DoCheck } from '@angular/core';
+import { Component, OnInit, Input, KeyValueChanges, KeyValueDiffer, KeyValueDiffers } from '@angular/core';
 import { Model, ModelClass } from './model';
 import { NgForm } from '@angular/forms';
 import { ChangeCollection, KeyValueDiffSubject } from '../../../custom-rx/diff';
 import { Observable } from 'rxjs/Observable';
-import { AutoUnsubscribe } from '../../../core';
-import { Subscription } from 'rxjs/Subscription';
+import { mixinLifecycleEvents } from '../../../core';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/reduce';
+import 'rxjs/add/operator/skip';
 import '../../../custom-rx/add/observable/diff';
 import '../../../custom-rx/add/observable/of-changes';
+
+// Boilerplate for applying mixins to KeyValueDifferFormComponent.
+export class KeyValueDifferFormBase { }
+export const _KeyValueDifferFormMixinBase = mixinLifecycleEvents(KeyValueDifferFormBase);
 
 @Component({
   selector: 'app-key-value-differ-form',
   templateUrl: './key-value-differ-form.component.html',
   styles: []
 })
-@AutoUnsubscribe
-export class KeyValueDifferFormComponent implements DoCheck, OnInit {
+export class KeyValueDifferFormComponent extends _KeyValueDifferFormMixinBase implements OnInit {
   @Input() model: Model;
-  modelDiffs: KeyValueDiffSubject<Model>;
+  private modelDiffs: KeyValueDiffSubject<Model>;
   logs$: Observable<string[]>;
   addCount$: Observable<number>;
   changeCount$: Observable<number>;
   removeCount$: Observable<number>;
-  subscriptions = new Subscription();
-  constructor(private differs: KeyValueDiffers) { }
+  constructor(private differs: KeyValueDiffers) {
+    super();
+  }
 
   ngOnInit() {
-    this.modelDiffs = Observable.diff(this.model, this.differs);
+    this.modelDiffs = Observable.diff(this.model, this.differs, this.ngDoCheck$.skip(1));
+    this.logs$ = this.changeLog$();
+    this.addCount$ = this.countOf$('add');
+    this.removeCount$ = this.countOf$('remove');
+    this.changeCount$ = this.countOf$('change');
+  }
 
-    // we need to `publishReplay` to avoid the async pipe in our template
-    // missing the first set of changes
-
-    const logs$ = this.modelDiffs
+  private changeLog$() {
+    return this.modelDiffs
       .switchMap(changes =>
         this.birthdaysOnly$(changes)
           .map(r => [`Happy ${r.currentValue}`])
           .merge([this.toLogEntries(changes)])
           .reduce((prev, current) => current.concat(prev))
       )
-      .publishReplay(1);
-    this.subscriptions.add(logs$.connect());
-    this.logs$ = logs$;
-
-    this.addCount$ = this.countOf$('add');
-    this.removeCount$ = this.countOf$('remove');
-    this.changeCount$ = this.countOf$('change');
-
   }
 
   private birthdaysOnly$(changes: KeyValueChanges<keyof Model, any>) {
@@ -57,18 +56,9 @@ export class KeyValueDifferFormComponent implements DoCheck, OnInit {
   }
 
   private countOf$(collection: ChangeCollection): Observable<number> {
-    const o = this.modelDiffs
+    return this.modelDiffs
       .mapToArrayOf(collection)
       .scan((sum, records) => sum + records.length, 0)
-      .publishReplay(1)
-    this.subscriptions.add(o.connect());
-    return o;
-  }
-
-
-
-  ngDoCheck(): void {
-    this.modelDiffs.detectChanges();
   }
 
   apply(form: NgForm, target: object) {
