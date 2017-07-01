@@ -16,6 +16,17 @@
 <p>
     {{ model | json }}
 </p>
+<p>
+    Summary of changes:
+</p>
 <ul>
-    <li *ngFor="let entry of logs$ | async">{{entry}}</li>
+    <li>Added: {{ addCount$ | async }}</li>
+    <li>Removed: {{ removeCount$ | async }}</li>
+    <li>Changed: {{ changeCount$ | async }}</li>
 </ul>
+<div *rxContext="let logs on logs$">
+    <p>Latest details ({{logs.length}}):</p>
+    <ul>
+        <li *ngFor="let entry of logs">{{entry}}</li>
+    </ul>
+</div>
