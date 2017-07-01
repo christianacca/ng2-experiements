@@ -31,7 +31,10 @@ export class KeyValueDifferFormComponent extends _KeyValueDifferFormMixinBase im
   }
 
   ngOnInit() {
-    this.modelDiffs = Observable.diff(this.model, this.differs, this.ngDoCheck$.skip(1));
+    // wait for async pipe to be initialized before detecting changes on each `DoCheck`
+    const changeDetections$ = this.afterViewInit$.switchMap(() => this.doCheck$);
+    this.modelDiffs = Observable.diff(this.model, this.differs, changeDetections$);
+
     this.logs$ = this.changeLog$();
     this.addCount$ = this.countOf$('add');
     this.removeCount$ = this.countOf$('remove');

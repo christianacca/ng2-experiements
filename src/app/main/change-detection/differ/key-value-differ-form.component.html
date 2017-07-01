@@ -27,6 +27,6 @@
 <div *rxContext="let logs on logs$">
     <p>Latest details ({{logs.length}}):</p>
     <ul>
-        <li *ngFor="let entry of logs">{{entry}}</li>
+        <li *ngFor="let entry of logs$">{{entry}}</li>
     </ul>
 </div>
