@@ -1,29 +1,14 @@
 import { Component, OnInit, Input, KeyValueChanges, KeyValueDiffer, KeyValueDiffers, DoCheck, Type } from '@angular/core';
 import { Model, ModelClass } from './model';
 import { NgForm } from '@angular/forms';
-import { ChangeCollection, KeyValueDiffSubject } from '../../../custom-rx/diff';
 import { Observable } from 'rxjs/Observable';
-import { mixinLifecycleEvents } from '../../../core';
+import { LifecycleEventsBase, MixinLifecycleEvents } from '../../../core';
+import { ChangeCollection, KeyValueDiffSubject } from '../../../custom-rx/diff';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/reduce';
-import 'rxjs/add/operator/skip';
+import 'rxjs/add/operator/switchMapTo';
 import '../../../custom-rx/add/observable/diff';
 import '../../../custom-rx/add/observable/of-changes';
-import { Subject } from 'rxjs/Subject';
-
-export type Constructor<T> = new (...args: any[]) => T;
-
-export function LifecycleEvents<T extends Constructor<{}>>(Base: T) {
-  return class Mixin extends Base implements DoCheck {
-    private doCheckSubject = new Subject<void>();
-    public doCheck$ = this.doCheckSubject.asObservable();
-    public ngDoCheck() {
-      this.doCheckSubject.next();
-    }
-  }
-}
-
-export class MixinRoot { }
 
 
 @Component({
@@ -31,7 +16,8 @@ export class MixinRoot { }
   templateUrl: './key-value-differ-form.component.html',
   styles: []
 })
-export class KeyValueDifferFormComponent extends LifecycleEvents(MixinRoot) implements OnInit {
+@MixinLifecycleEvents('DoCheck', 'AfterViewInit')
+export class KeyValueDifferFormComponent extends LifecycleEventsBase implements OnInit {
   @Input() model: Model;
   private modelDiffs: KeyValueDiffSubject<Model>;
   logs$: Observable<string[]>;
@@ -43,8 +29,8 @@ export class KeyValueDifferFormComponent extends LifecycleEvents(MixinRoot) impl
   }
 
   ngOnInit() {
-    // wait for async pipe to be initialized before detecting changes on each `DoCheck` s
-    const changeDetections$ = this.doCheck$.skip(1);
+    // wait for async pipe to be initialized before detecting changes on each `DoCheck`
+    const changeDetections$ = this.lifecycle$.afterViewInit().switchMapTo(this.lifecycle$.doCheck());
     this.modelDiffs = Observable.diff(this.model, this.differs, changeDetections$);
 
     const isKeyValueDifferFormComponent = this instanceof KeyValueDifferFormComponent;

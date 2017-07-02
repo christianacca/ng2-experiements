@@ -12,13 +12,13 @@ import { MixinLifecycleEvents, LifecycleEventsBase } from '../../../core';
   `,
   styles: []
 })
-@MixinLifecycleEvents
+@MixinLifecycleEvents()
 export class InheritingComponent extends LifecycleEventsBase implements OnInit {
 
   constructor() { super(); }
 
   ngOnInit() {
     console.log('InheritingComponent.ngOnInit');
-    this.lifecycleEvent$.subscribe(evt => { console.log(evt); });
+    this.lifecycle$.subscribe(evt => { console.log(evt); });
   }
 }

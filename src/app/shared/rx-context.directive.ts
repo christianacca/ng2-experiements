@@ -13,6 +13,8 @@ export class RxContextDirective implements OnInit, OnDestroy {
     constructor(private template: TemplateRef<any>, private viewContainer: ViewContainerRef) { }
 
     ngOnDestroy(): void {
+        if (!this.subs) { return; }
+
         this.subs.unsubscribe();
     }
 
