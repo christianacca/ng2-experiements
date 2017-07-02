@@ -1,4 +1,6 @@
-export function AutoUnsubscribe(constructor) {
+import { Type } from '@angular/core';
+
+export function AutoUnsubscribe(constructor: Type<any>) {
 
     const original = constructor.prototype.ngOnDestroy;
 

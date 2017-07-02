@@ -2,14 +2,14 @@ import { Type, DoCheck, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
-export interface LifecycleEvents extends AfterViewInit, DoCheck {
+export interface LifecycleEvents2 extends AfterViewInit, DoCheck {
     doCheck$: Observable<void>;
     afterViewInit$: Observable<void>;
 }
 
 export function mixinLifecycleEvents<T extends Type<any>>(Base: T)
-    : Type<LifecycleEvents> & T {
-    return class extends Base implements LifecycleEvents {
+    : Type<LifecycleEvents2> & T {
+    return class extends Base implements LifecycleEvents2 {
         private doCheckSubject = new Subject<void>();
         private afterViewInitSubject = new Subject<void>();
         doCheck$ = this.doCheckSubject.asObservable();

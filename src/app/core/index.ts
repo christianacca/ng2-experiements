@@ -14,3 +14,4 @@ export * from './mark-for-check-asap.decorator';
 export { Int } from './int.decorator';
 export * from './add-property-trait';
 export * from './lifecycle-events.mixin';
+export * from './lifecycle-events';
