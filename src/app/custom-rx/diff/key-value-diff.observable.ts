@@ -49,6 +49,19 @@ export class KeyValueDiffObservable<T extends object, K extends keyof T = keyof 
             return this.filter(changes => hasRecord(changes, predicate)).subscribe(subscriber);
         })
     }
+    // includes(predicate: (record: KeyValueChangeRecord<K, any>) => boolean) {
+    //     return new KeyValueDiffObservable<T, K>(subscriber => {
+    //         return this.subscribe({
+    //             next: (changes) => {
+    //                 if (hasRecord(changes, predicate)) {
+    //                     subscriber.next(changes);
+    //                 }
+    //             },
+    //             error: (err) => { subscriber.error(err); },
+    //             complete: () => { subscriber.complete(); }
+    //         })
+    //     })
+    // }
     mapToArray() {
         return this.map(changes => toArray(changes));
     }
