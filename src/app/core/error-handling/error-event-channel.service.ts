@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { asap } from 'rxjs/scheduler/asap';
 import 'rxjs/add/operator/observeOn';
+import 'rxjs/add/operator/distinctUntilChanged';
 
 export abstract class ErrorEventChannelService {
     errors$: Observable<any>;
@@ -13,7 +14,7 @@ export abstract class ErrorEventChannelService {
 // tslint:disable-next-line:class-name
 export class _ErrorEventChannelServiceImpl implements ErrorEventChannelService, ErrorHandler {
     private errorsSubject = new Subject<any>();
-    errors$ = this.errorsSubject.observeOn(asap);
+    errors$ = this.errorsSubject.distinctUntilChanged().observeOn(asap);
     publish(error: any) {
         this.errorsSubject.next(error);
     }
