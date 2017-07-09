@@ -1,12 +1,12 @@
-import { ErrorHandler, Injectable } from '@angular/core';
+import { ErrorHandler, Injectable, Inject } from '@angular/core';
+import { NG_ERROR_HANDLER } from './ng-error-handler';
 
 @Injectable()
-export class DelegatingErrorHandler extends ErrorHandler {
-  constructor() {
-    super();
+export class DelegatingErrorHandler implements ErrorHandler {
+  constructor( @Inject(NG_ERROR_HANDLER) private errorHandlerImpl: ErrorHandler) {
   }
   handleError(error: any) {
     console.warn(`Error received by DelegatingErrorHandler: ${error}`);
-    super.handleError(error);
+    this.errorHandlerImpl.handleError(error);
   }
 }
