@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
+import '../../custom-rx/add/operator/apply-global-error-handler';
 import { AutoUnsubscribe } from '../../core';
 
 @Component({
@@ -24,6 +26,7 @@ export class RxjsCatchOperatorComponent implements OnInit {
 
   syncError() {
     Observable.throw(new Error('sync error - BANG!'))
+      .applyGlobalErrorHandler({ rethrow: true })
       .catch(err => Observable.of(true))
       .subscribe(() => {
         this.isSyncRecovered = true;
