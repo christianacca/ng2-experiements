@@ -6,6 +6,7 @@ export class DelegatingErrorHandler extends ErrorHandler {
     super();
   }
   handleError(error: any) {
+    console.warn(`Error received by DelegatingErrorHandler: ${error}`);
     super.handleError(error);
   }
 }

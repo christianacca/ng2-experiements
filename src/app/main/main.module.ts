@@ -23,10 +23,11 @@ import { DiTmplContainerComponent } from './di/di-tmpl-container/di-tmpl-contain
 import { DiDirTmplContainerDirective } from './di/di-dir-tmpl-container.directive';
 import { DiTmplContainer2Component } from './di/di-tmpl-container2/di-tmpl-container2.component';
 import { DiTmplContentDirective } from './di/di-tmpl-container2/di-tmpl-content.directive';
-import { RxjsErrAsyncPipeComponent } from './rxjs/rxjs-err-async-pipe.component';
+import { RxjsErrAsyncPipeComponent } from './error-handler/rxjs-err-async-pipe.component';
 import { ErrorHandlerComponent } from './error-handler/error-handler.component';
 import { ChangeDetectionModule } from './change-detection/change-detection.module';
 import { ExtensionEgsModule } from './extension-egs/extension-egs.module';
+import { RxjsCatchOperatorComponent } from './error-handler/rxjs-catch-operator.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { ExtensionEgsModule } from './extension-egs/extension-egs.module';
     DiTmplContainer2Component,
     DiTmplContentDirective,
     RxjsErrAsyncPipeComponent,
-    ErrorHandlerComponent
+    ErrorHandlerComponent,
+    RxjsCatchOperatorComponent
   ],
   imports: [
     CommonModule,

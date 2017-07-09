@@ -5,8 +5,9 @@ import { DiComponent } from './di/di.component';
 import { DirLifecycleComponent } from './dir-lifecycle/dir-lifecycle.component';
 import { ErrorHandlerComponent } from './error-handler/error-handler.component';
 import { NgModule } from '@angular/core';
-import { RxjsErrAsyncPipeComponent } from './rxjs/rxjs-err-async-pipe.component';
+import { RxjsErrAsyncPipeComponent } from './error-handler/rxjs-err-async-pipe.component';
 import { ZonesComponent } from './error-handler/zones/zones.component';
+import { RxjsCatchOperatorComponent } from './error-handler/rxjs-catch-operator.component';
 
 const routes: Route[] = [
     {
@@ -39,6 +40,10 @@ const routes: Route[] = [
             {
                 component: RxjsErrAsyncPipeComponent,
                 path: 'rxjs-err-async-pipe'
+            },
+            {
+                component: RxjsCatchOperatorComponent,
+                path: 'rxjs-catch-operator'
             }
         ]
     }

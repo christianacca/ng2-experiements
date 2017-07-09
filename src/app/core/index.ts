@@ -5,6 +5,7 @@ export { Bootstrappable1 } from './bootstrappable1.service';
 export { Bootstrappable2 } from './bootstrappable2.service';
 export { Db } from './db.service';
 export { CoreModule } from './core.module';
+export * from './error-handling';
 export * from './langs-util';
 export { AutoUnsubscribe } from './auto-unsubscribe.decorator';
 import { DebugRouteReuseStrategy } from './debug-route-reuse-strategy';
