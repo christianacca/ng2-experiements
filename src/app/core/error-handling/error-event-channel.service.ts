@@ -14,7 +14,7 @@ export abstract class ErrorEventChannelService {
 // tslint:disable-next-line:class-name
 export class _ErrorEventChannelServiceImpl implements ErrorEventChannelService, ErrorHandler {
     private errorsSubject = new Subject<any>();
-    errors$ = this.errorsSubject.distinctUntilChanged().observeOn(asap);
+    errors$ = this.errorsSubject.distinctUntilChanged();
     publish(error: any) {
         this.errorsSubject.next(error);
     }

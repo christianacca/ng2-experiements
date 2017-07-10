@@ -19,7 +19,9 @@ export class ErrorLoggerService {
     private ngZone: NgZone) { }
 
   log(error: any) {
-    // don't want error logging to cause further change detection runs
+    // run outside of angular:
+    // * don't want error logging to cause further change detection runs
+    // * avoid errors during logging to result in potentially inifinte loops
     this.ngZone.runOutsideAngular(() => {
       this.errorAppenders.forEach(appender => this.tryAppendError(error, appender));
     });
@@ -35,8 +37,8 @@ export class ErrorLoggerService {
         try {
           this.fallbackErrorAppender.append(error);
         } catch (error) {
-          // we're swallowing error here - error logging should not itself cause
-          // the application to fail due to cycles in errors
+          // todo: consider "pushing" this event to the global error handler for the
+          // environment we're running in (eg browser or web worker or server-side nodejs)
         }
       }
     }
