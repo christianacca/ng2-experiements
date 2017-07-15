@@ -26,6 +26,7 @@
     "@angular/platform-browser-dynamic": "~4.2.2",
     "@angular/router": "~4.2.2",
     "core-js": "^2.4.1",
+    "raven-js": "^3.17.0",
     "rxjs": "^5.1.0",
     "ts-helpers": "^1.1.1",
     "zone.js": "^0.8.4"
