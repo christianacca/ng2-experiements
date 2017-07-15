@@ -28,6 +28,7 @@ import { ErrorHandlerComponent } from './error-handler/error-handler.component';
 import { ChangeDetectionModule } from './change-detection/change-detection.module';
 import { ExtensionEgsModule } from './extension-egs/extension-egs.module';
 import { RxjsCatchOperatorComponent } from './error-handler/rxjs-catch-operator.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { RxjsCatchOperatorComponent } from './error-handler/rxjs-catch-operator.
     ReportsModule,
     MainRoutingModule,
     ChangeDetectionModule,
-    ExtensionEgsModule
+    ExtensionEgsModule,
+    SharedModule
   ]
 })
 export class MainModule { }

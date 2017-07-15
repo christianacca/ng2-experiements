@@ -40,7 +40,6 @@ import { TreeShakeModule } from './tree-shake/tree-shake.module';
     TreeShakeModule
   ],
   providers: [
-    debugErrorAppenderProvider,
     bootstrappedProviders,
     { provide: RouteReuseStrategy, useClass: DebugRouteReuseStrategy }
   ],
