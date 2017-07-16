@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { MainRoutingModule } from './main-routing.module';
 import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { DiComponent } from './di/di.component';
 import { DiDir1Directive } from './di/di-dir1.directive';
@@ -28,7 +29,7 @@ import { ErrorHandlerComponent } from './error-handler/error-handler.component';
 import { ChangeDetectionModule } from './change-detection/change-detection.module';
 import { ExtensionEgsModule } from './extension-egs/extension-egs.module';
 import { SharedModule } from '../shared/shared.module';
-import { IntervalErrorComponent } from './error-handler/rx/interval-error.component';
+import { RxIntervalErrorComponent } from './error-handler/rx/rx-interval-error.component';
 import { IntervalErrorCountedComponent } from './error-handler/rx/interval-error-counted.component';
 import { ControlFlowComponent } from './error-handler/rx/control-flow.component';
 import { IntervalErrorComponent as NoRxIntervalErrorComponent } from './error-handler/no-rx/interval-error.component';
@@ -57,7 +58,7 @@ import { IntervalErrorCountedComponent as NoIntervalErrorCountedComponent } from
     DiTmplContentDirective,
     RxjsErrAsyncPipeComponent,
     ErrorHandlerComponent,
-    IntervalErrorComponent,
+    RxIntervalErrorComponent,
     IntervalErrorCountedComponent,
     ControlFlowComponent,
     NoRxIntervalErrorComponent,
@@ -65,6 +66,7 @@ import { IntervalErrorCountedComponent as NoIntervalErrorCountedComponent } from
   ],
   imports: [
     CommonModule,
+    FormsModule,
     HttpModule,
     ReportsModule,
     MainRoutingModule,
