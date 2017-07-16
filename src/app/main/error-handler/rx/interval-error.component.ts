@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/switchMap';
@@ -25,8 +25,7 @@ interface Record {
   `,
   styles: []
 })
-export class IntervalErrorComponent implements OnInit {
-  failureCount: boolean;
+export class IntervalErrorComponent {
   results$: Observable<number>;
   constructor() {
     const interval$ = Observable.interval(1000).startWith(0);
@@ -38,9 +37,5 @@ export class IntervalErrorComponent implements OnInit {
     // - we must apply any global exception policy (eg logging the error)
     this.results$ = interval$
       .switchMap(() => failRandomly$.applyGlobalErrorHandler());
-  }
-
-  ngOnInit() {
-
   }
 }

@@ -31,6 +31,8 @@ import { SharedModule } from '../shared/shared.module';
 import { IntervalErrorComponent } from './error-handler/rx/interval-error.component';
 import { IntervalErrorCountedComponent } from './error-handler/rx/interval-error-counted.component';
 import { ControlFlowComponent } from './error-handler/rx/control-flow.component';
+import { IntervalErrorComponent as NoRxIntervalErrorComponent } from './error-handler/no-rx/interval-error.component';
+import { IntervalErrorCountedComponent as NoIntervalErrorCountedComponent } from './error-handler/no-rx/interval-error-counted.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +59,9 @@ import { ControlFlowComponent } from './error-handler/rx/control-flow.component'
     ErrorHandlerComponent,
     IntervalErrorComponent,
     IntervalErrorCountedComponent,
-    ControlFlowComponent
+    ControlFlowComponent,
+    NoRxIntervalErrorComponent,
+    NoIntervalErrorCountedComponent
   ],
   imports: [
     CommonModule,

@@ -9,6 +9,8 @@ import { RxjsErrAsyncPipeComponent } from './error-handler/rxjs-err-async-pipe.c
 import { ZonesComponent } from './error-handler/zones/zones.component';
 import { IntervalErrorComponent } from './error-handler/rx/interval-error.component';
 import { IntervalErrorCountedComponent } from './error-handler/rx/interval-error-counted.component';
+import { IntervalErrorComponent as NoRxIntervalErrorComponent } from './error-handler/no-rx/interval-error.component';
+import { IntervalErrorCountedComponent as NoRxIntervalErrorCountedComponent } from './error-handler/no-rx/interval-error-counted.component';
 
 const routes: Route[] = [
     {
@@ -49,6 +51,14 @@ const routes: Route[] = [
             {
                 component: IntervalErrorCountedComponent,
                 path: 'rx-interval-counted-error'
+            },
+            {
+                component: NoRxIntervalErrorComponent,
+                path: 'interval-error'
+            },
+            {
+                component: NoRxIntervalErrorCountedComponent,
+                path: 'interval-counted-error'
             }
         ]
     }
