@@ -27,8 +27,10 @@ import { RxjsErrAsyncPipeComponent } from './error-handler/rxjs-err-async-pipe.c
 import { ErrorHandlerComponent } from './error-handler/error-handler.component';
 import { ChangeDetectionModule } from './change-detection/change-detection.module';
 import { ExtensionEgsModule } from './extension-egs/extension-egs.module';
-import { RxjsCatchOperatorComponent } from './error-handler/rxjs-catch-operator.component';
 import { SharedModule } from '../shared/shared.module';
+import { IntervalErrorComponent } from './error-handler/rx/interval-error.component';
+import { IntervalErrorCountedComponent } from './error-handler/rx/interval-error-counted.component';
+import { ControlFlowComponent } from './error-handler/rx/control-flow.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,9 @@ import { SharedModule } from '../shared/shared.module';
     DiTmplContentDirective,
     RxjsErrAsyncPipeComponent,
     ErrorHandlerComponent,
-    RxjsCatchOperatorComponent
+    IntervalErrorComponent,
+    IntervalErrorCountedComponent,
+    ControlFlowComponent
   ],
   imports: [
     CommonModule,
