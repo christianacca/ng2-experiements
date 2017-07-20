@@ -5,7 +5,6 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/defer';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/timer';
-import 'rxjs/add/observable/throw';
 import '../../../custom-rx/add/operator/apply-global-error-handler';
 import { failRandomly$ } from './fail-randomly.observable';
 
