@@ -1,45 +1,56 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { failRandomly } from './fail-randomly';
-
-interface Record {
-  successCount: number;
-  failureCount: number
-};
-
-async function recorded(state: Record, source: () => Promise<any>) {
-  try {
-    await source();
-    state.successCount += 1;
-  } catch (error) {
-    state.failureCount += 1;
-    // throw to ensure error is NOT silently swallowed but sent to global exception handler
-    throw error;
-  }
-}
+import { ActivatedRoute, Router } from '@angular/router';
+import { IntervalCountedErrorModel, IntervalCountedErrorModelData } from './interval-counted-error.model';
 
 @Component({
   template: `
     <h3>Interval error (counted)</h3>
     <div>
       <h4>First subscription</h4>
-      <p>Succeeded: {{results.successCount}}</p>
-      <p>Failed: {{results.failureCount}}</p>
+      <p>Succeeded: {{model.results.successCount}}</p>
+      <p>Failed: {{model.results.failureCount}}</p>
     </div>
+    <p>
+      <label>
+        Interval Frequency: <input type="number" [value]="model.frequency" #freq/>
+      </label>
+      <a href="" (click)="changeFrequency(freq.value); $event.preventDefault()">Change</a>
+    </p>
   `,
   styles: []
 })
 export class IntervalErrorCountedComponent implements OnInit, OnDestroy {
-  results = { successCount: 0, failureCount: 0 };
-  private intervalSubscription: any;
-  constructor() { }
+  model: IntervalCountedErrorModel;
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-    this.intervalSubscription = setInterval(
-      () => recorded(this.results, failRandomly)
-      , 1000);
+    const data$ = this.route.paramMap
+      .map(paramsMap => parseInt(paramsMap.get('frequency'), 10))
+      .map(frequency => ({ frequency }));
+
+    data$
+      .subscribe(data => {
+        this.teardownState();
+        this.setState(data);
+      });
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.intervalSubscription);
+    this.teardownState();
+  }
+
+  changeFrequency(frequency: string) {
+    this.router.navigate(['.', { frequency }], { relativeTo: this.route })
+  }
+
+  private teardownState() {
+    if (!this.model) { return; }
+
+    this.model.dispose();
+  }
+
+  private setState(data: IntervalCountedErrorModelData) {
+    this.model = new IntervalCountedErrorModel(data);
+    this.model.start();
   }
 }
