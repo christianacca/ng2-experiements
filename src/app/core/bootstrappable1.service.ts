@@ -11,11 +11,12 @@ export class Bootstrappable1 extends BootstrappableBase {
         console.log(`Bootstrappable.ctor -> recevied bootstrappable2`);
         console.log(`Bootstrappable.ctor -> bootstrappable2.asyncValue: ${bootstrappable2.asyncValue}`);
     }
-    protected bootstrapImpl() {
-        return this.bootstrappable2.done.then(() => this.loadAsyncValue());
+    protected async bootstrapImpl() {
+        await this.bootstrappable2.done;
+        return this.loadAsyncValue();
     }
     private loadAsyncValue() {
-        return new Promise(resolve => {
+        return new Promise<void>(resolve => {
             setTimeout(() => {
                 console.log(`Bootstrappable.loadAsyncValue -> bootstrappable2.asyncValue: ${this.bootstrappable2.asyncValue}`);
                 this.asyncValue = this.bootstrappable2.asyncValue;

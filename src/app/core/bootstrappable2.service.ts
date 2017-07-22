@@ -9,7 +9,7 @@ export class Bootstrappable2 extends BootstrappableBase {
         super('Bootstrappable2Service');
     }
     protected bootstrapImpl() {
-        return new Promise(resolve => {
+        return new Promise<void>(resolve => {
             setTimeout(() => {
                 this.asyncValue = 'A value from Bootstrappable2Service';
                 resolve();

@@ -1,9 +1,10 @@
-import { Deferred } from './deferred';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/toPromise'
 
 export interface Bootstrappable {
     isDone: boolean;
-    done: Promise<any>;
-    bootstrap(): void | Promise<any>;
+    done: Promise<void>;
+    bootstrap(): void | Promise<void>;
 }
 
 /**
@@ -11,24 +12,23 @@ export interface Bootstrappable {
  */
 export abstract class BootstrappableBase implements Bootstrappable {
     isDone = false;
-    done: Promise<any>;
-    private _deferred: Deferred<any>;
-    protected abstract bootstrapImpl(): Promise<any> | void;
+    done: Promise<void>;
+    private _deferred = new Subject<void>();
+
+    protected abstract bootstrapImpl(): Promise<void> | void;
     constructor(private serviceName?: string) {
-        this._deferred = Deferred.defer();
-        this.done = this._deferred.promise;
+        this.done = this._deferred.toPromise();
     }
-    bootstrap() {
+    async bootstrap() {
         console.log(`${this.serviceName}.bootstrap started`);
-        let result = this.bootstrapImpl();
-        if (!result) {
-            result = Promise.resolve(undefined);
+        try {
+            const result = await this.bootstrapImpl();
+            console.log(`${this.serviceName}.bootstrap complete`);
+            this.isDone = true;
+            this._deferred.next();
+            this._deferred.complete();
+        } catch (error) {
+            this._deferred.error(error)
         }
-        return result
-            .then(() => {
-                console.log(`${this.serviceName}.bootstrap complete`);
-                this.isDone = true;
-                this._deferred.resolve(undefined);
-            }, this._deferred.reject);
     }
 }
