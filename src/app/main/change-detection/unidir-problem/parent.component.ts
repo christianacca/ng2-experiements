@@ -60,6 +60,10 @@ export class ParentComponent implements OnInit, DoCheck {
 
   ngDoCheck(): void {
     console.log(`ParentComponent.ngDoCheck (age: ${this.value.age})`);
+    // (uni-directional data flow - means an update to data cannot be made that would affect a component,
+    //  higher in the component tree, that has already been checked for changes and it's view updated during
+    //  the current change detection cycle):
+
     // important: example of how a cycle can still occur even with uni-directional data flow:
     // 1. grandparent.component changes hairColor to 'brown'
     // 2. change detection runs
