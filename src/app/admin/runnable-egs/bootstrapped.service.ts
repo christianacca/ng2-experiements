@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IRunnable } from '../../runnable';
+import { delay } from '../../core';
 
 export abstract class BootstrappedService {
   asyncValue: string;
@@ -12,15 +13,11 @@ export abstract class BootstrappedService {
 @Injectable()
 export class BootstrappedServiceImpl extends BootstrappedService implements IRunnable {
 
-  run() {
+  async run() {
     console.log('admin>runnable-egs>BootstrappedService.run started');
-    return new Promise(resolve => {
-      setTimeout(() => {
-        this.asyncValue = 'A value from admin>BootstrappedService';
-        console.log('admin>runnable-egs>BootstrappedService.run resolved');
-        resolve();
-      }, 10);
-    });
+    await delay(10);
+    this.asyncValue = 'A value from admin>BootstrappedService';
+    console.log('admin>runnable-egs>BootstrappedService.run resolved');
   }
 
   constructor() {

@@ -22,7 +22,7 @@ export abstract class BootstrappableBase implements Bootstrappable {
     async bootstrap() {
         console.log(`${this.serviceName}.bootstrap started`);
         try {
-            const result = await this.bootstrapImpl();
+            await this.bootstrapImpl();
             console.log(`${this.serviceName}.bootstrap complete`);
             this.isDone = true;
             this._deferred.next();

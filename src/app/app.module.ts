@@ -7,7 +7,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
 import { CoreModule, ErrorHandlerModuleInitializer, sentryErrorAppenderProvider } from './core';
-import { RunnableModule, RUNNABLE } from './runnable';
+import { RunnableModule, RUN_BLOCK } from './runnable';
 import { OnRun } from './runnable-egs/on-run.service';
 import { bootstrappedProviders, BootstrappedService } from './runnable-egs/bootstrapped.service';
 import { ModuleSyncInitModule } from './module-sync-init';
@@ -33,9 +33,9 @@ import { TreeShakeModule } from './tree-shake/tree-shake.module';
     DiRegModule,
     DiReg2Module,
     RunnableModule.for([
-      { provide: RUNNABLE, multi: true, useClass: OnRun },
-      { provide: RUNNABLE, multi: true, useExisting: BootstrappedService },
-      { provide: RUNNABLE, multi: true, useClass: ErrorHandlerModuleInitializer },
+      { provide: RUN_BLOCK, multi: true, useClass: OnRun },
+      { provide: RUN_BLOCK, multi: true, useExisting: BootstrappedService },
+      { provide: RUN_BLOCK, multi: true, useClass: ErrorHandlerModuleInitializer },
     ]),
     TreeShakeModule
   ],

@@ -1,40 +1,39 @@
-import { Injectable, InjectionToken, Type, APP_INITIALIZER, Provider, Optional } from '@angular/core';
-import { isPromise } from '../core';
+import { Injectable, InjectionToken, APP_INITIALIZER, Provider, Optional } from '@angular/core';
+import { asyncInvoke } from '../core';
 
 export interface IRunnable {
-    run(): void | Promise<any>;
+    run(): void | Promise<void>;
 }
 
-// exported to make AOT happy
-export function runAll(runnables: IRunnable[], runner: Runner) {
-    return function runBlock() { return runner.run(runnables || []); };
+export interface IConfigurable {
+    configure(): void | Promise<void>;
 }
 
-export const RUNNABLE = new InjectionToken<IRunnable[]>('Runnables');
+export function createConfigAndRunBlock(configurables: IConfigurable[], runnables: IRunnable[], runner: AsyncRunner) {
+    return async function configAndRunBlock() {
+        await runner.invoke(configurables, c => c.configure());
+        await runner.invoke(runnables, r => r.run())
+    };
+}
+
+export const RUN_BLOCK = new InjectionToken<IRunnable[]>('Run_block');
+
+export const CONFIG_BLOCK = new InjectionToken<IConfigurable[]>('Config_block');
 
 
 @Injectable()
-export class Runner {
-    run(runnables: IRunnable[]): Promise<any> {
-        const asyncRunPromises: Promise<any>[] = [];
-        for (let i = 0; i < runnables.length; i++) {
-            const runResult = runnables[i].run();
-            if (isPromise(runResult)) {
-                asyncRunPromises.push(runResult);
-            }
-        }
-        return Promise.all(asyncRunPromises);
-    }
+export class AsyncRunner {
+    invoke = asyncInvoke;
 }
 
-const runAllProvider: Provider = {
+const configAndRunAllProvider: Provider = {
     provide: APP_INITIALIZER,
     multi: true,
-    useFactory: runAll,
-    deps: [[RUNNABLE, new Optional()], Runner]
+    useFactory: createConfigAndRunBlock,
+    deps: [[CONFIG_BLOCK, new Optional()], [RUN_BLOCK, new Optional()], AsyncRunner]
 };
 
 export const runnerProviders: Provider[] = [
-    Runner,
-    runAllProvider
+    AsyncRunner,
+    configAndRunAllProvider
 ];

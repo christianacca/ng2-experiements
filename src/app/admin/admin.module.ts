@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AdminComponent } from './admin.component';
 import { FeatOneComponent } from './feat-one/feat-one.component';
 import { AdminRoutingModule } from './admin-routing.module';
-import { RunnableModule, RUNNABLE } from '../runnable';
+import { RunnableModule, RUN_BLOCK } from '../runnable';
 import { OnRun } from './runnable-egs/on-run.service';
 import { bootstrappedProvider, BootstrappedService } from './runnable-egs/bootstrapped.service';
 
@@ -19,8 +19,8 @@ export function adminTitleResolve() {
     FormsModule,
     AdminRoutingModule,
     RunnableModule.for([
-      { provide: RUNNABLE, multi: true, useClass: OnRun },
-      { provide: RUNNABLE, multi: true, useExisting: BootstrappedService }
+      { provide: RUN_BLOCK, multi: true, useClass: OnRun },
+      { provide: RUN_BLOCK, multi: true, useExisting: BootstrappedService }
     ])
   ],
   declarations: [AdminComponent, FeatOneComponent],

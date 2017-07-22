@@ -2,6 +2,7 @@ import { Injectable, APP_INITIALIZER } from '@angular/core';
 import { BootstrappableBase } from './bootstrappable';
 import { Bootstrappable2 } from './bootstrappable2.service';
 import { runBlockFactory } from './provide-bootstrappable';
+import { delay } from '../core';
 
 @Injectable()
 export class Bootstrappable1 extends BootstrappableBase {
@@ -15,14 +16,10 @@ export class Bootstrappable1 extends BootstrappableBase {
         await this.bootstrappable2.done;
         return this.loadAsyncValue();
     }
-    private loadAsyncValue() {
-        return new Promise<void>(resolve => {
-            setTimeout(() => {
-                console.log(`Bootstrappable.loadAsyncValue -> bootstrappable2.asyncValue: ${this.bootstrappable2.asyncValue}`);
-                this.asyncValue = this.bootstrappable2.asyncValue;
-                resolve();
-            }, 100);
-        });
+    private async loadAsyncValue() {
+        await delay(100);
+        console.log(`Bootstrappable.loadAsyncValue -> bootstrappable2.asyncValue: ${this.bootstrappable2.asyncValue}`);
+        this.asyncValue = this.bootstrappable2.asyncValue;
     }
 }
 
