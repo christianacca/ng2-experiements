@@ -15,8 +15,17 @@
  * angular injector
  */
 
-import { InjectionToken, Type } from '@angular/core';
 import { Db } from './db.service';
+
+export interface AssetType {
+    new (): Asset;
+}
+
+/**
+ * The injection token for the {@link Asset} constructor
+ */
+export class AssetType {
+}
 
 export interface Asset {
     id?: number;
@@ -24,16 +33,14 @@ export interface Asset {
     load(): Promise<void>;
 }
 
-export const AssetType = new InjectionToken<Type<Asset>>('AssetType');
-
 export function assetCtorFactory(db: Db) {
     return class implements Asset {
         id?: number;
         purchaseValue?: number;
         load() {
-           return db.fetchEntityData<Asset>(this.id, 'Asset').then(data => {
+            return db.fetchEntityData<Asset>(this.id, 'Asset').then(data => {
                 this.purchaseValue = data.purchaseValue || 0;
-           });
+            });
         }
     };
 }

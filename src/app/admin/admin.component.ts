@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Type } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Asset, AssetType, Company, CompanyType } from '../core';
 import { BootstrappedService } from './runnable-egs/bootstrapped.service';
@@ -13,8 +13,8 @@ export class AdminComponent implements OnInit {
   company: Company;
   title = 'Admin area';
   constructor(
-    @Inject(AssetType) Asset: Type<Asset>,
-    @Inject(CompanyType) Company: Type<Company>,
+    Asset: AssetType,
+    Company: CompanyType,
     bootstrapped: BootstrappedService,
     private route: ActivatedRoute
   ) {

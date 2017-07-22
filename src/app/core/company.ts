@@ -15,10 +15,18 @@
  * angular injector
  */
 
-import { InjectionToken, Type } from '@angular/core';
 import { Db } from './db.service';
 
-export const CompanyType = new InjectionToken<Type<Company>>('CompanyType');
+export interface CompanyType {
+  new (): Company;
+}
+
+/**
+ * The injection token for the {@link Company} constructor
+ */
+export class CompanyType {
+
+}
 
 export class Company {
   private static db: Db;
