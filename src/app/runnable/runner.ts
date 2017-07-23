@@ -1,24 +1,48 @@
 import { Injectable, InjectionToken, APP_INITIALIZER, Provider, Optional } from '@angular/core';
-import { asyncInvoke } from '../promise-exts';
+import { asyncInvoke, Deferrable, ResolveDeferred } from '../promise-exts';
 
-export interface IRunnable {
+export interface Runnable {
+    readonly runDone: Promise<void>;
     run(): void | Promise<void>;
 }
 
-export interface IConfigurable {
+/**
+ * Convenient base class that provides most of the implementation of the {@link Runnable} interface
+ */
+@Deferrable<Runnable>('runDone')
+export class Runnable {
+    @ResolveDeferred()
+    run() {
+        // override in subclass
+    }
+}
+
+export interface Configurable {
+    readonly configDone: Promise<void>;
     configure(): void | Promise<void>;
 }
 
-export function createConfigAndRunBlock(configurables: IConfigurable[], runnables: IRunnable[], runner: AsyncRunner) {
+/**
+ * Convenient base class that provides most of the implementation of the {@link Configurable} interface
+ */
+@Deferrable<Configurable>('configDone')
+export class Configurable {
+    @ResolveDeferred()
+    async configure() {
+        // override in subclass
+    }
+}
+
+export function createConfigAndRunBlock(configurables: Configurable[], runnables: Runnable[], runner: AsyncRunner) {
     return async function configAndRunBlock() {
         await runner.invoke(configurables, c => c.configure());
         await runner.invoke(runnables, r => r.run())
     };
 }
 
-export const RUN_BLOCK = new InjectionToken<IRunnable[]>('Run_block');
+export const RUN_BLOCK = new InjectionToken<Runnable[]>('Run_block');
 
-export const CONFIG_BLOCK = new InjectionToken<IConfigurable[]>('Config_block');
+export const CONFIG_BLOCK = new InjectionToken<Configurable[]>('Config_block');
 
 
 @Injectable()

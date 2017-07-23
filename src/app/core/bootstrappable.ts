@@ -3,7 +3,7 @@ import 'rxjs/add/operator/toPromise'
 import { Deferrable, ResolveDeferred } from '../promise-exts';
 
 export interface Bootstrappable {
-    done: Promise<void>;
+    readonly done: Promise<void>;
     bootstrap(): void | Promise<void>;
 }
 
@@ -13,7 +13,7 @@ export interface Bootstrappable {
 @Deferrable()
 export class Bootstrappable {
     @ResolveDeferred()
-    async bootstrap() {
+    bootstrap() {
         // override in subclass
     }
 }

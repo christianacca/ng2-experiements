@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { IRunnable } from '../../runnable';
+import { Runnable } from '../../runnable';
 
 @Injectable()
-export class OnRun implements IRunnable {
+export class OnRun extends Runnable {
   constructor() {
+    super();
     console.log('admin>runnable-egs>OnRun.ctor');
   }
 
-  run(): void | Promise<any> {
+  run() {
     console.log('admin>runnable-egs>OnRun called');
   }
 }
