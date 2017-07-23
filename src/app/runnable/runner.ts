@@ -1,18 +1,18 @@
 import { Injectable, InjectionToken, APP_INITIALIZER, Provider, Optional } from '@angular/core';
 import { asyncInvoke, Deferrable, ResolveDeferred } from '../promise-exts';
 
-export interface Runnable {
-    readonly runDone: Promise<void>;
-    run(): void | Promise<void>;
+export interface Startable {
+    readonly startDone: Promise<void>;
+    start(): void | Promise<void>;
 }
 
 /**
  * Convenient base class that provides most of the implementation of the {@link Runnable} interface
  */
-@Deferrable<Runnable>('runDone')
-export class Runnable {
+@Deferrable<Startable>('startDone')
+export class Startable {
     @ResolveDeferred()
-    run() {
+    start() {
         // override in subclass
     }
 }
@@ -37,21 +37,21 @@ function isConfigurable(item: any): item is Configurable {
     return ('configure' in item);
 }
 
-function isRunnable(item: any): item is Runnable {
+function isRunnable(item: any): item is Startable {
     return ('run' in item);
 }
 
-export function createConfigAndRunBlock(startables: Array<Runnable | Configurable>, runner: AsyncRunner) {
+export function createConfigAndRunBlock(startables: Array<Startable | Configurable>, runner: AsyncRunner) {
     return async function configAndRunBlock() {
         // todo: remove type assertion once webpack uses same version of typescript (2.4.2) which can correctly infer
         const configurable = startables.filter(isConfigurable) as Configurable[];
-        const runnable = startables.filter(isRunnable) as Runnable[];
+        const runnable = startables.filter(isRunnable) as Startable[];
         await runner.invoke(configurable, c => c.configure());
-        await runner.invoke(runnable, r => r.run())
+        await runner.invoke(runnable, r => r.start())
     };
 }
 
-export const STARTABLE = new InjectionToken<Array<Runnable | Configurable>>('Run_block');
+export const STARTABLE = new InjectionToken<Array<Startable | Configurable>>('Run_block');
 
 
 @Injectable()

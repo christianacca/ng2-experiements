@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Runnable } from '../../runnable';
+import { Startable } from '../../runnable';
 import { delay } from '../../promise-exts';
 
 export abstract class BootstrappedService {
@@ -11,9 +11,9 @@ export abstract class BootstrappedService {
  * used in a synchronus fashion
  */
 @Injectable()
-export class BootstrappedServiceImpl extends Runnable implements BootstrappedService {
+export class BootstrappedServiceImpl extends Startable implements BootstrappedService {
   asyncValue: string;
-  async run() {
+  async start() {
     console.log('admin>runnable-egs>BootstrappedService.run started');
     await delay(10);
     this.asyncValue = 'A value from admin>BootstrappedService';
