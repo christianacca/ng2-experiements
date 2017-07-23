@@ -1,15 +1,13 @@
 import { Injectable, APP_INITIALIZER } from '@angular/core';
-import { BootstrappableBase } from './bootstrappable';
+import { Bootstrappable } from './bootstrappable';
 import { runBlockFactory } from './provide-bootstrappable';
-import { delay } from '../core';
+import { delay } from './langs-util';
+import { Deferrable, ResolveDeferred } from './deferrable.decorator';
 
 @Injectable()
-export class Bootstrappable2 extends BootstrappableBase {
+export class Bootstrappable2 extends Bootstrappable {
     asyncValue: string;
-    constructor() {
-        super('Bootstrappable2Service');
-    }
-    protected async bootstrapImpl() {
+    async bootstrap() {
         await delay(100);
         this.asyncValue = 'A value from Bootstrappable2Service';
     }

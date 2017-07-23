@@ -1,21 +1,26 @@
 import { Injectable, APP_INITIALIZER } from '@angular/core';
-import { BootstrappableBase } from './bootstrappable';
 import { Bootstrappable2 } from './bootstrappable2.service';
 import { runBlockFactory } from './provide-bootstrappable';
-import { delay } from '../core';
+import { Bootstrappable } from './bootstrappable';
+import { delay } from './langs-util';
+import { Deferrable, ResolveDeferred } from './deferrable.decorator';
+
 
 @Injectable()
-export class Bootstrappable1 extends BootstrappableBase {
+export class Bootstrappable1 extends Bootstrappable {
     asyncValue: string;
+    done: Promise<void>;
     constructor(private bootstrappable2: Bootstrappable2) {
-        super('BootstrappableService');
+        super()
         console.log(`Bootstrappable.ctor -> recevied bootstrappable2`);
         console.log(`Bootstrappable.ctor -> bootstrappable2.asyncValue: ${bootstrappable2.asyncValue}`);
     }
-    protected async bootstrapImpl() {
+
+    async bootstrap() {
         await this.bootstrappable2.done;
-        return this.loadAsyncValue();
+        await this.loadAsyncValue();
     }
+
     private async loadAsyncValue() {
         await delay(100);
         console.log(`Bootstrappable.loadAsyncValue -> bootstrappable2.asyncValue: ${this.bootstrappable2.asyncValue}`);
