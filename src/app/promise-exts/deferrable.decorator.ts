@@ -1,7 +1,6 @@
 import { Type } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/toPromise';
 import { isPromiseLike } from './is-promise-like';
+import { Deferred } from './deferred';
 
 const resolveDeferredMetadataKey = Symbol('resolveDeferred');
 
@@ -23,28 +22,23 @@ interface Deferrable {
 }
 
 
-const deferSubjectKey = Symbol('deferSubject');
-const deferredKey = Symbol('deferredSubject');
+const deferKey = Symbol('defer');
 
 function wrapResolve(originalResolve: () => void | Promise<void>, deferredField: string) {
-    return function (this: object) {
-        // important: order of next two lines critial
-        const deferred = this[deferredField];
-        const deferSubject = this[deferSubjectKey] as Subject<void>;
+    return async function (this: object) {
+        const defer = this[deferKey] as Deferred<void>;
 
-        if (deferSubject.closed) {
-            return deferred;
+        if (defer.isDone) {
+            return defer.promise;
         }
 
-        let result = originalResolve.call(this) as Promise<void>;
-        if (!isPromiseLike(result)) {
-            result = Promise.resolve();
+        try {
+            await originalResolve.call(this);
+            defer.resolve();
+        } catch (error) {
+            defer.reject(error);
         }
-        result.then(() => {
-            deferSubject.next();
-            deferSubject.complete();
-        })
-        return deferred;
+        return defer.promise;
     }
 }
 
@@ -52,13 +46,8 @@ function addDeferrableBackingFields(proto: object, deferredField: string) {
 
     Object.defineProperty(proto, deferredField, {
         get: function (this: object) {
-            if (!this[deferSubjectKey]) {
-                this[deferSubjectKey] = new Subject<void>();
-            }
-            if (!this[deferredKey]) {
-                this[deferredKey] = this[deferSubjectKey].toPromise();
-            }
-            return this[deferredKey];
+            const defer = this[deferKey] = (this[deferKey] as Deferred<void> || Deferred.defer<void>());
+            return defer.promise;
         }
     })
 }
