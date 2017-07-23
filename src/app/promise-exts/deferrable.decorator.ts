@@ -1,7 +1,7 @@
 import { Type } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/toPromise';
-import { isPromiseLike } from '../core';
+import { isPromiseLike } from './is-promise-like';
 
 const resolveDeferredMetadataKey = Symbol('resolveDeferred');
 

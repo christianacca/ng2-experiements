@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IRunnable } from '../runnable';
-import { delay } from '../core';
+import { delay } from '../promise-exts';
 
 export abstract class BootstrappedService {
   asyncValue: string;

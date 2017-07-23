@@ -1,5 +1,5 @@
 import { Injectable, InjectionToken, APP_INITIALIZER, Provider, Optional } from '@angular/core';
-import { asyncInvoke } from '../core';
+import { asyncInvoke } from '../promise-exts';
 
 export interface IRunnable {
     run(): void | Promise<void>;

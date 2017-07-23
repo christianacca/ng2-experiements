@@ -1,8 +1,7 @@
 import { Injectable, APP_INITIALIZER } from '@angular/core';
 import { Bootstrappable } from './bootstrappable';
 import { runBlockFactory } from './provide-bootstrappable';
-import { delay } from './langs-util';
-import { Deferrable, ResolveDeferred } from './deferrable.decorator';
+import { delay, Deferrable, ResolveDeferred } from '../promise-exts';
 
 @Injectable()
 export class Bootstrappable2 extends Bootstrappable {

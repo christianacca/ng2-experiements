@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/toPromise'
-import { Deferrable, ResolveDeferred } from '../core/deferrable.decorator';
+import { Deferrable, ResolveDeferred } from '../promise-exts';
 
 export interface Bootstrappable {
     done: Promise<void>;

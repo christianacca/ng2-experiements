@@ -3,6 +3,7 @@ export class Deferred<T> {
     resolve: (value: T) => void;
     reject: (reason: T) => void;
 
+    // tslint:disable-next-line:no-shadowed-variable
     static defer<T>(): Deferred<T> {
         return new Deferred<T>();
     }
