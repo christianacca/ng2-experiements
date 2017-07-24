@@ -6,15 +6,16 @@ import { delay, Deferrable, ResolveDeferred } from '../promise-exts';
 
 
 @Injectable()
-export class Bootstrappable1 extends Bootstrappable {
+@Deferrable()
+export class Bootstrappable1 implements Bootstrappable {
     asyncValue: string;
     done: Promise<void>;
     constructor(private bootstrappable2: Bootstrappable2) {
-        super()
         console.log(`Bootstrappable.ctor -> recevied bootstrappable2`);
         console.log(`Bootstrappable.ctor -> bootstrappable2.asyncValue: ${bootstrappable2.asyncValue}`);
     }
 
+    @ResolveDeferred()
     async bootstrap() {
         await this.bootstrappable2.done;
         await this.loadAsyncValue();

@@ -2,35 +2,13 @@ import { Injectable, InjectionToken, APP_INITIALIZER, Provider, Optional } from 
 import { asyncInvoke, Deferrable, ResolveDeferred } from '../promise-exts';
 
 export interface Startable {
-    readonly startDone: Promise<void>;
+    startDone: Promise<void>;
     start(): void | Promise<void>;
 }
 
-/**
- * Convenient base class that provides most of the implementation of the {@link Runnable} interface
- */
-@Deferrable<Startable>('startDone')
-export class Startable {
-    @ResolveDeferred()
-    start() {
-        // override in subclass
-    }
-}
-
 export interface Configurable {
-    readonly configDone: Promise<void>;
+    configDone: Promise<void>;
     configure(): void | Promise<void>;
-}
-
-/**
- * Convenient base class that provides most of the implementation of the {@link Configurable} interface
- */
-@Deferrable<Configurable>('configDone')
-export class Configurable {
-    @ResolveDeferred()
-    async configure() {
-        // override in subclass
-    }
 }
 
 function isConfigurable(item: any): item is Configurable {
@@ -38,7 +16,7 @@ function isConfigurable(item: any): item is Configurable {
 }
 
 function isRunnable(item: any): item is Startable {
-    return ('run' in item);
+    return ('start' in item);
 }
 
 export function createConfigAndRunBlock(startables: Array<Startable | Configurable>, runner: AsyncRunner) {

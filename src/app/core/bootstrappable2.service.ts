@@ -4,8 +4,11 @@ import { runBlockFactory } from './provide-bootstrappable';
 import { delay, Deferrable, ResolveDeferred } from '../promise-exts';
 
 @Injectable()
-export class Bootstrappable2 extends Bootstrappable {
+@Deferrable()
+export class Bootstrappable2 implements Bootstrappable {
     asyncValue: string;
+    done: Promise<void>;
+    @ResolveDeferred()
     async bootstrap() {
         await delay(100);
         this.asyncValue = 'A value from Bootstrappable2Service';

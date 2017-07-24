@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Startable } from '../runnable';
+import { Deferrable, ResolveDeferred } from '../promise-exts';
 
 @Injectable()
-export class OnRun extends Startable {
+@Deferrable<Startable>('startDone')
+export class OnRun implements Startable {
+  startDone: Promise<void>;
   constructor() {
-    super();
     console.log('runnable-egs>OnRun.ctor');
   }
+  @ResolveDeferred()
   start(): void | Promise<any> {
     console.log('runnable-egs>OnRun called');
   }

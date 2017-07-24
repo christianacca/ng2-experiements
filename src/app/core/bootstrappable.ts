@@ -6,14 +6,3 @@ export interface Bootstrappable {
     readonly done: Promise<void>;
     bootstrap(): void | Promise<void>;
 }
-
-/**
- * Convenient base class that provides most of the implementation of the {@link Bootstrappable} interface
- */
-@Deferrable()
-export class Bootstrappable {
-    @ResolveDeferred()
-    bootstrap() {
-        // override in subclass
-    }
-}
