@@ -1,15 +1,8 @@
-import { Injectable, InjectionToken, APP_INITIALIZER, Provider, Optional } from '@angular/core';
-import { asyncInvoke, Deferrable, ResolveDeferred } from '../promise-exts';
+import { Injectable, InjectionToken, APP_INITIALIZER, Provider, Optional, Type } from '@angular/core';
+import { asyncInvoke, Deferred } from '../promise-exts';
+import { Configurable } from './configurable';
+import { Startable } from './startable';
 
-export interface Startable {
-    startDone: Promise<void>;
-    start(): void | Promise<void>;
-}
-
-export interface Configurable {
-    configDone: Promise<void>;
-    configure(): void | Promise<void>;
-}
 
 function isConfigurable(item: any): item is Configurable {
     return ('configure' in item);

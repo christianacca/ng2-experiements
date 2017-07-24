@@ -1,6 +1,7 @@
 import { Injectable, Optional, Inject, SkipSelf } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { AsyncRunner, Configurable, Startable, STARTABLE, createConfigAndRunBlock } from './runner';
+import { Startable } from './startable';
+import { AsyncRunner, STARTABLE, createConfigAndRunBlock } from './runner';
 
 @Injectable()
 export class LazyModuleRunner implements CanActivate {
