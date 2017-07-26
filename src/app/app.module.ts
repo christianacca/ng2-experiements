@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
-import { CoreModule, ErrorHandlerModuleInitializer, sentryErrorAppenderProvider } from './core';
+import { CoreModule } from './core';
 import { RunnableModule, STARTABLE } from './runnable';
 import { OnRun } from './runnable-egs/on-run.service';
 import { bootstrappedProviders, BootstrappedService } from './runnable-egs/bootstrapped.service';
@@ -17,7 +17,9 @@ import { DebugRouteReuseStrategy } from './core/debug-route-reuse-strategy';
 import { DiRegModule } from './di-reg/di-reg.module';
 import { DiReg2Module } from './di-reg2/di-reg2.module';
 import { TreeShakeModule } from './tree-shake/tree-shake.module';
+import { errorModuleProviders } from './config/error-module-config';
 // import { RouteAlwaysReuseStrategy } from './core/route-reuse-always-strategy';
+
 
 @NgModule({
   declarations: [
@@ -33,16 +35,15 @@ import { TreeShakeModule } from './tree-shake/tree-shake.module';
     DiRegModule,
     DiReg2Module,
     RunnableModule.for([
+      errorModuleProviders,
       { provide: STARTABLE, multi: true, useClass: OnRun },
       { provide: STARTABLE, multi: true, useExisting: BootstrappedService },
-      { provide: STARTABLE, multi: true, useClass: ErrorHandlerModuleInitializer },
     ]),
     TreeShakeModule
   ],
   providers: [
     bootstrappedProviders,
-    { provide: RouteReuseStrategy, useClass: DebugRouteReuseStrategy },
-    sentryErrorAppenderProvider
+    { provide: RouteReuseStrategy, useClass: DebugRouteReuseStrategy }
   ],
   bootstrap: [AppComponent]
 })

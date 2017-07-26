@@ -1,14 +1,14 @@
 import { Injectable, ErrorHandler } from '@angular/core';
 import { ErrorEventChannelService } from './error-event-channel.service';
 import { ErrorLoggerService } from './error-logger.service';
-import { Startable } from '../../runnable';
+import { Configurable } from '../../runnable';
 import { applyGlobalErrorHandler } from '../../custom-rx/apply-global-error-handler.operator';
 import { Deferrable, ResolveDeferred } from '../../promise-exts';
 
 @Injectable()
-@Deferrable<Startable>('startDone')
-export class ErrorHandlerModuleInitializer implements Startable {
-  startDone: Promise<void>;
+@Deferrable<Configurable>('configDone')
+export class ErrorHandlerModuleInitializer implements Configurable {
+  configDone: Promise<void>;
   constructor(
     private errorEventChannelService: ErrorEventChannelService,
     private errorLogger: ErrorLoggerService,
@@ -16,7 +16,7 @@ export class ErrorHandlerModuleInitializer implements Startable {
   }
 
   @ResolveDeferred()
-  start(): void | Promise<any> {
+  configure(): void | Promise<any> {
     applyGlobalErrorHandler.globalErrorHandler = this.errorHandler;
     this.errorEventChannelService.errors$.subscribe(error => {
       this.errorLogger.log(error);

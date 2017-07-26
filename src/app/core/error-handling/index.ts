@@ -4,4 +4,4 @@ export { ErrorHandlerModuleInitializer } from './error-handler-module-initialize
 export { ErrorLoggerService } from './error-logger.service';
 export { ERROR_APPENDERS } from './error-appender.service'
 export { debugErrorAppenderProvider } from './debug-error-appender.service';
-export { sentryErrorAppenderProvider } from './sentry-error-appender.service';
+export * from './sentry';
