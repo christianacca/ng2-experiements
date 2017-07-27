@@ -23,10 +23,10 @@ function getPropertyNameByMetadataKey<T>(target: any, symbol: Symbol) {
 }
 
 
-function wrapResolve(originalResolve: () => void | Promise<void>, deferredFieldKey: PropertyKey, deferFieldKey: PropertyKey) {
+function wrapResolve(originalResolve: () => void | Promise<void>, deferredField: string, deferFieldKey: PropertyKey) {
     return async function (this: object) {
         // ciritial: do not change order of next 2 lines
-        const deferred = this[deferredFieldKey] as Promise<void>
+        const deferred = this[deferredField] as Promise<void>
         const defer = this[deferFieldKey] as Deferred<void>;
 
         if (defer.isDone) {
@@ -43,9 +43,9 @@ function wrapResolve(originalResolve: () => void | Promise<void>, deferredFieldK
     }
 }
 
-function addDeferredProperty(target: object, deferredFieldKey: PropertyKey, deferFieldKey: PropertyKey) {
+function addDeferredProperty(target: object, deferredField: string, deferFieldKey: PropertyKey) {
 
-    Object.defineProperty(target, deferredFieldKey, {
+    Object.defineProperty(target, deferredField, {
         get: function (this: object) {
             const defer = this[deferFieldKey] = (this[deferFieldKey] as Deferred<void> || Deferred.defer<void>());
             return defer.promise;
@@ -53,10 +53,10 @@ function addDeferredProperty(target: object, deferredFieldKey: PropertyKey, defe
     });
 }
 
-function addResolveBehaviour(target: object, deferredFieldKey: PropertyKey, deferFieldKey: PropertyKey) {
+function addResolveBehaviour(target: object, deferredField: string, deferFieldKey: PropertyKey) {
     const resolveFnName = getPropertyNameByMetadataKey(target, resolveDeferredMetadataKey);
     const originalResolve = target[resolveFnName] as () => void | Promise<void>;
-    target[resolveFnName] = wrapResolve(originalResolve, deferredFieldKey, deferFieldKey);
+    target[resolveFnName] = wrapResolve(originalResolve, deferredField, deferFieldKey);
 }
 
 function Deferrable<T = Deferrable>(deferredField?: keyof T) {
@@ -65,8 +65,8 @@ function Deferrable<T = Deferrable>(deferredField?: keyof T) {
     const deferFieldKey = Symbol(deferredField + '_defer');
     return (Ctor: Type<T>) => {
 
-        addDeferredProperty(Ctor.prototype, deferredFieldKey, deferFieldKey);
-        addResolveBehaviour(Ctor.prototype, deferredFieldKey, deferFieldKey);
+        addDeferredProperty(Ctor.prototype, deferredField, deferFieldKey);
+        addResolveBehaviour(Ctor.prototype, deferredField, deferFieldKey);
     };
 }
 

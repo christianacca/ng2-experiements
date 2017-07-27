@@ -4,17 +4,31 @@ import * as Raven from 'raven-js';
 import { STARTABLE, Configurable } from '../../../runnable';
 import { Deferrable, ResolveDeferred } from '../../../promise-exts';
 import { SentryConfiguratorService } from './sentry-configurator.service';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/buffer';
+import 'rxjs/add/operator/debounce';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/observable/from';
+import { Observable } from 'rxjs/Observable';
 
 @Deferrable<Configurable>('configDone')
 export class SentryErrorAppenderService implements ErrorAppenderService, Configurable {
     configDone: Promise<void>;
-    /**
-     * use a replay subject to avoid missing errors raised before library is configured
-     */
-    private errorSubject = new ReplaySubject<any>();
+    private errorSubject = new Subject<any>();
 
-    constructor(private configurator: SentryConfiguratorService) { }
+    constructor(private configurator: SentryConfiguratorService) {
+        this.nonLossyErrors()
+            .subscribe(error => {
+                console.log(error.count);
+                Raven.captureException(error.error);
+            });
+    }
+
+    private nonLossyErrors() {
+        return this.errorSubject
+            .buffer(this.errorSubject.debounce(() => Observable.from(this.configDone)))
+            .switchMap(errors => errors);
+    }
 
     append(error: any) {
         this.errorSubject.next(error);
@@ -23,10 +37,6 @@ export class SentryErrorAppenderService implements ErrorAppenderService, Configu
     @ResolveDeferred()
     async configure() {
         await this.configurator.onAppStartup(Raven);
-        this.errorSubject
-            .subscribe(error => {
-                Raven.captureException(error);
-            });
     }
 }
 
