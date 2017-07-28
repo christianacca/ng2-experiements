@@ -2,6 +2,7 @@ import { Deferred } from '../promise-exts';
 import { Type } from '@angular/core';
 
 export interface Configurable {
+    isBlocking?: boolean;
     configDone: Promise<void>;
     configure(): void | Promise<void>;
 }
@@ -13,6 +14,7 @@ export interface ConfigurableImpl {
 export function MixinConfigurable<T extends Type<ConfigurableImpl>>(Base: T) {
     return class ConfigurableBase extends Base implements Configurable {
         private _defer = Deferred.defer<void>();
+        isBlocking = false;
         readonly configDone = this._defer.promise;
 
         async configure() {

@@ -50,7 +50,7 @@ import { ObservableInput } from 'rxjs/Observable';
  * @name applyGlobalErrorHandler
  * @owner Observable
  */
-export function applyGlobalErrorHandler<T, R>(
+export function applyGlobalErrorHandler<T, R = T>(
     this: Observable<T>,
     selector?: (err: any, caught: Observable<T>) => ObservableInput<R>): Observable<T | R> {
     return this.catch(error => {
