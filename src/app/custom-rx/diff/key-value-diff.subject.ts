@@ -12,6 +12,7 @@ export class KeyValueDiffSubject<T extends {}, K extends keyof T = keyof T> exte
     private subject = new Subject<KeyValueChanges<K, any>>();
     private manualTrigger = new Subject();
 
+    // tslint:disable-next-line:no-shadowed-variable
     static create<T extends object, K extends keyof T>(
         source: T,
         differ: KeyValueDiffer<K, any>,
