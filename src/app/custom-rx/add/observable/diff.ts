@@ -3,7 +3,7 @@ import { KeyValueDiffSubject } from '../../diff/key-value-diff.subject';
 import { KeyValueDiffer, KeyValueDiffers } from '@angular/core';
 import 'rxjs/add/observable/never';
 
-function isDiffersCollection<T extends object>(value: KeyValueDiffer<keyof T, any> | KeyValueDiffers): value is KeyValueDiffers {
+function isDiffersCollection<T extends object>(value: KeyValueDiffer<string, any> | KeyValueDiffers): value is KeyValueDiffers {
     return ('find' in value) && ('factories' in value);
 }
 
@@ -20,6 +20,7 @@ export function staticDiff<T extends object>(
 
 
 declare module 'rxjs/Observable' {
+    // tslint:disable-next-line:no-shadowed-variable
     namespace Observable {
         let diff: typeof staticDiff;
     }

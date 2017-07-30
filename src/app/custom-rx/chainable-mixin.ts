@@ -13,7 +13,7 @@ export function MixinChainable<T>(Base: ObservableType<T>) {
         }
         chain<R extends Observable<T>>(func: (selector: this) => R): this {
             return new this.Ctor(subscriber => {
-                func(this).subscribe(subscriber);
+                return func(this).subscribe(subscriber);
             }) as any;
         }
     }
