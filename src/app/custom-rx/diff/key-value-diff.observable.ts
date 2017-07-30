@@ -4,7 +4,7 @@ import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/switchMap';
-import { MixinChainable } from '../chainable-mixin';
+import { MixinChainable } from '../chainable.mixin';
 
 export type ChangeCollection = 'add' | 'remove' | 'change';
 
@@ -46,14 +46,14 @@ export class KeyValueDiffObservable<T extends object, K extends keyof T = keyof 
     mapToArrayOf(...collections: ChangeCollection[]) {
         return this.map(changes => toArray(changes, collections));
     }
-    includes2(predicate: (record: KeyValueChangeRecord<K, any>) => boolean) {
-        return new KeyValueDiffObservable<T, K>(subscriber => {
-            return this.filter(changes => hasRecord(changes, predicate)).subscribe(subscriber);
-        })
-    }
     includes(predicate: (record: KeyValueChangeRecord<K, any>) => boolean) {
         return this.chain(me => me.filter(changes => hasRecord(changes, predicate)))
     }
+    // includes(predicate: (record: KeyValueChangeRecord<K, any>) => boolean) {
+    //     return new KeyValueDiffObservable<T, K>(subscriber => {
+    //         return this.filter(changes => hasRecord(changes, predicate)).subscribe(subscriber);
+    //     })
+    // }
     // includes(predicate: (record: KeyValueChangeRecord<K, any>) => boolean) {
     //     return new KeyValueDiffObservable<T, K>(subscriber => {
     //         return this.subscribe({
