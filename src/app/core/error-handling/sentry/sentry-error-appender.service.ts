@@ -14,14 +14,12 @@ import { Observable } from 'rxjs/Observable';
 @Deferrable<Configurable>('configDone')
 export class SentryErrorAppenderService implements ErrorAppenderService, Configurable {
     configDone: Promise<void>;
-    isBlocking = false;
     private errorSubject = new Subject<any>();
 
     constructor(private configurator: SentryConfiguratorService) {
         this.nonLossyErrors()
             .subscribe(error => {
-                console.log(error.count);
-                Raven.captureException(error.error);
+                Raven.captureException(error);
             });
     }
 

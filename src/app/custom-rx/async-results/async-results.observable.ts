@@ -1,9 +1,7 @@
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/groupBy';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/mapTo';
-import 'rxjs/add/operator/let';
+import 'rxjs/add/observable/from';
 import { Subscriber } from 'rxjs/Subscriber';
 import { TeardownLogic } from 'rxjs/Subscription';
 import { MixinChainable } from '../chainable.mixin';
@@ -13,26 +11,6 @@ import { AsyncResult } from './async-result';
 // todo: use lodash/fp once typings for this are available
 // (follow: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/7896)
 const isMatch = curryRight(originalIsMatch);
-
-const promiseResults = [{
-    result: Promise.resolve(),
-    key: {
-        isBlocking: false,
-        subsystem: 'security',
-        type: 'LoadRoles'
-    }
-}, {
-    result: Promise.resolve(),
-    key: {
-        isBlocking: false,
-        subsystem: 'security',
-        type: 'SetCurrentUser'
-    }
-}];
-
-const result$ = Observable.from(promiseResults)
-    .filter(x => x.key.isBlocking)
-    .mergeMap(x => Observable.of(x.result).mapTo(x));
 
 
 function isObject(value: any): value is Object {
