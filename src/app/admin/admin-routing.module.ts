@@ -1,12 +1,12 @@
 import { Route, RouterModule } from '@angular/router';
 
 import { AdminComponent } from './admin.component';
-import { LazyModuleRunner } from '../runnable';
+import { LazyModuleBootstrapper } from '../bootstrapping';
 
 const routes: Route[] = [
     {
         path: '',
-        canActivate: [LazyModuleRunner],
+        canActivate: [LazyModuleBootstrapper],
         children: [
             {
                 path: '',

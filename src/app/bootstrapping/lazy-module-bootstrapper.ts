@@ -1,16 +1,16 @@
 import { Injectable, Optional, Inject, SkipSelf } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Startable } from './startable';
-import { AsyncRunner, STARTABLE, createConfigAndRunBlock } from './runner';
+import { Boostrapper, BOOTSTRAPPABLE, createConfigAndRunBlock } from './bootstrapper';
 
 @Injectable()
-export class LazyModuleRunner implements CanActivate {
+export class LazyModuleBootstrapper implements CanActivate {
 
     private donePromise: Promise<boolean>;
     private _done = false;
     constructor(
-        @Inject(STARTABLE) @Optional() private runnables: Startable[],
-        @SkipSelf() @Optional() private runner: AsyncRunner) {
+        @Inject(BOOTSTRAPPABLE) @Optional() private runnables: Startable[],
+        @SkipSelf() @Optional() private runner: Boostrapper) {
         // only invoke runnables if we're running in a lazy loaded module
         if (!this.runner) {
             this.donePromise = Promise.resolve(true);

@@ -1,7 +1,7 @@
 import { ErrorAppenderService, ERROR_APPENDERS } from '../error-appender.service';
 import { Provider, Inject } from '@angular/core';
 import * as Raven from 'raven-js';
-import { STARTABLE, Configurable } from '../../../runnable';
+import { BOOTSTRAPPABLE, Configurable } from '../../../bootstrapping';
 import { Deferrable, ResolveDeferred } from '../../../promise-exts';
 import { SentryConfiguratorService } from './sentry-configurator.service';
 import { Subject } from 'rxjs/Subject';
@@ -46,5 +46,5 @@ export const sentryErrorAppenderProviders: Provider[] = [
         useExisting: SentryErrorAppenderService,
         multi: true
     },
-    { provide: STARTABLE, multi: true, useExisting: SentryErrorAppenderService }
+    { provide: BOOTSTRAPPABLE, multi: true, useExisting: SentryErrorAppenderService }
 ];

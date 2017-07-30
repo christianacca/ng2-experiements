@@ -1,6 +1,6 @@
 import { Phase } from './phase';
 
-export interface BlockAttributes {
+export interface BootstrapAttrs {
     isBlocking: boolean;
     phase: Phase
 }

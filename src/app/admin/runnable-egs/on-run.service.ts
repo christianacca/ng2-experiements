@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Startable } from '../../runnable';
+import { Startable } from '../../bootstrapping';
 import { Deferrable, ResolveDeferred } from '../../promise-exts';
 
 @Injectable()

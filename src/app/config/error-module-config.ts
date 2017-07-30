@@ -1,7 +1,7 @@
 import { SentryConfiguratorService, ErrorHandlerModuleInitializer, sentryErrorAppenderProviders } from '../core';
 import { RavenStatic } from 'raven-js';
 import { Provider } from '@angular/core';
-import { STARTABLE } from '../runnable';
+import { BOOTSTRAPPABLE } from '../bootstrapping';
 
 export class SentryConfiguratorImplService extends SentryConfiguratorService {
   onAppStartup(library: RavenStatic) {
@@ -12,7 +12,7 @@ export class SentryConfiguratorImplService extends SentryConfiguratorService {
 }
 
 export const errorModuleProviders: Provider[] = [
-  { provide: STARTABLE, multi: true, useClass: ErrorHandlerModuleInitializer },
+  { provide: BOOTSTRAPPABLE, multi: true, useClass: ErrorHandlerModuleInitializer },
   { provide: SentryConfiguratorService, useClass: SentryConfiguratorImplService },
   sentryErrorAppenderProviders
 ];

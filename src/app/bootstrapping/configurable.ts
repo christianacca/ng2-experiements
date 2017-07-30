@@ -1,23 +1,23 @@
 import { Deferred } from '../promise-exts';
 import { Type } from '@angular/core';
-import { BlockAttributes } from './block-attributes';
+import { BootstrapAttrs } from './bootstrap-attrs';
 import { Phase } from './phase';
 import { defaults } from 'lodash-es';
 
 
-export class ConfigurableAttributes implements BlockAttributes {
-    static readonly defaults = new ConfigurableAttributes();
+export class ConfigurableAttrs implements BootstrapAttrs {
+    static readonly defaults = new ConfigurableAttrs();
     isBlocking = false;
     phase = Phase.config;
-    static create<T extends ConfigurableAttributes = ConfigurableAttributes>(values?: Partial<T>) {
-        return defaults<T>(values, ConfigurableAttributes.defaults);
+    static create<T extends ConfigurableAttrs = ConfigurableAttrs>(values?: Partial<T>) {
+        return defaults<T>(values, ConfigurableAttrs.defaults);
     }
     protected constructor() {}
 }
-Object.freeze(ConfigurableAttributes.defaults);
+Object.freeze(ConfigurableAttrs.defaults);
 
 export interface Configurable {
-    attributes?: BlockAttributes;
+    attributes?: BootstrapAttrs;
     configDone: Promise<void>;
     configure(): void | Promise<void>;
 }
@@ -29,7 +29,7 @@ export interface ConfigurableImpl {
 export function MixinConfigurable<T extends Type<ConfigurableImpl>>(Base: T) {
     return class ConfigurableBase extends Base implements Configurable {
         private _defer = Deferred.defer<void>();
-        attributes = ConfigurableAttributes.defaults;
+        attributes = ConfigurableAttrs.defaults;
         readonly configDone = this._defer.promise;
 
         async configure() {

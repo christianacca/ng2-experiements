@@ -7,10 +7,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
 import { CoreModule } from './core';
-import { RunnableModule, STARTABLE } from './runnable';
-import { OnRun } from './runnable-egs/on-run.service';
-import { bootstrappedProviders } from './runnable-egs/bootstrapped.service';
-import { bootstrapped2Providers } from './runnable-egs/bootstrapped2.service';
+import { BootstrappingModule, BOOTSTRAPPABLE } from './bootstrapping';
+import { OnStart } from './bootstrapping-egs/on-start.service';
+import { bootstrappedProviders } from './bootstrapping-egs/bootstrapped.service';
+import { bootstrapped2Providers } from './bootstrapping-egs/bootstrapped2.service';
 import { ModuleSyncInitModule } from './module-sync-init';
 import { logModInitProvider } from './log-mod-init';
 import { RoutingEgsModule } from './routing-egs/routing-egs.module';
@@ -35,9 +35,9 @@ import { errorModuleProviders } from './config/error-module-config';
     RoutingEgsModule,
     DiRegModule,
     DiReg2Module,
-    RunnableModule.for([
+    BootstrappingModule.for([
       errorModuleProviders,
-      { provide: STARTABLE, multi: true, useClass: OnRun },
+      { provide: BOOTSTRAPPABLE, multi: true, useClass: OnStart },
       bootstrapped2Providers,
       bootstrappedProviders
     ]),

@@ -1,5 +1,5 @@
 import { Injectable, Provider } from '@angular/core';
-import { Startable, STARTABLE } from '../runnable';
+import { Startable, BOOTSTRAPPABLE } from '../bootstrapping';
 import { delay, Deferrable, ResolveDeferred } from '../promise-exts';
 
 @Injectable()
@@ -23,5 +23,5 @@ export class BootstrappedService implements Startable {
 
 export const bootstrappedProviders: Provider[] = [
   BootstrappedService,
-  { provide: STARTABLE, multi: true, useExisting: BootstrappedService }
+  { provide: BOOTSTRAPPABLE, multi: true, useExisting: BootstrappedService }
 ];

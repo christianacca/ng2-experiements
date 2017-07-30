@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { Bootstrapped2Service } from './runnable-egs/bootstrapped2.service';
+import { Bootstrapped2Service } from './bootstrapping-egs/bootstrapped2.service';
 
 @Component({
   selector: 'app-root',
