@@ -2,6 +2,8 @@ import { Injectable, InjectionToken, APP_INITIALIZER, Provider, Optional, Type }
 import { Deferred } from '../promise-exts';
 import { Configurable } from './configurable';
 import { Startable } from './startable';
+import { Observable } from 'rxjs/Observable';
+import '../custom-rx/add/observable/asyn-results'
 
 
 function isConfigurable(item: any): item is Configurable {
@@ -17,7 +19,8 @@ export function createConfigAndRunBlock(startables: Array<Startable | Configurab
         // todo: remove type assertion once webpack uses same version of typescript (2.4.2) which can correctly infer
         const configurable = startables.filter(isConfigurable) as Configurable[];
         const runnable = startables.filter(isRunnable) as Startable[];
-        await runner.run(configurable, c => c.configure());
+        const configured$ = runner.run2(configurable, c => c.configure());
+        await configured$.where({ isBlocking: true }).results().toPromise()
         return runner.run(runnable, r => r.start())
     };
 }
@@ -27,16 +30,25 @@ export const STARTABLE = new InjectionToken<Array<Startable | Configurable>>('Ru
 
 @Injectable()
 export class AsyncRunner {
-    async run<T extends { isBlocking?: boolean }>(items: T[], method: (item: T) => void | Promise<void>) {
-        items = items || [];
-        const blockingItems = items
-            .map(item => ({
-                result: Promise.resolve(method(item)),
-                item
+    async run<T extends { isBlocking?: boolean }>(commands: T[], method: (cmd: T) => void | Promise<void>) {
+        commands = commands || [];
+        const blockingItems = commands
+            .map(cmd => ({
+                result: Promise.resolve(method(cmd)),
+                key: cmd
             }))
-            .filter(r => r.item.isBlocking)
+            .filter(r => r.key.isBlocking)
             .map(r => r.result);
         await Promise.all(blockingItems);
+    }
+    run2<T extends { isBlocking?: boolean }>(commands: T[], method: (cmd: T) => void | Promise<void>) {
+        commands = commands || [];
+        const results = commands
+            .map(cmd => ({
+                result: Promise.resolve(method(cmd)),
+                key: cmd
+            }))
+        return Observable.fromAsynResults(results)
     }
 }
 
