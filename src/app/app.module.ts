@@ -9,7 +9,8 @@ import { NgModule } from '@angular/core';
 import { CoreModule } from './core';
 import { RunnableModule, STARTABLE } from './runnable';
 import { OnRun } from './runnable-egs/on-run.service';
-import { bootstrappedProviders, BootstrappedService } from './runnable-egs/bootstrapped.service';
+import { bootstrappedProviders } from './runnable-egs/bootstrapped.service';
+import { bootstrapped2Providers } from './runnable-egs/bootstrapped2.service';
 import { ModuleSyncInitModule } from './module-sync-init';
 import { logModInitProvider } from './log-mod-init';
 import { RoutingEgsModule } from './routing-egs/routing-egs.module';
@@ -37,12 +38,12 @@ import { errorModuleProviders } from './config/error-module-config';
     RunnableModule.for([
       errorModuleProviders,
       { provide: STARTABLE, multi: true, useClass: OnRun },
-      { provide: STARTABLE, multi: true, useExisting: BootstrappedService },
+      bootstrapped2Providers,
+      bootstrappedProviders
     ]),
     TreeShakeModule
   ],
   providers: [
-    bootstrappedProviders,
     { provide: RouteReuseStrategy, useClass: DebugRouteReuseStrategy }
   ],
   bootstrap: [AppComponent]

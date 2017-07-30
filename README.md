@@ -2,30 +2,6 @@
 
 ## Experiments
 
-### async service bootstrap
-
-* You want to provide the convenience of working with a service by making *synchronous* calls to it's methods.
-* Yet the service requires some async data before it can work
-* The service should load its data before injecting the service into a component or a route guard
-
-This experiment shows how a service can define an async method that is guaranteed to have completed
-before the service is injected into a component or a route guard.
-
-Such a service becomes a `bootstrappable` service
-
-**Limitations**
-
-* **WARNING**: There is no guarantees that a `bootstrappable` service will be finished bootrapping when injecting that service into another service
-* A `bootstrappable` service must be registered with the root injector
-    * The solution relies on the `APP_INITIALIZER` token to register the `bootstrappable` service. Services thus registered will only be invoked during the bootstrapping of the *application*
-    * Therefore, registering a `bootstrappable` service in a lazy loaded module or a component will not result in the bootstrapping of the `bootstrappable`
-
-**Code listing**
-
-* Implementation: `provide-bootstrappable.ts`, `bootstrappable.ts`
-* Example usage: `bootstrappable.service.ts`, `bootstrappable2.service.ts`
-
-
 ### synchronous module initialization
 
 * You want to run code once for a module (equivalent to a run block in AngularJS)

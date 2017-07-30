@@ -1,6 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { Bootstrappable1 } from './core';
-import { BootstrappedService } from './runnable-egs/bootstrapped.service';
+import { Bootstrapped2Service } from './runnable-egs/bootstrapped2.service';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +8,8 @@ import { BootstrappedService } from './runnable-egs/bootstrapped.service';
 })
 export class AppComponent {
   title = 'app works!';
-  constructor(bootstrappable1: Bootstrappable1, bootstrapped: BootstrappedService) {
+  constructor(bootstrapped2: Bootstrapped2Service) {
     console.log('AppComponent created');
-    console.log(`${bootstrappable1.asyncValue}`);
-    console.log(`${bootstrapped.asyncValue}`);
+    console.log(`${bootstrapped2.asyncValue}`);
   }
 }

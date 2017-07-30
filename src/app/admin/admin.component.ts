@@ -13,7 +13,9 @@ export class AdminComponent implements OnInit {
   company: Company;
   title = 'Admin area';
   constructor(
+    // tslint:disable-next-line:no-shadowed-variable
     Asset: AssetType,
+    // tslint:disable-next-line:no-shadowed-variable
     Company: CompanyType,
     bootstrapped: BootstrappedService,
     private route: ActivatedRoute
