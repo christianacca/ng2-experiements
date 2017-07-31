@@ -9,10 +9,10 @@ export class LazyModuleBootstrapper implements CanActivate {
     private donePromise: Promise<boolean>;
     private _done = false;
     constructor(
-        @Inject(BOOTSTRAPPABLE) @Optional() private runnables: Startable[],
-        @SkipSelf() @Optional() private runner: Boostrapper) {
+        @Inject(BOOTSTRAPPABLE) @Optional() private bootstrappable: Startable[],
+        @SkipSelf() @Optional() private bootstrapper: Boostrapper) {
         // only invoke runnables if we're running in a lazy loaded module
-        if (!this.runner) {
+        if (!this.bootstrapper) {
             this.donePromise = Promise.resolve(true);
         }
     }
@@ -24,7 +24,7 @@ export class LazyModuleBootstrapper implements CanActivate {
     run() {
         if (this.donePromise != null) { return this.donePromise; }
 
-        this.donePromise = createConfigAndRunBlock(this.runnables, this.runner)()
+        this.donePromise = createConfigAndRunBlock(this.bootstrappable, this.bootstrapper)()
             .then(() => {
                 this._done = true;
                 return this._done;

@@ -4,9 +4,8 @@ import { delay, Deferrable, ResolveDeferred } from '../../promise-exts';
 
 @Injectable()
 @Deferrable<Startable>('startDone')
-export class BootstrappedService implements Startable {
+export class BootstrappedService extends Startable {
   asyncValue: string;
-  startDone: Promise<void>;
 
   @ResolveDeferred()
   async start() {
@@ -17,6 +16,7 @@ export class BootstrappedService implements Startable {
   }
 
   constructor() {
+    super();
     console.log('admin>runnable-egs>BootstrappedService.ctor');
   }
 }

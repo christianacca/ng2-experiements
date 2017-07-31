@@ -4,9 +4,9 @@ import { Deferrable, ResolveDeferred } from '../../promise-exts';
 
 @Injectable()
 @Deferrable<Startable>('startDone')
-export class OnRun implements Startable {
-  startDone: Promise<void>;
+export class OnRun extends Startable {
   constructor() {
+    super();
     console.log('admin>runnable-egs>OnRun.ctor');
   }
 

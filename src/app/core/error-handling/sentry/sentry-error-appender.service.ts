@@ -12,11 +12,11 @@ import 'rxjs/add/observable/from';
 import { Observable } from 'rxjs/Observable';
 
 @Deferrable<Configurable>('configDone')
-export class SentryErrorAppenderService implements ErrorAppenderService, Configurable {
-    configDone: Promise<void>;
+export class SentryErrorAppenderService extends Configurable implements ErrorAppenderService {
     private errorSubject = new Subject<any>();
 
     constructor(private configurator: SentryConfiguratorService) {
+        super();
         this.nonLossyErrors()
             .subscribe(error => {
                 Raven.captureException(error);

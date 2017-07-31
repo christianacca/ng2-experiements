@@ -5,9 +5,9 @@ import { AdminComponent } from './admin.component';
 import { FeatOneComponent } from './feat-one/feat-one.component';
 import { AdminRoutingModule } from './admin-routing.module';
 import { BootstrappingModule, BOOTSTRAPPABLE } from '../bootstrapping';
-import { OnRun } from './runnable-egs/on-run.service';
-import { bootstrappedProviders, BootstrappedService } from './runnable-egs/bootstrapped.service';
-import { bootstrapped2Providers } from './runnable-egs/bootstrapped2.service';
+import { OnRun } from './bootstrapping-egs/on-run.service';
+import { bootstrappedProviders, BootstrappedService } from './bootstrapping-egs/bootstrapped.service';
+import { bootstrapped2Providers } from './bootstrapping-egs/bootstrapped2.service';
 
 // exported for AOT compatibility
 export function adminTitleResolve() {

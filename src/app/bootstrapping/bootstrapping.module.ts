@@ -1,12 +1,12 @@
 import { NgModule, Provider, ModuleWithProviders } from '@angular/core';
-import { runnerProviders } from './bootstrapper';
+import { bootstrapperProviders } from './bootstrapper';
 import { LazyModuleBootstrapper } from './lazy-module-bootstrapper';
 
 // note: these services WILL be registered with angular multiple times - once *per importing module*
 // however, that's not a problem as angular will discard previous registrations run within the same main or lazy
 // route. The end result will then be the desired one:
 // one *instance* of each service for each injector servicing the main and lazy loaded route(s)
-const perMainAndLazyRouteProviders = [LazyModuleBootstrapper, runnerProviders];
+const perMainAndLazyRouteProviders = [LazyModuleBootstrapper, bootstrapperProviders];
 
 @NgModule({})
 export class BootstrappingModule {

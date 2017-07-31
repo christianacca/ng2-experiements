@@ -1,10 +1,10 @@
 import { Injectable, InjectionToken, APP_INITIALIZER, Provider, Optional, Type } from '@angular/core';
 import { Deferred } from '../promise-exts';
-import { Configurable, ConfigurableAttrs } from './configurable';
-import { Startable, StartableAttrs } from './startable';
+import { Configurable } from './configurable';
+import { Startable } from './startable';
 import { Observable } from 'rxjs/Observable';
 import '../custom-rx/add/observable/asyn-results'
-import { BootstrapAttrs } from './bootstrap-attrs';
+import { Bootstrappable } from './bootstrappable';
 
 
 function isConfigurable(item: any): item is Configurable {
@@ -15,34 +15,32 @@ function isStartable(item: any): item is Startable {
     return ('start' in item);
 }
 
-export function createConfigAndRunBlock(startables: Array<Startable | Configurable>, runner: Boostrapper) {
+export function createConfigAndRunBlock(bootstrappable: Array<Startable | Configurable>, bootstrapper: Boostrapper) {
     return async function configAndRunBlock() {
         // todo: remove type assertion once webpack uses same version of typescript (2.4.2) which can correctly infer
-        const configurable = startables.filter(isConfigurable) as Configurable[];
-        const runnable = startables.filter(isStartable) as Startable[];
-        const configured$ = runner.run(configurable, c => c.configure(), c => c.attributes || ConfigurableAttrs.defaults);
+        const configurable = bootstrappable.filter(isConfigurable) as Configurable[];
+        const startable = bootstrappable.filter(isStartable) as Startable[];
+        const configured$ = bootstrapper.run(configurable, c => c.configure());
         await configured$.where({ isBlocking: true }).results().toPromise();
-        const started$ = runner.run(runnable, c => c.start(), s => s.attributes || StartableAttrs.defaults);
+        const started$ = bootstrapper.run(startable, c => c.start());
         await started$.where({ isBlocking: true }).results().toPromise();
     };
 }
 
 export const BOOTSTRAPPABLE = new InjectionToken<Array<Startable | Configurable>>('boostapper_block');
 
-
 @Injectable()
 export class Boostrapper {
-    run<T, A extends BootstrapAttrs>(commands: T[], method: (cmd: T) => void | Promise<void>, keySelector: (cmd: T) => A) {
+    run<T extends Bootstrappable>(commands: T[], method: (cmd: T) => void | Promise<void>) {
         commands = commands || [];
         const results = commands
             .map(cmd => ({
                 result: Promise.resolve(method(cmd)),
-                key: keySelector(cmd)
+                key: cmd.attributes
             }))
         return Observable.fromAsynResults(results)
     }
 }
-
 
 const configAndRunAllProvider: Provider = {
     provide: APP_INITIALIZER,
@@ -51,7 +49,7 @@ const configAndRunAllProvider: Provider = {
     deps: [[BOOTSTRAPPABLE, new Optional()], Boostrapper]
 };
 
-export const runnerProviders: Provider[] = [
+export const bootstrapperProviders: Provider[] = [
     Boostrapper,
     configAndRunAllProvider
 ];

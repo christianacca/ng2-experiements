@@ -3,6 +3,7 @@ import { Type } from '@angular/core';
 import { BootstrapAttrs } from './bootstrap-attrs';
 import { Phase } from './phase';
 import { defaults } from 'lodash-es';
+import { Bootstrappable } from './bootstrappable';
 
 export class StartableAttrs implements BootstrapAttrs {
     static readonly defaults = new StartableAttrs();
@@ -15,10 +16,11 @@ export class StartableAttrs implements BootstrapAttrs {
 }
 Object.freeze(StartableAttrs.defaults);
 
-export interface Startable {
-    attributes?: BootstrapAttrs;
+export abstract class Startable implements Bootstrappable {
+    static defaultAttributes = StartableAttrs.defaults;
+    attributes = StartableAttrs.defaults;
     startDone: Promise<void>;
-    start(): void | Promise<void>;
+    abstract start(): void | Promise<void>;
 }
 
 export interface StartableImpl {

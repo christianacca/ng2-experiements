@@ -3,6 +3,7 @@ import { Type } from '@angular/core';
 import { BootstrapAttrs } from './bootstrap-attrs';
 import { Phase } from './phase';
 import { defaults } from 'lodash-es';
+import { Bootstrappable } from './bootstrappable';
 
 
 export class ConfigurableAttrs implements BootstrapAttrs {
@@ -16,10 +17,10 @@ export class ConfigurableAttrs implements BootstrapAttrs {
 }
 Object.freeze(ConfigurableAttrs.defaults);
 
-export interface Configurable {
-    attributes?: BootstrapAttrs;
+export abstract class Configurable implements Bootstrappable {
+    attributes = ConfigurableAttrs.defaults;
     configDone: Promise<void>;
-    configure(): void | Promise<void>;
+    abstract configure(): void | Promise<void>;
 }
 
 export interface ConfigurableImpl {
