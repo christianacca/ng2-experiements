@@ -6,12 +6,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
-import { CoreModule } from './core';
+import { CoreModule, DebugRouterEventsListener } from './core';
 import { BootstrappingModule, BOOTSTRAPPABLE } from './bootstrapping';
 import { OnStart } from './bootstrapping-egs/on-start.service';
 import { bootstrappedProviders } from './bootstrapping-egs/bootstrapped.service';
 import { bootstrapped2Providers } from './bootstrapping-egs/bootstrapped2.service';
-import { ModuleSyncInitModule } from './module-sync-init';
+import { ModuleSyncInitModule, MOD_SYNC_INIT } from './module-sync-init';
 import { logModInitProvider } from './log-mod-init';
 import { RoutingEgsModule } from './routing-egs/routing-egs.module';
 import { DebugRouteReuseStrategy } from './core/debug-route-reuse-strategy';
@@ -30,7 +30,10 @@ import { errorModuleProviders } from './config/error-module-config';
     BrowserModule,
     HttpModule,
     CoreModule,
-    ModuleSyncInitModule.withInits([logModInitProvider]),
+    ModuleSyncInitModule.withInits([
+      logModInitProvider,
+      { provide: MOD_SYNC_INIT, multi: true, useClass: DebugRouterEventsListener }
+    ]),
     AppRoutingModule,
     RoutingEgsModule,
     DiRegModule,
