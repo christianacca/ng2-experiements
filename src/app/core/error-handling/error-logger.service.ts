@@ -19,6 +19,14 @@ export class ErrorLoggerService {
     private ngZone: NgZone) { }
 
   log(error: any) {
+
+    // note: as of angular 4.3.2 using `runOutsideAngular` as you see below is
+    // redundant in cases where `log` is being called from a custom `ErrorHandler`.
+    // This is because `ErrorHandler.handleError` is already running outside of
+    // the angular zone.
+    // However, we still using `runOutsideAngular` in case `log` is being called
+    // by someone other than `ErrorHandler.handleError`
+
     // run outside of angular:
     // * don't want error logging to cause further change detection runs
     // * avoid errors during logging to result in potentially inifinte loops

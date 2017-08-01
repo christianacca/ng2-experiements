@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Asset, AssetType, Company, CompanyType } from '../core';
-import { BootstrappedService } from './runnable-egs/bootstrapped.service';
+import { BootstrappedService } from './bootstrapping-egs/bootstrapped.service';
 
 @Component({
   selector: 'app-admin',

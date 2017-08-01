@@ -22,6 +22,8 @@ export class _ErrorEventChannelServiceImpl implements ErrorEventChannelService, 
         this.errorsSubject.next(error);
     }
     handleError(error: any) {
+        // note: as of angular 4.3.2 `handleError` is running outside of the angular zone
+        // (see https://github.com/angular/angular/pull/18269)
         this.publish(error);
     }
 }
