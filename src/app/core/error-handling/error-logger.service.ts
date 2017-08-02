@@ -24,8 +24,8 @@ export class ErrorLoggerService {
     // redundant in cases where `log` is being called from a custom `ErrorHandler`.
     // This is because `ErrorHandler.handleError` is already running outside of
     // the angular zone.
-    // However, we still using `runOutsideAngular` in case `log` is being called
-    // by someone other than `ErrorHandler.handleError`
+    // However, we're still using `runOutsideAngular` in case `log` is called
+    // by user land code that is running *inside* of the angular zone
 
     // run outside of angular:
     // * don't want error logging to cause further change detection runs

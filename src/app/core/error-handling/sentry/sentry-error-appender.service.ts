@@ -6,6 +6,7 @@ import { Deferrable, ResolveDeferred } from '../../../promise-exts';
 import { SentryConfiguratorService } from './sentry-configurator.service';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/buffer';
+import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/debounce';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/from';
@@ -24,8 +25,9 @@ export class SentryErrorAppenderService extends Configurable implements ErrorApp
     }
 
     private nonLossyErrors() {
+        const delayUntilConfigDone$ = this.errorSubject.delay(0).debounce(() => Observable.from(this.configDone));
         return this.errorSubject
-            .buffer(this.errorSubject.debounce(() => Observable.from(this.configDone)))
+            .buffer(delayUntilConfigDone$)
             .switchMap(errors => errors);
     }
 
