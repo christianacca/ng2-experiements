@@ -10,6 +10,7 @@ export function staticOfDiff<T extends object, K extends keyof T = keyof T>(chan
 }
 
 declare module 'rxjs/Observable' {
+    // tslint:disable-next-line:no-shadowed-variable
     namespace Observable {
         let ofChanges: typeof staticOfDiff;
     }

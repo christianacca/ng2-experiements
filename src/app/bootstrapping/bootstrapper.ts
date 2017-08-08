@@ -32,13 +32,12 @@ export const BOOTSTRAPPABLE = new InjectionToken<Array<Startable | Configurable>
 @Injectable()
 export class Boostrapper {
     run<T extends Bootstrappable>(commands: T[], method: (cmd: T) => void | Promise<void>) {
-        commands = commands || [];
-        const results = commands
+        const results$ = Observable.from(commands || [])
             .map(cmd => ({
-                result: Promise.resolve(method(cmd)),
+                result: Observable.from(method(cmd) || Observable.empty<void>()),
                 key: cmd.attributes
             }))
-        return Observable.fromAsynResults(results)
+        return Observable.fromAsynResults(results$)
     }
 }
 

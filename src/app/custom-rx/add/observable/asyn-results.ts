@@ -1,7 +1,11 @@
 import { AsyncResult, AsyncResultsObservable } from '../../async-results';
-import { Observable } from 'rxjs/Observable';
+import { Observable, SubscribableOrPromise } from 'rxjs/Observable';
+import { ObservableInput, Subscribable } from 'rxjs/Observable';
 
-function fromAsynResultsStatic<T, R>(results: AsyncResult<T, R>[]): AsyncResultsObservable<T, R> {
+export type ArrayOrObservable<T> = ArrayLike<T> | Subscribable<T>
+
+function fromAsynResultsStatic<K, V>(
+    results: ArrayOrObservable<AsyncResult<K, V>>): AsyncResultsObservable<K, V> {
     return new AsyncResultsObservable(subscriber => {
         return Observable.from(results).subscribe(subscriber);
     });
