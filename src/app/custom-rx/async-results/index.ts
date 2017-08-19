@@ -1,2 +1,2 @@
 export * from './async-result';
-export * from './async-results.observable';
+export { AsyncResultsObservable } from './async-results.observable';

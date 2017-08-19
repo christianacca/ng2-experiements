@@ -21,9 +21,9 @@ export function createConfigAndRunBlock(bootstrappable: Array<Startable | Config
         const configurable = bootstrappable.filter(isConfigurable) as Configurable[];
         const startable = bootstrappable.filter(isStartable) as Startable[];
         const configured$ = bootstrapper.run(configurable, c => c.configure());
-        await configured$.where({ isBlocking: true }).results().toPromise();
+        await configured$.whereKey({ isBlocking: true }).results().toPromise();
         const started$ = bootstrapper.run(startable, c => c.start());
-        await started$.where({ isBlocking: true }).results().toPromise();
+        await started$.whereKey({ isBlocking: true }).results().toPromise();
     };
 }
 
@@ -37,7 +37,7 @@ export class Boostrapper {
                 result: Observable.from(method(cmd) || Observable.empty<void>()),
                 key: cmd.attributes
             }))
-        return Observable.fromAsynResults(results$)
+        return Observable.fromAsyncResults(results$)
     }
 }
 

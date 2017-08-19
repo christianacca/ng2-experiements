@@ -1,21 +1,15 @@
-import { AsyncResult, AsyncResultsObservable } from '../../async-results';
+import { AsyncResult } from '../../async-results/async-result';
+import { fromAsyncResultsStatic, toAsyncResultsStatic } from '../../async-results/async-results.observable';
 import { Observable, SubscribableOrPromise } from 'rxjs/Observable';
 import { ObservableInput, Subscribable } from 'rxjs/Observable';
-
-export type ArrayOrObservable<T> = ArrayLike<T> | Subscribable<T>
-
-function fromAsynResultsStatic<K, V>(
-    results: ArrayOrObservable<AsyncResult<K, V>>): AsyncResultsObservable<K, V> {
-    return new AsyncResultsObservable(subscriber => {
-        return Observable.from(results).subscribe(subscriber);
-    });
-}
 
 declare module 'rxjs/Observable' {
     // tslint:disable-next-line:no-shadowed-variable
     namespace Observable {
-        export let fromAsynResults: typeof fromAsynResultsStatic;
+        export let fromAsyncResults: typeof fromAsyncResultsStatic;
+        export let toAsyncResults: typeof toAsyncResultsStatic;
     }
 }
 
-Observable.fromAsynResults = fromAsynResultsStatic;
+Observable.fromAsyncResults = fromAsyncResultsStatic;
+Observable.toAsyncResults = toAsyncResultsStatic;
