@@ -4,7 +4,9 @@ import 'rxjs/add/operator/mapTo';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/concatMap';
 import 'rxjs/add/operator/first';
-import 'rxjs/add/operator/scan';
+import 'rxjs/add/operator/groupBy';
+import 'rxjs/add/operator/publishReplay';
+import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/observable/empty';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/observable/race';
@@ -13,13 +15,22 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { AsyncResult } from '../custom-rx/async-results';
 
 interface Attributes {
-    [name: string]: any;
     isBlocking: boolean;
+    group?: string;
 }
 
-interface Configurable {
+interface Boostrappable {
     attributes: Attributes;
-    configure(): void | SubscribableOrPromise<void>;
+}
+
+type MaybeAsyncVoid = void | SubscribableOrPromise<void>
+
+interface Configurable extends Boostrappable {
+    configure(): MaybeAsyncVoid;
+}
+
+interface Startable extends Boostrappable {
+    start(): MaybeAsyncVoid;
 }
 
 const fakeConfig = {
@@ -31,9 +42,10 @@ const fakeConfig = {
     }
 }
 
-const fakeAsyncConfig = {
+const fakeAsyncConfig: Configurable = {
     attributes: {
-        isBlocking: true
+        isBlocking: true,
+        group: 'security'
     },
     configure() {
         return Observable.empty();
@@ -46,19 +58,100 @@ const configurable: Configurable[] = [
 ];
 
 
-function run2(configurables: Configurable[]) {
+function isConfigurable(item: any): item is Configurable {
+    return ('configure' in item);
+}
+
+function isStartable(item: any): item is Startable {
+    return ('start' in item);
+}
+
+function run2(bootstrappable: Array<Startable | Configurable>) {
     const throwAfter = (timeout: number) => Observable.timer(timeout)
         .switchMap(() => Observable.throw(new Error('Timout')));
 
-    const results$ = Observable.from(configurable)
-        .map(c => ({
-            key: c.attributes,
-            result: Observable.from(c.configure() || Observable.empty()).mapTo(c.attributes).concat([c.attributes]).first()
-        }));
-    const asyncResults$ = Observable.fromAsynResults(results$);
-    const resultsByTimeout$ = asyncResults$.partition({ isBlocking: true })
-        .concatMap((obs, idx) => obs.results());
+    // todo: remove type assertion once webpack uses same version of typescript (2.4.2) which can correctly infer
+    const configurables = bootstrappable.filter(isConfigurable) as Configurable[];
+    const startables = bootstrappable.filter(isStartable) as Startable[];
 
+    const asyncConfigResults$ = toAsyncResults(configurables, c => c.configure());
+    const asyncStartResults$ = toAsyncResults(startables, c => c.start());
+    const resultsByTimeout$ = asyncConfigResults$
+        .partitionByKey({ isBlocking: true })
+        .concatMap((configs$, idx) => configs$.results());
+
+}
+
+enum Phase {
+    config,
+    run
+}
+
+interface Command {
+    key: Attributes & { phase: Phase };
+    action: () => MaybeAsyncVoid;
+}
+
+function createConfigAndRunCommands<T extends Startable | Configurable>(b: T): Command[] {
+    return [
+        isConfigurable(b)
+            ? {
+                key: { ...b.attributes, phase: Phase.config },
+                action: () => b.configure()
+            }
+            : null,
+        isStartable(b)
+            ? {
+                key: { ...b.attributes, phase: Phase.run },
+                action: () => b.start()
+            }
+            : null
+    ].filter(cmd => !!cmd);
+}
+
+function runCommands(cmds$: Observable<Command>) {
+    return cmds$.mergeMap(cmd => {
+        const result$ = Observable.from(cmd.action() || Observable.empty());
+        return result$.mapTo(cmd.key).concat([cmd.key]).first();
+    });
+}
+
+function run3(bootstrappable: Array<Startable | Configurable>) {
+    const notifications$ = Observable.from(bootstrappable)
+        .mergeMap(createConfigAndRunCommands)
+        .groupBy(x => x.key.group)
+        .mergeMap(grp => {
+            const sharedGrp = grp.publishReplay().refCount();
+            const results$ = Observable.from([
+                sharedGrp.filter(x => x.key.phase === Phase.config),
+                sharedGrp.filter(x => x.key.phase === Phase.run)
+            ]).concatMap(runCommands)
+            return results$;
+        });
+}
+
+function run4(bootstrappable: Array<Startable | Configurable>) {
+    const notifications$ = Observable.from(bootstrappable)
+        .mergeMap(createConfigAndRunCommands)
+        .groupBy(x => x.key.group)
+        .mergeMap(grp => {
+            const phases$ = grp.groupBy(x => x.key.phase === Phase.config, null, null, () => new ReplaySubject())
+            const sharedGrp = grp.publishReplay().refCount();
+            const results$ = Observable.from([
+                sharedGrp.filter(x => x.key.phase === Phase.config),
+                sharedGrp.filter(x => x.key.phase === Phase.run)
+            ]).concatMap(runCommands)
+            return results$;
+        });
+}
+
+function toAsyncResults<T extends Boostrappable>(boostrappable: T[], action: (item: T) => MaybeAsyncVoid) {
+    const source$ = Observable.from(boostrappable)
+        .map(item => ({
+            key: item.attributes,
+            result: Observable.from(action(item) || Observable.empty()).mapTo(item.attributes).concat([item.attributes]).first()
+        }));
+    return Observable.fromAsyncResults(source$);
 }
 
 
